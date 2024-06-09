@@ -1,0 +1,207 @@
+body{
+    background-color: white;
+}                       /* BODY */
+
+/* DEBUT BOUTTON */
+.floating-button {
+    position: fixed;
+    top: 8px; /* Ajuste la position verticale pour qu'il s'adapte à ta navbar */
+    right: 20px;
+    background-color: lightgrey;
+    color: black;
+    width: 40px; /* Réduit la largeur du bouton */
+    height: 40px; /* Réduit la hauteur du bouton */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px; /* Réduit la taille de la police pour s'adapter au bouton plus petit */
+    text-decoration: none;
+    border-radius: 5px; /* Ajoute des coins arrondis pour un meilleur aspect */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Réduit légèrement l'ombre pour s'adapter à la taille réduite */
+    transition: background-color 0.3s;
+}
+
+.floating-button a {
+    color: #fff; /* Définit la couleur du texte sur blanc */
+}
+
+.floating-button:hover {
+    background-color: black;
+}
+/* FIN BOUTTON */
+
+.navbar-nav .nav-item:not(:last-child) .nav-link {
+    margin-right: 20px;
+    margin-left: 20px;
+}
+
+#prenom {
+    position: absolute;
+    top: 70px;
+    right: 500px;
+    margin-left: 30px;
+    margin-right: 680px;       /* PRENOM ET PERSONAL WEBSITE */
+}
+
+#photoprofil {
+    position: absolute;
+    top: 160px;
+    right: 230px;
+    margin-right: 10px;        /* PHOTO PERSONNEL PREMIERE PAGE */
+}
+
+#photoprofil img {
+    width: 250px;
+    height: 250px;
+    border-radius: 15px;      /* Arrondir les bords de l'image */
+}
+
+#presentation {
+    position: absolute;
+    top: 180px;
+    right: 600px;
+    margin-left: 100px;
+    margin-right: 30px;       /* PRESENTATION PERSONNEL CENTRE PREMIERE PAGE */
+    /* border-radius: 15px; */
+    /* padding: 7px; */
+    /* background-color: rgba(243, 250, 245, 0.961); */
+}
+
+#reseaux {
+    position: absolute;
+    top: 430px;
+    right: 500px;
+    left: 500px;
+    margin-left: 100px;
+    margin-right: 30px; /* LOGO RESEAUX */
+}
+
+#reseaux a {
+    text-decoration: none; /* Supprime le soulignement */
+    color: inherit; /* Utilise la couleur par défaut du texte */
+    display: inline-block; /* Définit la zone sensible sur la taille de l'image */
+}
+
+#reseaux a:hover img {
+    transform: scale(1.1); /* Agrandit légèrement l'image au survol */
+    transition: transform 0.2s ease; /* Ajoute une transition fluide */
+}
+
+
+/* ---------------------------- PARTIE PROJET ---------------------------- */
+
+.ContenuProjet {
+    position: absolute;
+    top: 40px;
+    left: 100px;
+    margin: 420px auto 20px auto; /* Marge en haut ajustée à 2000px */   
+}
+
+.firstligne {
+    border: none;
+    width: 73%; /* Largeur de la ligne réduite à 50% de la largeur du conteneur */
+    height: 1px;
+    background-color: grey;
+    margin: 450px auto 30px auto; /* Marge en haut ajustée à 2000px */
+    margin-right: 20%; /* Décalage vers la gauche de 7.5% */
+}
+
+/* ---------------------------- FIN "TRANSITION" ---------------------------- */
+
+/* Ajoute la classe .hover-effect aux cartes pour l'effet de survol */
+.hover-effect {
+    transition: box-shadow 0.3s; /* Ajoute une transition pour l'ombre de la carte */
+}
+
+/* Définit l'effet de survol pour les cartes */
+.hover-effect:hover {
+    box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.3); /* Ajoute une ombre lors du survol */
+}
+
+
+#carouselExampleControls {
+    position: relative;
+    top: -100px; /* Ajustement vertical du carousel */
+    left: -60px;
+}
+
+.card-wrapper {
+    margin-top: 90px; /* Marge supérieure du wrapper */
+    display: flex;
+    justify-content: space-between; /* Pour espacer également les cartes */
+    margin-bottom: -10px; /* Pour compenser l'espace négatif en bas */
+}
+
+
+.carousel-control-prev,
+.carousel-control-next {
+    top: 50px; /* Ajuste cette valeur pour déplacer les flèches vers le bas */
+}
+
+.card {
+    padding: 0;
+    width: 18rem; /* Largeur des cartes */
+    height: 350px; /* Hauteur des cartes */
+    margin-left: 0px; /* Réduit la marge à droite de chaque carte */
+    margin-right: 10px; /* Espacement horizontal entre les cartes */
+    margin-bottom: 10px; /* Ajoute une marge en bas de chaque carte */
+}
+
+.card img {
+    width: 100%; /* La largeur de l'image occupe toute la largeur de la carte */
+    height: 180px; /* Laissez la hauteur ajustée automatiquement pour conserver les proportions */
+}
+
+.card-text {
+    margin-left: 17px;
+    margin-top: -95px; /* Ajuste cette valeur pour faire monter le texte plus haut */
+}
+
+.card-link {
+    text-decoration: none; /* Enlève le soulignement du lien */
+    color: inherit; /* Utilise la couleur par défaut du texte */
+}
+
+
+  /* ---------------------------- FIN PARTIE PROJET ---------------------------- */
+  /* ---------------------------- TRANSITION ---------------------------- */
+
+.contenublog {
+    position: absolute;
+    top: 40px;
+    left: 100px;
+    margin: 880px auto 20px auto; /* Marge en haut ajustée à 2000px */   
+}
+
+.secondligne {
+    border: none;
+    width: 73%; /* Largeur de la ligne réduite à 50% de la largeur du conteneur */
+    height: 1px;
+    background-color: grey;
+    margin: -9px auto 30px auto; /* Marge en haut ajustée à 2000px */
+    margin-right: 20%; /* Décalage vers la gauche de 7.5% */
+}
+
+  /* ---------------------------- DEBUT PARTIE BLOG ---------------------------- */
+
+#carouselblog {
+    position: relative;
+    top: -100px; /* Ajustement vertical du carousel */
+    left: -60px;
+}
+
+  /* ---------------------------- FIN PARTIE BLOG ---------------------------- */
+
+
+  .footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: white;
+    color: white;
+    text-align: center;
+    display: none; /* Cache le footer par défaut */
+  }
+
+

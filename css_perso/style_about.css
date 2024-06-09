@@ -1,0 +1,142 @@
+body{
+    background-color: white;
+}        
+
+#debutpage {
+    position: absolute;
+    top: 70px;
+    margin-left: 240px;
+}
+
+.navbar-nav .nav-item:not(:last-child) .nav-link {
+    margin-right: 20px;
+    margin-left: 20px;
+}
+/* NAVABAR */
+
+/* DEBUT BOUTTON CV */
+.floating-button {
+    position: fixed;
+    top: 8px; /* Ajuste la position verticale pour qu'il s'adapte à ta navbar */
+    right: 20px;
+    background-color: lightgrey;
+    color: black;
+    width: 40px; /* Réduit la largeur du bouton */
+    height: 40px; /* Réduit la hauteur du bouton */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px; /* Réduit la taille de la police pour s'adapter au bouton plus petit */
+    text-decoration: none;
+    border-radius: 5px; /* Ajoute des coins arrondis pour un meilleur aspect */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Réduit légèrement l'ombre pour s'adapter à la taille réduite */
+    transition: background-color 0.3s;
+}
+
+.floating-button a {
+    color: #fff; /* Définit la couleur du texte sur blanc */
+}
+
+.floating-button:hover {
+    background-color: black;
+}
+/* FIN BOUTTON CV */
+
+
+#presentation {
+    position: absolute;
+    top: 140px;
+    width: 60%;
+    margin-left: 240px;
+}
+
+
+/* DEBUT PARTIE FORMATION */
+
+#formation {
+    position: absolute;
+    top: 260px;
+    width: 60%;
+    margin-left: 240px;
+}
+
+.formation-list li {
+    position: relative; /* Permet d'utiliser la position absolue à l'intérieur */
+}
+
+.date {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+/* FIN PARTIE FORMATION */
+
+
+/* DEBUT PARTIE EXPRIENCE */
+
+#Experience{
+    position: absolute;
+    top: 520px;
+    width: 60%;
+    margin-left: 240px;
+}
+
+.experience {
+    margin-bottom: 20px; /* Espace entre chaque expérience */
+    position: relative; /* Définit la position relative pour pouvoir positionner la date absolument par rapport à cela */
+}
+
+.date {
+    font-style: italic; /* Met la date en italique */
+    position: absolute; /* Définit la position absolue */
+    top: 0; /* Aligne la date sur le haut du bloc "experience" */
+    right: 0; /* Aligne la date sur la droite du bloc "experience" */
+}
+
+.job-title {
+    margin-left: 20px; /* Indente le titre du poste */
+    text-decoration: none; /* Supprime la décoration du lien */
+}
+
+.description {
+    margin-left: 20px; /* Indente le paragraphe */
+}
+
+.espace_formation {
+    margin-left: 30px; /* Ajoute un espacement horizontal de 20 pixels */
+}
+
+.espace_formation a{
+    color: inherit; /* Applique la couleur du texte parent (noir par défaut) */
+}
+
+
+/* FIN PARTIE EXPRIENCE */
+
+
+/* DEBUT PARTIE COMPETENCE */
+
+#Competence {
+    position: absolute;
+    top: 720px;
+    width: 60%;
+    margin-left: 240px;
+}
+
+.competence {
+    border: 0.1px solid lightgrey; /* Ajoute une bordure noire de 2 pixels */
+    margin-bottom: 20px; /* Espace entre chaque bloc de compétence */
+    padding: 1%;
+    transition: border-color 0.3s; /* Ajoute une transition pour la couleur de la bordure */
+}
+
+.competence:hover {
+    border-color: grey; /* Change la couleur de la bordure lors du survol */
+}
+
+
+/* FIN PARTIE COMPETENCE */
+
+
+

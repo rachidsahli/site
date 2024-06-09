@@ -1,0 +1,31 @@
+.floating-button {
+    position: fixed;
+    top: 8px; /* Ajuste la position verticale pour qu'il s'adapte à ta navbar */
+    right: 20px;
+    background-color: lightgrey;
+    color: black;
+    width: 40px; /* Réduit la largeur du bouton */
+    height: 40px; /* Réduit la hauteur du bouton */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px; /* Réduit la taille de la police pour s'adapter au bouton plus petit */
+    text-decoration: none;
+    border-radius: 5px; /* Ajoute des coins arrondis pour un meilleur aspect */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Réduit légèrement l'ombre pour s'adapter à la taille réduite */
+    transition: background-color 0.3s;
+}
+
+.floating-button a {
+    color: #fff; /* Définit la couleur du texte sur blanc */
+}
+
+.floating-button:hover {
+    background-color: black;
+}
+/* FIN BOUTTON */
+
+.navbar-nav .nav-item:not(:last-child) .nav-link {
+    margin-right: 20px;
+    margin-left: 20px;
+}

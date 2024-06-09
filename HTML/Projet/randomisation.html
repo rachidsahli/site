@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Rachid SAHLI - Randomisation</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="/Users/rs777/Documents/Site perso/css_bootstrap/bootstrap.min.css" rel="stylesheet" type = "text/css">
+    <link href="/Users/rs777/Documents/Site perso/css_perso/style_projet_description.css" rel="stylesheet" type = "text/css">
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  </head>
+  <body>
+      <!-- Debut de la NAVBAR -->
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+                <a class="nav-link active" href="/Users/rs777/Documents/Site perso/HTML/index.html">Rachid SAHLI</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/Users/rs777/Documents/Site perso/HTML/about.html">À propos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href= "/Users/rs777/Documents/Site perso/HTML/projet.html" aria-current="page">Projets</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active " href= "/Users/rs777/Documents/Site perso/HTML/blog.html">Blog</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="file:///Users/rs777/Documents/Site%20perso/HTML/contact.html">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Fin de la NAVBAR -->
+
+        <!-- DEBUT LOGO CV -->
+        <div class="floating-button">
+                    <a href="/Users/rs777/Documents/Site perso/CV_SAHLI.pdf" target="_blank">CV</a>
+        </div>
+        <!-- FIN LOGO CV -->
+        <div id = "container">
+          <div id = "titre-projet">
+              <h1>Randomisation dans les essais cliniques</h1>
+              <h4>12 mars 2024</h4>
+          </div>
+
+          <div id  = "image-presentation">
+            <img src="/Users/rs777/Documents/Site perso/Image/clinique.jpeg" alt="image randomisation explication"
+            width="490" height= "280">
+          </div>
+
+          <div id = "presentationprojet">
+            <p>Les essais cliniques et les applications de méthodes statistiques dans le domaine de la santé contiennent un grand nombre de spécificités intéressantes. 
+                C’est ce que nous allons voir, à travers ce projet dont le but est de comparer deux méthodes de randomisation au sein d’une simulation d'un grand nombre d'essais cliniques.
+                <br>
+                La randomisation est un processus statistique dans lequel un mécanisme aléatoire est utilisé pour sélectionner un échantillon 
+                dans une population, où affecter des sujets à différents groupes.
+                <br>
+                <br>
+                L’objectif principal d’un essai clinique est de réaliser une étude scientifique sur des êtres humains. 
+                Par exemple, en mesurant l’efficacité d’un médicament, en comparant deux traitements ou encore en étudiant la tolérance des individus à certains traitements. 
+                <br>
+                Un essai clinique compare 2 bras : le traitement standard (ou placebo), dit bras contrôle, versus le traitement d’intérêt, dit bras expérimental.
+                <br>
+                <br>
+                La randomisation intervient donc naturellement dans les essais cliniques. 
+                Cette méthode a pour objectif de garantir la répartition équilibrée entre les groupes de patients de variables susceptibles d'interférer (biais) avec la mesure ou l'analyse des résultats de l'essai.
+                <br>
+                De plus, la randomisation est la méthode recommandée par les autorités de santé dans les essais cliniques.
+                <br>
+                Plusieurs méthodes existent et présentent chacune avantages et inconvénients. Dans cette étude, nous allons parler de la méthode de minimisation.
+                Elle a été introduite par <a href = "https://pubmed.ncbi.nlm.nih.gov/1100130/">Pocok et Simon</a> en 1975. Elle calcule en temps réel l'attribution du groupe du prochain patient. 
+                Cela à partir des données issues des patients précédents. 
+                
+                <br>
+                <br>
+                <img src="/Users/rs777/Documents/Site perso/Image/randomisation_explication.png" alt="image randomisation explication"
+                width="490" height= "280">
+                <br>
+                L'objectif de ce projet a été de comparer deux méthodes de randomisation en simulant un grand nombre d'essais cliniques.
+                Nous nous sommes intéressés au biais de sélection, à l'équilibre de facteurs pronostiques, à l'équilibre global entre les groupes et à l'aléatoire pour utiliser les tests statistiques et les contraintes logistiques des différentes méthodes.
+                <br>
+                Les livrables de ce projet ont été : un rapport technique sous forme d'article, un code contenant notre algorithme et une présentation devant un jury composé de professeurs de statistiques.
+                <br>
+                Le rapport ainsi que le code sont disponible ici : <a href = "https://github.com/rachidsahli/Minimisation">Projet Randomisation</a>
+                <br>
+                <br>
+
+                <h3> Minimisation </h3>
+
+                La minimisation est une méthode de randomisation utilisée dans les essais cliniques pour équilibrer les groupes de traitement en fonction de certaines caractéristiques des participants, comme l'âge ou la sévérité de la maladie. 
+                Contrairement à la randomisation simple, qui peut entraîner des déséquilibres, la minimisation attribue les participants aux groupes de manière à réduire ces déséquilibres. 
+                Lorsqu'un nouveau participant doit être assigné, on calcule comment chaque assignation possible affecterait l'équilibre des groupes, puis on choisit l'option qui minimise l'imbalance. 
+                Si plusieurs options sont équivalentes, on en choisit une de manière aléatoire. Cela permet de maintenir des groupes comparables, augmentant ainsi la validité des résultats de l'étude.
+                <br>
+                </br>
+
+                Cette allocation tend à une répartition équilibrée des facteurs pronostiques. 
+                Cependant, c'est une méthode déterministe, car il est possible de prédire l'attribution du traitement en connaissant préalablement les niveaux des variables. 
+                Ceci, peut être un problème, car l'essai peut être trafiqué et ne plus rien avoir d'aléatoire. 
+                Afin de pallier à cela et d'éliminer toute possibilité de prédiction, l'intégration d'un facteur aléatoire dans l'algorithme est possible. 
+                La minimisation est adaptable aux petits échantillons et peut prendre un grand nombre de variables (facteurs pronostiques).
+                <br>
+                L'implémentation de cette méthode reste plutôt complexe. Il faut disposer de données et la prévisibilité potentielle du traitement fait partie
+                des inconvénients.
+                <br> 
+                En somme, cette méthode permet de se prémunir contre les biais accidentels liés à plusieurs facteurs pronostiques en les prenant en compte simultanément, 
+                afin d'obtenir un équilibre entre les groupes.
+                <br>
+                <br>
+
+                <img src="/Users/rs777/Documents/Site perso/Image/explication_minimisation.png" alt="image randomisation explication"
+                    width="430" height= "290">
+
+                <br>
+                <br>
+                
+                <h3> Randomisation Simple </h3>
+
+                Puis, nous utiliserons également la randomisation simple. Cette méthode que l'on connaît tous avec le pile ou face, permet à chaque participant de l'étude d'avoir une chance égale d'être assigné à l'un des deux groupes. C'est une méthode très simple à mettre en œuvre qui consiste à attribuer un traitement à chaque nouveau patient sans tenir compte des facteurs de base dont on sait qu'ils ont une importance pronostique.
+                Par exemple, une étude sur l'efficacité de deux méthodes de traitement pour une maladie cardiaque. Les chercheurs utilisent la randomisation simple pour assigner les patients à l'un des deux groupes de traitement : le groupe A recevra le traitement médicamenteux et le groupe B recevra une intervention chirurgicale.
+                <br>
+                <br>
+
+                    <img src="/Users/rs777/Documents/Site perso/Image/randosimple.jpeg" alt="image randomisation simple"
+                    width="250" height= "290">
+
+                <br>
+                <br>
+                Dans ce scénario, la randomisation simple ne tient pas compte des facteurs tels que l'âge, le sexe, les antécédents médicaux ou les facteurs de risque cardiovasculaire préexistants des patients. Par exemple, si une méthode chirurgicale est plus risquée pour les patients âgés, la randomisation simple pourra entraîner une sur-représentation de ce groupe d'âge dans le groupe de traitement chirurgical, ce qui pourrait biaiser les résultats de l'étude en faveur du traitement médicamenteux et causer un déséquilibre entre les groupes.
+                <br>
+                <br>
+                Cette méthode est certes imprédictible et s'implémente facilement. Cependant, elle souffre d'un déséquilibre entre les groupes de traitement dû à la non-prise en compte de certains facteurs pronostiques, ce qui invalide les résultats de l'essai ou nécessite une analyse secondaire.
+                <br>
+                <br>
+                L'objectif de cette étude est donc de comparer ces deux méthodes de randomisation en simulant un grand nombre d'essais cliniques.
+                Pour déterminer laquel est la plus performante. Pour cela, nous mesurerons le déséquilibre entre les groupes puis nous effectuerons des tests statistiques.
+
+                <br>
+                <br>
+ 
+                <h3> Etape 1 : Génération de Données </h3>
+
+                Notre première étape a été de construire ne base de données contenant des patients. Ici, il y aura deux bases de données l'une contenant 20 patients et la seconde 50 patients. 
+                Cela nous permettra de voir les différences entre une étude dite petite (20 patients) et une étude plutôt grande.
+                <br>
+                <br>
+                Les deux bases créées contiennent 3 variables ; Identifiant patient, Âge et Pays.
+                <br>
+                La génération aléatoire des données pour les patients s'est effectuée de la même manière pour les deux bases, suivant ces critères :
+                <br>
+                <br>
+
+                - Identifiant patient : Nombre aléatoire
+                <br>
+                - L'âge \(\sim \mathcal{N}(65, 10)\)
+                <br>
+                - Attribution des pays {1;2;3} selon les proba suivantes : P(1) = 0.50, P(2) = 0.30, P(3) = 0.20.
+
+                Une fois nos données générées, nous pouvons construire notre algorithme dans le but de simuler des essais cliniques.
+                
+                <br>
+                <br>
+                
+                <h3> Etape 2 : Création de l'algorithme</h3>
+
+                On peut ensuite créer nos deux algorithmes correspondant à nos deux méthodes expliquées plus haut.
+                Il serviront à attribuer des groupes aux patients de nos études.
+                <br>
+                Des packages sur R existe contenant ces algorithmes. Ici, nous avons décidé de le faire nous mêmes.
+                <br>
+                Nous avons simplement repris la méthode de Pocock et Simon que nous avons implémenté sur R.
+                Cependant, la méthode de minimisation étant déterministe. Un facteur aléatoire à été inclus dans l'algorithme.
+                L'objectif était de réduire la prédictibilité de l'attribution du traitement.
+                Ce facteur peut être de 60 %, 70 %, 80 % ou 100 %. Par exemple, avec un facteur aléatoire de 60 %, lorsque l'algorithme décide d'attribuer le groupe A au patient, 
+                nous décidons de réeffectuer un tirage aléatoire donnant au patient 60 % de chances d'être sélectionné dans le groupe A et 40 % de chances d'être sélectionné dans le groupe B.
+                <br>
+                Il est donc beaucoup plus difficile de connaître le groupe d'attribution du patient.
+                <br>
+                <br>
+
+                <h3> Etape 3 : Simulation des essais cliniques </h3>
+                
+                Nous avons séparé nos deux méthodes de randomisation, les réalisant indépendamment les unes des autres.
+                En ce qui concerne la randomisation simple, nous avons simulé 1000 études à 20 patients et 1000 études à 50 patients.
+                <br>
+                Dans le cadre de la méthode de minimisation, 1000 études distinctes contenant 20 et 50 patients ont été simulés pour tout les facteurs aléatoires possibles.
+                <br>
+                <br>
+                En sortie, nous obtenons donc nos 1000 études distinctes qui contiennent 20 ou 50 patients affectés à un groupe.
+                L'étape suivant est la création d'une variable statut permettant de nous donner une indication sur l'issue du traitement (succès ou échec).
+                Le succès est attribué selon les proba suivantes :
+                <br>
+                <br>
+                
+                <img src="/Users/rs777/Documents/Site perso/Image/proba_succes.png" alt="image proba succes"
+                width="430" height= "150">
+
+                <br>
+                <br>
+
+                Par exemple, si le patient est issue du Pays 1 et obtient le traitement A, il y a 1 chance sur 2 que le traitement soit un succès.
+
+                <br>
+                <br>
+
+                <h3> Etape 4 : Analyse </h3>
+
+                Dans la partie analyse, nous avons comparer les deux méthodes de randomisation ce qui était notre objectif initiale.
+                Pour cela, l'indicateur le plus pertinent est le déséquilibre entre les groupes. Il permet de mesurer la répartition de l'attribution des
+                traitements au sein de chaque groupe.
+                <br>
+                On somme par étude le traitement A et le traitement B. La différence d'individus entre ces deux groupes constitue le déséquilibre.
+                <br>
+                <br>
+                <img src="/Users/rs777/Documents/Site perso/Image/res.jpg" alt="image proba succes"
+                width="500" height= "200">
+                <br>
+                <br>
+                Pour rappel, notre objectif ici est d'obtenir des groupes équilibrés et imprédictibles.
+                <br>
+                Pour les étude de tailles 20 par exemple, on a observé que la minimisation conduit à des écarts moins importants que la reandomisation simple.
+                Cependant, moins le facteur aléatoire est faible dans la minimisation plus l'écart est dans les groupes est élevée.
+                Ce qui est parfaitement logique.
+                <br>
+                <br>
+                Ensuite, nous avons utilisé le test de Fisher, pour comparer la relation entre l'attribution du traitement et la variable statut.
+                Cela en comparant les p-valeurs obtenues à travers chaque méthode de randomisation.
+                Puis nous avons utilisé le test <a href = "https://en.wikipedia.org/wiki/Cochran%E2%80%93Mantel%E2%80%93Haenszel_statistics">CMH</a>, afin de
+                déterminer s'il existe un lien entre le traitement et son statut en contrôlant la variable Pays.
+                <br>
+                <br>
+                Tout nos résultats sont explicités de manière très détaillé dans notre rapport technique (<a href = "https://github.com/rachidsahli/Minimization/blob/main/Rapport.pdf">Rapport</a>).
+                <br>
+                <br>
+                <h3> Conclusion </h3>
+
+                Le projet à été passionnant. Le monde de la santé et ces applications statistiques sont très intéressantes. Nous étions imergé le monde des essais cliniques avec un aspect statistique. 
+                La problématique était très concrète, et je sais que les biostatisticiens y sont confrontés quotidiennement. 
+                Se mettre à leur place a été une expérience vraiment intéressante, surtout pour réfléchir à la manière de mener ce genre d'essais cliniques.
+                <br>
+                De plus, découvrir une méthode scientifique, lire un article scientifique et utiliser des outils statistiques tel que le CMH m'a permis de m'améliorer dans ce domaine.
+                Construire un algorithme, m'a permis de m'améliorer en programmation notamment sur R. Présentez ce projet devant un jury était également une très belle experience car elle nous a permis
+                de nous améliorer dans la communication de nos travauc, nos résultats et les méthodes utilisées.
+            </p>
+        </div>
+  </body>

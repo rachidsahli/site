@@ -1,0 +1,123 @@
+/* DEBUT BASE DE LA PAGE */
+body{
+    background-color: white;
+}                       /* BODY */
+
+/* DEBUT BOUTTON */
+.floating-button {
+    position: fixed;
+    top: 8px; /* Ajuste la position verticale pour qu'il s'adapte à ta navbar */
+    right: 20px;
+    background-color: lightgrey;
+    color: black;
+    width: 40px; /* Réduit la largeur du bouton */
+    height: 40px; /* Réduit la hauteur du bouton */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px; /* Réduit la taille de la police pour s'adapter au bouton plus petit */
+    text-decoration: none;
+    border-radius: 5px; /* Ajoute des coins arrondis pour un meilleur aspect */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Réduit légèrement l'ombre pour s'adapter à la taille réduite */
+    transition: background-color 0.3s;
+}
+
+.floating-button a {
+    color: #fff; /* Définit la couleur du texte sur blanc */
+}
+
+.floating-button:hover {
+    background-color: black;
+}
+/* FIN BOUTTON */
+
+.navbar-nav .nav-item:not(:last-child) .nav-link {
+    margin-right: 20px;
+    margin-left: 20px;
+}
+/* FIN BASE DE LA PAGE (la base est la même pour tous les projets)*/
+
+/* DEBUT TOUT PROJET (cette partie est la même pour tous les projet)*/
+
+#titre-projet {
+    position: absolute;
+    top: 70px;
+    margin-left: 240px;
+}
+
+#titre-projet h4 { 
+    font-size: 1.1em;
+    color: gray; 
+}
+/* DATE EN DESSOUS DU PROJET */
+
+#image-presentation {
+    position: absolute;
+    top: 170px;
+    margin-left: 240px;
+}
+
+#presentationprojet {
+    position: absolute;
+    top: 480px;
+    margin-left: 240px;
+    margin-right: 200px;
+}
+/* FIN TOUT PROJET */
+
+/* DEBUT PROJET LOUVRE */
+
+#titre-secondaire-louvre  {
+    position: absolute;
+    top: 728px;
+    margin-left: 240px;
+    margin-right: 200px;
+}
+
+#partie-2-louvre  {
+    position: absolute;
+    top: 780px;
+    margin-left: 240px;
+    margin-right: 200px;
+}
+
+/* FIN PROJET LOUVRE */
+
+/* ----------------------------------------------------------------------------------------------------- */
+
+/* DEBUT PROJET RANDOMISATION */
+
+/* FIN PROJET RANDOMISATION */
+
+
+
+/* INTEGRATIOn */
+
+table {
+    border-collapse: collapse;
+    border: 2px solid rgb(140 140 140);
+    font-family: sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+  }
+  
+  caption {
+    caption-side: bottom;
+    padding: 10px;
+    font-weight: bold;
+  }
+  
+  thead,
+  tfoot {
+    background-color: rgb(228 240 245);
+  }
+  
+  th,
+  td {
+    border: 1px solid rgb(160 160 160);
+    padding: 8px 10px;
+  }
+  
+  td:last-of-type {
+    text-align: center;
+  }
