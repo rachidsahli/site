@@ -43,6 +43,14 @@ body{
     margin-right: 680px;       /* PRENOM ET PERSONAL WEBSITE */
 }
 
+#prenom h2 {
+  font-size: 36px;
+}
+
+#prenom h3 {
+  font-size: 24px;
+}
+
 #photoprofil {
     position: absolute;
     top: 160px;
