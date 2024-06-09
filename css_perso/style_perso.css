@@ -204,4 +204,25 @@ body{
     display: none; /* Cache le footer par défaut */
   }
 
+/* ----------------------- RESPONSIVE ----------------- */
+
+@media (max-width: 768px) {
+  #prenom h2 {
+    font-size: 28px;
+  }
+
+  #prenom h3 {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  #prenom h2 {
+    font-size: 24px;
+  }
+
+  #prenom h3 {
+    font-size: 16px;
+  }
+}
 
