@@ -91,7 +91,7 @@ body{
 
 
 
-/* INTEGRATIOn */
+/* INTEGRATION */
 
 table {
     border-collapse: collapse;
@@ -121,3 +121,5 @@ table {
   td:last-of-type {
     text-align: center;
   }
+
+/* ----------------------------------- RESPONSIVE ------------------  */
