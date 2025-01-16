@@ -4,6 +4,9 @@ project:
 
 website:
   title: "Rachid Sahli"
+  description: "Site personnel de Rachid Sahli"
+  
+  repo-url: https://github.com/rachidsahli/Site-personnel
   
   navbar: 
     background: warning
