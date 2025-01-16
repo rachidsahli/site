@@ -1,4 +1,13 @@
 ---
 title: "Projets"
 lang: "fr"
+
+
+listing:
+  type: grid
+  contents: 
+        - projets/but_sd.qmd
+        - projets/pratiquer.qmd
+  fields: [image, title, reading-time, description, categories, date,]
+  categories: true
 ---

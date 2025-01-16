@@ -1,1 +1,29 @@
+---
+title: "L'algorithme des $k$ plus proches voisins"
+description: "Application sur R de l'algorithme des $k$ plus proches voisins."
+date: 29 septembre 2024
+categories: ["R","Machine learning"]
+toc: true
+number-sections: true
+image: image_blog/knn.png
+---
 
+![](image_blog/knn.png){fig-align="center" width="400"}
+
+# Introduction
+
+Le but de l'apprentissage supervisé est de prévoir l'étiquette (classification) $Y$ ou la valeur de $Y$ (régression) associée à une nouvelle entrée $X$, où il est sous-entendu que ($X,Y$) est une nouvelle réalisation des données, indépendante de l’échantillon observé.
+
+L'algorithme des $k$ plus proches voisins est une méthode d'apprentissage supervisé. On peut l'utiliser pour classifier quand $Y_i$ est une variable qualitative, les $Y_i$ sont appelés étiquettes. On peut également l'utiliser pour prédire si $Y_i \in \mathbb{R}$. C'est donc une régression et les $Y_i$ sont appelés variables à expliquer.
+
+**Remarque** : On parle d’apprentissage supervisé car pour chaque $X_i$ de l’échantillon d’apprentissage on dispose de $Y_i$, l’étiquette. Au contraire, on parlera d’apprentissage non-supervisé lorsque l’échantillon est simplement constitué des $X_i$.
+
+# Comment ça marche ?
+
+**En Classification**, pour un nouveau $X$ on classifie son étiquette $Y$ par la méthode des k-plus proches voisins de la façon suivante. On détermine tout d’abord les $k$ plus proches $X_i$ de l’échantillon par rapport à $X$ et on attribue la modalité dominante parmi les k modalités observées (on parle de vote majoritaire).
+
+**En Régression**, pour un nouveau $X$ on prédit la valeur $Y$ par la méthode des k-plus proches voisins de la façon suivante. On détermine tout d’abord les $k$ plus proches $X_i$ de l’échantillon par rapport à $X$ et on calcule la moyenne des $Y_i$.
+
+**Remarque** : Pour déterminer les $k$ plus proches $X_i$ de $X$ on utilise généralement la distance **euclidienne**. Il est possible de pondérer différement certaines composantes de $X_i$ pour lesquelles on veut attribuer plus ou moins d’importance.
+
+Nous allons mettre en pratique ces deux méthodes à travers deux exemples.
