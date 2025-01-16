@@ -1,6 +1,28 @@
 ---
-title: "Acceuil"
+title: "Rachid SAHLI"
+
+about:
+  image-width: 13em
+
+  template: jolla
+  image: /image/photo_cv.jpeg
+  links:
+    - icon: linkedin
+      text: Linkedin
+      href: https://linkedin.com
+    - icon: github
+      text: Github
+      href: https://github.com
+    - icon: book
+      text: CV
+      href: https://cv.hal.science/rachid-sahli
+    - icon: envelope
+      text: Mail
+      href: mailto:sahlirachid427@gmail.com
 ---
 
-This is a Quarto website.
+::: {#hero-heading}
+Je suis étudiant à l'IUT Paris Rives de Seine en Science des données et alternant à l'INSEE.<br> Au sein de la direction des statistiques démographiques et sociales, mes missions portent sur la couverture de différentes bases de sondage et sur l'appariement de gros volumes de données.
 
+J'aime les statistiques, le soleil ☀️, le vélo 🚲 , le cinéma 🎞️ et la programmation 👾.
+:::

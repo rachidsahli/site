@@ -4,17 +4,30 @@ project:
 
 website:
   title: "Rachid Sahli"
-  navbar:
+  navbar: 
+    background: warning
+    foreground: light
+    
     left:
       - href: index.qmd
-        text: Home
-      - about.qmd
+        text: Accueil
+      - href: about.qmd
+        text: À propos
+      - href: projets.qmd
+        text: Projets
+      - href: blog.qmd
+        text: Blog
+        
+  page-footer: "Copyright 2025, Rachid SAHLI"
 
 format:
   html:
-    theme: cosmo
+    theme: 
+          light: Default
+          dark: darkly
     css: styles.css
     toc: true
+    page-layout: full
 
 editor: visual
 

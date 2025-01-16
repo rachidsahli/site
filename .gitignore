@@ -1,4 +1,17 @@
-.Rproj.user
+# Ignorer les fichiers générés par Quarto (HTML, CSS, etc.)
+_site/
+docs/
+
+# Ignorer les fichiers et dossiers spécifiques à R
 .Rhistory
 .RData
+.Rproj.user
 .Ruserdata
+
+# Ignorer les fichiers système
+.DS_Store
+
+# Ignorer les fichiers de logs et de cache
+*.log
+
+/.quarto/
