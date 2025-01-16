@@ -4,6 +4,7 @@ project:
 
 website:
   title: "Rachid Sahli"
+  
   navbar: 
     background: warning
     foreground: light
@@ -17,6 +18,17 @@ website:
         text: Projets
       - href: blog.qmd
         text: Blog
+        
+    right: 
+      - icon: github
+        href: https://github.com/rachidsahli
+      - icon: envelope
+        href: mailto:sahlirachid427@gmail.com
+      - icon: linkedin
+        href: https://www.linkedin.com/in/rachidsahli/
+      - icon: file-person
+        text: CV
+        href: https://github.com/rachidsahli
         
   page-footer: "Copyright 2025, Rachid SAHLI"
 

@@ -14,4 +14,6 @@ docs/
 # Ignorer les fichiers de logs et de cache
 *.log
 
+Site-personnel.Rproj
+
 /.quarto/

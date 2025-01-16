@@ -1,1 +1,17 @@
+---
+title: "Blog"
 
+lang: "fr"
+
+listing:
+  type: default
+  
+  sort:
+    - "date"
+  
+  contents:
+        - blog/knn.qmd
+    
+    
+  categories: true
+---
