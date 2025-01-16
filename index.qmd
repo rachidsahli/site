@@ -5,7 +5,7 @@ about:
   image-width: 13em
 
   template: jolla
-  image: /image/photo_cv.jpeg
+  image: image/photo_cv.jpeg
   links:
     - icon: linkedin
       text: Linkedin
