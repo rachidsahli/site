@@ -1,7 +1,3 @@
-# Ignorer les fichiers générés par Quarto (HTML, CSS, etc.)
-_site/
-docs/
-
 # Ignorer les fichiers et dossiers spécifiques à R
 .Rhistory
 .RData
