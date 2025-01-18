@@ -1,1 +1,28 @@
+---
+title: "Intégration de données dans un data warehouse"
+
+description: "Construction d'une moyen de stockage de données et d'un dashboard pour une entreprise de e-commerce. "
+
+lang: "fr"
+
+categories: ["SQL","Base de données"]
+
+date: "13 Janvier 2024"
+  
+image: image_but/integration.jpeg
+---
+
+Ce projet a été réalisé dans le cadre du cours d'intégration de données en BUT SD (2 ème année).
+
+L'objectif de ce module était de nous initier au stockage de données en entreprise afin de permettre une approche décisionnelle. Nous avons vu des notions telles que le data warehouse, l'ETL, les systèmes d'information décisionnels, SQL...
+
+## Introduction
+
+Une entreprise française de e-commerce nous a sollicités pour analyser le comportement des utilisateurs sur sa plateforme. Dans un premier temps, nous avons équipé l'entreprise d'un système de stockage de données. Ensuite, nous avons mis en place un tableau de bord permettant de répondre à la problématique posée.
+
+## Modèle relationnel
+
+Après une étude approfondie de l'environnement et des besoins de l'entreprise, nous avons établi un modèle relationnel pertinent, adapté à l'analyse du comportement des utilisateurs sur la plateforme.
+
+Nous avons choisi d'utiliser un modèle relationnel en flocon.
 

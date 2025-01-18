@@ -6,7 +6,7 @@ website:
   title: "Rachid Sahli"
   description: "Site personnel de Rachid Sahli"
   
-  repo-url: https://github.com/rachidsahli/Site-personnel
+  repo-url: https://github.com/rachidsahli/Website
   
   navbar: 
     background: warning

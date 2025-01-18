@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr"><head>
 
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.5.57">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="Voici une liste de mes projets réalisées durant mes 3 années à l’institut universitaire de technologie de Paris Rives de Seine ! (2022 - 2025)">
+<meta name="description" content="Développement d’un site web interactif fournissant des ressources éducatives et des exercices pratiques pour faciliter l’apprentissage du langage R.">
 
-<title>Projets BUT SD – Rachid Sahli</title>
+<title>PratiqueR – Rachid Sahli</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -31,8 +31,6 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-listing/list.min.js"></script>
-<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -58,78 +56,20 @@ ul.task-list li input[type="checkbox"] {
   ],
   "show-item-context": false,
   "language": {
-    "search-no-results-text": "No results",
-    "search-matching-documents-text": "matching documents",
-    "search-copy-link-title": "Copy link to search",
-    "search-hide-matches-text": "Hide additional matches",
-    "search-more-match-text": "more match in this document",
-    "search-more-matches-text": "more matches in this document",
-    "search-clear-button-title": "Clear",
+    "search-no-results-text": "Pas de résultats",
+    "search-matching-documents-text": "documents trouvés",
+    "search-copy-link-title": "Copier le lien vers la recherche",
+    "search-hide-matches-text": "Cacher les correspondances additionnelles",
+    "search-more-match-text": "correspondance de plus dans ce document",
+    "search-more-matches-text": "correspondances de plus dans ce document",
+    "search-clear-button-title": "Effacer",
     "search-text-placeholder": "",
-    "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit",
-    "search-label": "Search"
+    "search-detached-cancel-button-title": "Annuler",
+    "search-submit-button-title": "Envoyer",
+    "search-label": "Recherche"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-image','listing-title','listing-reading-time','listing-description','listing-categories','listing-date',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-title","listing-author","listing-date","listing-image","listing-description","listing-categories"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 <link rel="stylesheet" href="../styles.css">
 </head>
@@ -145,8 +85,8 @@ window.Quarto = {
     <span class="navbar-title">Rachid Sahli</span>
     </a>
   </div>
-            <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+            <div id="quarto-search" class="" title="Recherche"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Basculer la navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -192,7 +132,7 @@ window.Quarto = {
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
-  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Basculer le mode sombre"><i class="bi"></i></a>
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -201,32 +141,37 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
         
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(2)</span></div><div class="category" data-category="Base de données">Base de données <span class="quarto-category-count">(1)</span></div><div class="category" data-category="IA">IA <span class="quarto-category-count">(1)</span></div><div class="category" data-category="SQL">SQL <span class="quarto-category-count">(1)</span></div></div></div>
+    </div>
 <!-- main -->
-<main class="content column-page-left" id="quarto-document-content">
+<main class="content column-page" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Projets BUT SD</h1>
+<h1 class="title">PratiqueR</h1>
   <div class="quarto-categories">
-    <div class="quarto-category">Science des données</div>
-    <div class="quarto-category">Statistique</div>
     <div class="quarto-category">R</div>
+    <div class="quarto-category">Data Science</div>
   </div>
   </div>
 
 <div>
   <div class="description">
-    Voici une liste de mes projets réalisées durant mes 3 années à l’institut universitaire de technologie de Paris Rives de Seine ! (2022 - 2025)
+    Développement d’un site web interactif fournissant des ressources éducatives et des exercices pratiques pour faciliter l’apprentissage du langage R.
   </div>
 </div>
 
 
-<div class="quarto-title-meta column-page-left">
+<div class="quarto-title-meta column-page">
 
     
+    <div>
+    <div class="quarto-title-meta-heading">Date de publication</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">23 juillet 2024</p>
+    </div>
+  </div>
   
     
   </div>
@@ -236,80 +181,13 @@ window.Quarto = {
 </header>
 
 
+<p><a href="https://rachidsahli.quarto.pub/test/"> <img src="image_projets/capture_pratique_r.png" id="image-pratiquer" class="img-fluid quarto-figure quarto-figure-center anchored" width="1000"> </a></p>
+<p>J’ai créé ce site pour aider les débutants à apprendre le langage R. Mon objectif est d’expliquer les bases et de présenter des cas d’utilisation courants à travers des exemples concrets. Vous trouverez également des exercices pratiques pour vous aider à prendre en main ce langage.</p>
+<p>Voici le lien du site : <a href="https://rachidsahli.quarto.pub/test/" class="uri">https://rachidsahli.quarto.pub/test/</a></p>
 
 
 
-
-<div class="quarto-listing quarto-listing-container-grid" id="listing-listing">
-<div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-categories="SQL,Base de données" data-listing-date-sort="1705100400000" data-listing-file-modified-sort="1737201131083" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="138">
-<a href="../projets/projets_but/integration.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img loading="lazy" src="../projets/projets_but/image_but/integration.jpeg" class="thumbnail-image card-img" style="height: 150px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Intégration de données dans un data warehouse
-</h5>
-<div class="listing-reading-time card-text text-muted">
-1 min
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('SQL'); return false;">
-SQL
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('Base de données'); return false;">
-Base de données
-</div>
-</div>
-<div class="card-text listing-description">
-Construction d’une moyen de stockage de données et d’un dashboard pour une entreprise de e-commerce.
-</div>
-<div class="card-attribution card-text-small end">
-<div class="listing-date">
-Jan 13, 2024
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="1" data-categories="IA" data-listing-date-sort="1700780400000" data-listing-file-modified-sort="1737200837404" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="688">
-<a href="../projets/projets_but/louvre.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img loading="lazy" src="../projets/projets_but/image_but/louvre.jpg" class="thumbnail-image card-img" style="height: 150px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Nocturne au musée du Louvre
-</h5>
-<div class="listing-reading-time card-text text-muted">
-4 min
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('IA'); return false;">
-IA
-</div>
-</div>
-<div class="card-text listing-description">
-Tous les vendredis, le musée du Louvre offre un moment de magie à ses visiteurs au milieu de ses collections. Au programme de ces nocturnes hebdomadaires, de nombreuses…<br><br>
-</div>
-<div class="card-attribution card-text-small end">
-<div class="listing-date">
-Nov 24, 2023
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-</div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -497,12 +375,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // flash "checked"
     button.classList.add('code-copy-button-checked');
     var currentTitle = button.getAttribute("title");
-    button.setAttribute("title", "Copied!");
+    button.setAttribute("title", "Copié");
     let tooltip;
     if (window.bootstrap) {
       button.setAttribute("data-bs-toggle", "tooltip");
       button.setAttribute("data-bs-placement", "left");
-      button.setAttribute("data-bs-title", "Copied!");
+      button.setAttribute("data-bs-title", "Copié");
       tooltip = new bootstrap.Tooltip(button, 
         { trigger: "manual", 
           customClass: "code-copy-button-tooltip",

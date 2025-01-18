@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr"><head>
 
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.5.57">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="description" content="Construction d’une moyen de stockage de données et d’un dashboard pour une entreprise de e-commerce.">
 
-<title>integration – Rachid Sahli</title>
+<title>Intégration de données dans un data warehouse – Rachid Sahli</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -55,17 +56,17 @@ ul.task-list li input[type="checkbox"] {
   ],
   "show-item-context": false,
   "language": {
-    "search-no-results-text": "No results",
-    "search-matching-documents-text": "matching documents",
-    "search-copy-link-title": "Copy link to search",
-    "search-hide-matches-text": "Hide additional matches",
-    "search-more-match-text": "more match in this document",
-    "search-more-matches-text": "more matches in this document",
-    "search-clear-button-title": "Clear",
+    "search-no-results-text": "Pas de résultats",
+    "search-matching-documents-text": "documents trouvés",
+    "search-copy-link-title": "Copier le lien vers la recherche",
+    "search-hide-matches-text": "Cacher les correspondances additionnelles",
+    "search-more-match-text": "correspondance de plus dans ce document",
+    "search-more-matches-text": "correspondances de plus dans ce document",
+    "search-clear-button-title": "Effacer",
     "search-text-placeholder": "",
-    "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit",
-    "search-label": "Search"
+    "search-detached-cancel-button-title": "Annuler",
+    "search-submit-button-title": "Envoyer",
+    "search-label": "Recherche"
   }
 }</script>
 
@@ -84,8 +85,8 @@ ul.task-list li input[type="checkbox"] {
     <span class="navbar-title">Rachid Sahli</span>
     </a>
   </div>
-            <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+            <div id="quarto-search" class="" title="Recherche"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Basculer la navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -131,7 +132,7 @@ ul.task-list li input[type="checkbox"] {
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
-  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Basculer le mode sombre"><i class="bi"></i></a>
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -140,17 +141,66 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Sur cette page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#modèle-relationnel" id="toc-modèle-relationnel" class="nav-link" data-scroll-target="#modèle-relationnel">Modèle relationnel</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
-<main class="content column-page" id="quarto-document-content">
+<main class="content column-page-left" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Intégration de données dans un data warehouse</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">SQL</div>
+    <div class="quarto-category">Base de données</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Construction d’une moyen de stockage de données et d’un dashboard pour une entreprise de e-commerce.
+  </div>
+</div>
 
 
+<div class="quarto-title-meta column-page-left">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Date de publication</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">13 janvier 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
 
 
+</header>
 
 
+<p>Ce projet a été réalisé dans le cadre du cours d’intégration de données en BUT SD (2 ème année).</p>
+<p>L’objectif de ce module était de nous initier au stockage de données en entreprise afin de permettre une approche décisionnelle. Nous avons vu des notions telles que le data warehouse, l’ETL, les systèmes d’information décisionnels, SQL…</p>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>Une entreprise française de e-commerce nous a sollicités pour analyser le comportement des utilisateurs sur sa plateforme. Dans un premier temps, nous avons équipé l’entreprise d’un système de stockage de données. Ensuite, nous avons mis en place un tableau de bord permettant de répondre à la problématique posée.</p>
+</section>
+<section id="modèle-relationnel" class="level2">
+<h2 class="anchored" data-anchor-id="modèle-relationnel">Modèle relationnel</h2>
+<p>Après une étude approfondie de l’environnement et des besoins de l’entreprise, nous avons établi un modèle relationnel pertinent, adapté à l’analyse du comportement des utilisateurs sur la plateforme.</p>
+<p>Nous avons choisi d’utiliser un modèle relationnel en flocon.</p>
+
+
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -340,12 +390,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // flash "checked"
     button.classList.add('code-copy-button-checked');
     var currentTitle = button.getAttribute("title");
-    button.setAttribute("title", "Copied!");
+    button.setAttribute("title", "Copié");
     let tooltip;
     if (window.bootstrap) {
       button.setAttribute("data-bs-toggle", "tooltip");
       button.setAttribute("data-bs-placement", "left");
-      button.setAttribute("data-bs-title", "Copied!");
+      button.setAttribute("data-bs-title", "Copié");
       tooltip = new bootstrap.Tooltip(button, 
         { trigger: "manual", 
           customClass: "code-copy-button-tooltip",

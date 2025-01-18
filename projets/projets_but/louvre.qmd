@@ -4,20 +4,20 @@ title: "Nocturne au musée du Louvre"
 lang: fr
 categories: ["IA"]
 
-image: image_projets/louvre.webp
+image: image_but/louvre.jpg
 
 date: "24 november 2023"
 ---
 
-![](projets_but/image_but/rachid-perrine.jpeg){#image-pratiquer fig-align="center" width="400"}
+![](image_but/louvre.jpg){fig-align="center" width="700"}
 
 Tous les vendredis, le musée du Louvre offre un moment de magie à ses visiteurs au milieu de ses collections. Au programme de ces nocturnes hebdomadaires, de nombreuses activités pour petits et grands.<br> Le 24 novembre 2023, mes camarades de l'IUT et moi avons pu participer à l’une de ces soirées. Nous avons décidé de présenter certains tableaux du célèbre musée au filtre de l'IA. Au moment où cette technologie prend une place active dans notre société, avec par exemple ChatGPT, DALL-E ou encore Mistral AI, il est intéressant de pouvoir approfondir l'utilisation de ces outils permettant de générer des éléments en lien, ici, avec l'art, par exemple.<br> De plus, ce sujet fascinant qu'est l'intelligence artificielle est plus ou moins en lien avec notre formation en science des données. Explorer ce domaine où se mêlent mathématiques, informatique et données était particulièrement captivant.
 
-## Qu'avons nous fait ?
+# Qu'avons nous fait ?
 
 L'objectif final était de pouvoir le 23 novembre 2024, présenter une œuvre en rapport avec l'IA au visiteur de la nocturne.<br> Pour cela, 2 mois, auparavant, nous avons décidé de choisir un sujet d'intelligence artificielle qui pouvait coïncider avec une œuvre du musée.<br> Après de longues recherches passionnantes, nous avons choisi de présenter les GAN (Generative adversarial networks).<br> C'est une classe d'algorithmes d'apprentissage non supervisé. Ils permettent de générer des images avec un fort degré de réalisme. Nous avons trouvé la technologie et les méthodes très intéressantes, d'autant plus qu'elles aboutissent à des applications concrètes, telles que la génération d'images artistiques.<br> Cependant, ces algorithmes sont utilisés dans bien d'autres domaines tels que la médecine ou encore la finance.<br> Mais concrètement, comment ça marche ?
 
-## Qu'est-ce qu'un GAN ?
+# Qu'est-ce qu'un GAN ?
 
 Afin de comprendre comment il fonctionne, on peut imaginer un jeu entre deux joueurs :
 
@@ -29,7 +29,7 @@ Tant que l'image n'est pas accepté par le juge, l'artiste continue à produire 
 
 [![Schéma GAN](https://c02.purpledshub.com/uploads/sites/41/2022/10/GANSpreview-tb-f1fb529.jpg?w=1880&webp=1){fig-align="center" width="500"}](https://www.sciencefocus.com/future-technology/how-do-machine-learning-gans-work)
 
-## Présentation au public
+# Présentation au public
 
 Nous avons décidé de présenter au public le travail d'Obvious. Ce collectif de chercheurs, d'artistes travaille avec des modèles d'apprentissage profond pour explorer le potentiel créatif de l'intelligence artificielle. Ils ont justement utilisé des GAN pour générer une famille de 11 tableaux (la famille Belamy). <br><br>
 
@@ -38,11 +38,11 @@ Un portrait a retenu notre attention, le portrait d'Edmond de Belamy. Ce tableau
 ::: panel-tabset
 ## Portrait de Belamy
 
-[![](image_projets/belamy.jpeg){fig-align="center"}](https://obvious-art.com/portfolio/edmond-de-belamy/)
+[![](image_but/belamy.jpeg){fig-align="center"}](https://obvious-art.com/portfolio/edmond-de-belamy/)
 
 ## Portrait de Jean de Bray
 
-[![Portrait d'homme, 1658](image_projets/jean_bray.jpeg){fig-align="center"}](https://collections.louvre.fr/en/ark:/53355/cl010059124)
+[![Portrait d'homme, 1658](image_but/jean_bray.jpeg){fig-align="center"}](https://collections.louvre.fr/en/ark:/53355/cl010059124)
 :::
 
 Les visiteurs étaient agréablement surpris par le réalisme du portrait d’Edmond de Belamy, mais aussi par le prix de vente de l’œuvre. Ils pensaient pouvoir reconnaître la réalisation d’une IA.

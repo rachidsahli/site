@@ -1,0 +1,20 @@
+---
+title: "PratiqueR"
+
+description: "Développement d'un site web interactif fournissant des ressources éducatives et des exercices pratiques pour faciliter l'apprentissage du langage R."
+
+lang: fr
+
+categories: ["R","Data Science"]
+
+date: "23 July 2024"
+  
+image: image_projets/pratiquer.jpeg
+---
+
+<a href="https://rachidsahli.quarto.pub/test/"> ![](image_projets/capture_pratique_r.png){#image-pratiquer fig-align="center" width="1000"} </a>
+
+J'ai créé ce site pour aider les débutants à apprendre le langage R. Mon objectif est d'expliquer les bases et de présenter des cas d'utilisation courants à travers des exemples concrets. Vous trouverez également des exercices pratiques pour vous aider à prendre en main ce langage.
+
+Voici le lien du site : <https://rachidsahli.quarto.pub/test/>
+

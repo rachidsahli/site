@@ -1,8 +1,6 @@
 ---
 title: "Projets"
 lang: "fr"
-
-
 listing:
   type: grid
   contents: 
