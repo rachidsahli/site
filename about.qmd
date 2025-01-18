@@ -1,1 +1,38 @@
+---
+title: "À propos"
+subtitle: "Alternant à l'INSEE, j'apprécie travailler sur des sujets complexes en utilisant des méthodes statistiques."
+
+lang: "fr"
+---
+
+## Formation
+
+::: {.callout-note icon="false" appearance="default"}
+## IUT de Paris - Rives de Seine (Université Paris Cité) \| Paris, France
+
+Bachelor universitaire de technologie en **Science des données** \| Sept 2022 - Juin 2025\
+**Cours suivis** : Algèbre, Statistique, Probabilités, Programmation, Base de données, Économie
+:::
+
+## Expérience
+
+::: {.callout-important icon="false" appearance="default"}
+## Institut national de la statistique et des études économiques \| Montrouge, France
+
+**Programmeur Statistique** \| Septembre 2023 - présent<br> *Direction des statistiques démographiques et sociales*<br> Appariement de données<br> Comparaison de la couverture de deux bases de sondages
+:::
+
+## Compétences
+
+::: {.callout-tip icon="false" appearance="default"}
+## Programmation
+
+Python \| R \| SQL \| SAS \| GIT
+:::
+
+::: {.callout-warning icon="false" appearance="default"}
+## Langue
+
+Anglais (**B2**) \| Espagnol (**B2**) \| Arabe (**C2**)
+:::
 

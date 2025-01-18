@@ -1,0 +1,15 @@
+---
+title: "Projets BUT SD"
+description: "Voici une liste de mes projets réalisées durant mes 3 années à l'institut universitaire de technologie de Paris Rives de Seine ! (2022 - 2025)"
+date: "02 septembre 2022"
+categories: ["Science des données","Statistique","R"]
+image: image_projets/but.jpeg
+
+listing:
+  type: grid
+  contents: 
+        - projets_but/louvre.qmd
+        - projets_but/integration.qmd
+  fields: [image, title, reading-time, description, categories, date,]
+  categories: true
+---
