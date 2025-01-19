@@ -1,7 +1,6 @@
 ---
 title: "À propos"
 subtitle: "Alternant à l'INSEE, j'apprécie travailler sur des sujets complexes en utilisant des méthodes statistiques."
-
 lang: "fr"
 ---
 
@@ -17,9 +16,11 @@ Bachelor universitaire de technologie en **Science des données** \| Sept 2022 -
 ## Expérience
 
 ::: {.callout-important icon="false" appearance="default"}
-## Institut national de la statistique et des études économiques \| Montrouge, France
+## Institut national de la statistique et des études économiques (INSEE) \| Montrouge, France
 
-**Programmeur Statistique** \| Septembre 2023 - présent<br> *Direction des statistiques démographiques et sociales*<br> Appariement de données<br> Comparaison de la couverture de deux bases de sondages
+**Programmeur Statistique** \| 2023 - 2025<br> Au sein de la Direction des statistiques démographiques et sociales, j'ai mené des travaux d'appariement de données administratives. L'objectif de ces travaux était de mesurer et de comparer la couverture de deux bases de sondages. Par ailleurs, j'ai comparé différents algorithmes d'appariement à l'aide d'analyses statistiques.
+
+Mes missions ont inclus la **manipulation de données brutes**, le **nettoyage des données**, l'appariement de grands **volumes de données**, ainsi que leur **analyse statistique**.
 :::
 
 ## Compétences
@@ -35,4 +36,3 @@ Python \| R \| SQL \| SAS \| GIT
 
 Anglais (**B2**) \| Espagnol (**B2**) \| Arabe (**C2**)
 :::
-

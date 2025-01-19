@@ -1,11 +1,15 @@
 ---
 title: "L'algorithme des $k$ plus proches voisins"
+lang : "fr"
 description: "Application sur R de l'algorithme des $k$ plus proches voisins."
 date: 29 septembre 2024
 categories: ["R","Machine learning"]
 toc: true
 number-sections: true
 image: image_blog/knn.png
+format:
+  html:
+    page-layout: article
 ---
 
 ![](image_blog/knn.png){fig-align="center" width="400"}
@@ -18,7 +22,7 @@ L'algorithme des $k$ plus proches voisins est une méthode d'apprentissage super
 
 **Remarque** : On parle d’apprentissage supervisé car pour chaque $X_i$ de l’échantillon d’apprentissage on dispose de $Y_i$, l’étiquette. Au contraire, on parlera d’apprentissage non-supervisé lorsque l’échantillon est simplement constitué des $X_i$.
 
-# Comment ça marche ?
+# Méthode
 
 **En Classification**, pour un nouveau $X$ on classifie son étiquette $Y$ par la méthode des k-plus proches voisins de la façon suivante. On détermine tout d’abord les $k$ plus proches $X_i$ de l’échantillon par rapport à $X$ et on attribue la modalité dominante parmi les k modalités observées (on parle de vote majoritaire).
 
@@ -27,3 +31,249 @@ L'algorithme des $k$ plus proches voisins est une méthode d'apprentissage super
 **Remarque** : Pour déterminer les $k$ plus proches $X_i$ de $X$ on utilise généralement la distance **euclidienne**. Il est possible de pondérer différement certaines composantes de $X_i$ pour lesquelles on veut attribuer plus ou moins d’importance.
 
 Nous allons mettre en pratique ces deux méthodes à travers deux exemples.
+
+# Classification
+
+Nous allons utiliser le jeu de données **Iris**. Également connu sous le nom d'Iris de Fisher. C'est un jeu de données multivariées présenté en 1936 par Ronald Fisher. Il comprend 50 observations de chacune des trois espèces d'iris (Iris setosa, Iris virginica et Iris versicolor). Quatre caractéristiques sont mesurées : la longueur et la largeur des sépales et des pétales, en centimètres.
+
+Nous allons construire une règle de classification permettant de discriminer les espèces versicolor et virginica.
+
+Pour cela, la première étape est l'import du package nécessaire à la réalisation de notre classification.
+
+```{r message=FALSE, warning=FALSE, paged.print=FALSE}
+# Import library ---------------
+library(class)
+```
+
+Le package **class** contient des fonctions pour l'apprentissage statistique, principalement utilisée pour des algorithmes de classification non supervisée, comme l'algorithme des $k$ plus proches voisins.
+
+Ensuite, nous importons le jeu de données Iris qui est initialement intégré dans R.
+
+```{r message=FALSE, warning=FALSE, paged.print=FALSE}
+# Import data ---------------
+iris <- iris
+```
+
+Notre règle de classification doit nous permettre de discriminer seulement 2 espèces (versicolor et virginica). Nous supprimons donc de nos données les observations relatif à l'espèce setosa.
+
+```{r message=FALSE, warning=FALSE, paged.print=FALSE}
+# Suppression des observations "setosa"
+iris <- iris[!iris$Species == "setosa",] 
+
+# Supression de la modalité 
+iris$Species <- droplevels(iris$Species)
+```
+
+Ci-dessous un petit aperçu des données.
+
+```{r message=FALSE, warning=FALSE, paged.print=FALSE}
+head(iris, 4)
+```
+
+Nous allons maintenant construire notre échantillon d'apprentissage et notre échantillon de test. Ce sont deux sous-échantillons qui sont construits à partir des données initiales.
+
+-   L'échantillon d'apprentissage contient 80 % de notre jeu de données initiale. Il va permettre à l'algorithme d'apprendre à prédire sur nos données.
+
+-   L'échantillon de test contient les 20 % restants de notre jeu de données. Nous l'utiliserons pour tester l'algorithme de classification.
+
+```{r message=FALSE, warning=FALSE, paged.print=FALSE}
+# Construction de l'echantillon d'apprentissage et de test
+N <- 80
+idx1 <- sample(1:50, N/2, replace = F) # Tirage aleatoire de 40 indices entre 1 et 50 (classe : versicolor)
+idx0 <- sample(51:100, N/2, replace = F) # Tirage aleatoire de 40 indices entre 51 et 100 (classe : virginica)
+dataL <- iris[c(idx1,idx0),] # Echantillon d'apprentissage (80 %)
+dataV <- iris[-c(idx1,idx0),] # Echantillon de test (20 %)
+```
+
+A présent, nous pouvons classifier nos données à l'aide de la fonction *knn()* et obtenir notre taux de mauvaise classification. Ici, nous initialiserons $k$ à 3, ce qui implique que l'algorithme considérera les 3 voisins les plus proches dans l'espace pour déterminer la classe d'une observation.
+
+```{r message=FALSE, warning=FALSE, paged.print=FALSE}
+pred <- knn(train=dataL[,-5],test=dataV[,-5],cl=dataL[,5],k=3,prob=FALSE)
+paste0("Taux de mauvaise classification : ",mean(pred!=dataV[,5]))
+```
+
+En classification, on calcule généralement un taux de mauvaise classification sur l’échantillon de test. Après avoir classifié toutes les observations de l'échantillon de test, on compare ces classifications attribuées aux observations à leurs vraies étiquettes. Ensuite, on calcule le pourcentage d'observations mal classifiées.
+
+Ici, afin d'obtenir un taux de classification stable pour $k = 3$, nous allons répéter l'expérience 100 fois en utilisant des échantillons différents à chaque itération. À l'issue de ces répétitions, nous calculerons la moyenne des taux de mauvaise classification obtenus. Cela nous permettera de mesurer la performance de note modèle.
+
+```{r message=FALSE, warning=FALSE, paged.print=FALSE}
+rep <- 100
+error <- rep(NA, rep)
+
+for (i in 1:rep){
+  # Echnatillonage
+  N <- 80
+  idx1 <- sample(1:50, N/2, replace = F)
+  idx0 <- sample(51:100, N/2, replace = F)
+  dataL <- iris[c(idx1,idx0),]
+  dataV <- iris[-c(idx1,idx0),]
+  
+  # Classification
+  pred.knn <- knn(train = dataL[,-5], test = dataV[,-5],cl = dataL[,5], k = 3, prob = F)
+  
+  # Caclcul du taux d'erreur
+  error[i] <- c(mean(pred.knn!= dataV[,5]))
+}
+paste0("Taux de mauvaise classification : ",mean(error))
+```
+
+Nous allons maintenant essayer d'identifier la valeur de $k$ pour laquelle le taux de mauvaise classification est minimisé. On pourra alors déterminer le niveau optimal de $k$ afin d'améliorer la précision du modèle. La boucle suivante permet de calculer le taux d'erreur moyen sur 100 échantillons pour chaque valeur de $k$.
+
+```{r message=FALSE, warning=FALSE, paged.print=FALSE}
+rep <- 100
+kval <- seq(1,79,by=2)
+error <- matrix(NA,rep,length(kval))
+
+for (i in 1:rep){
+  N <- 80
+  idx1 <- sample(1:50, N/2, replace = F)
+  idx0 <- sample(51:100, N/2, replace = F)
+  dataL <- iris[c(idx1,idx0),]
+  dataV <- iris[-c(idx1,idx0),]
+  for (j in 1:(length(kval)))
+  {
+    pred.knn <- knn(train = dataL[,-5], test = dataV[,-5], 
+                    cl = dataL[,5], k = kval[j], prob = F)
+    error[i,j] <- mean(dataV[,5]!=pred.knn)
+  }
+}
+apply(error,2,mean)
+```
+
+Observons les résultats sur le graphique ci-dessous.
+
+```{r message=FALSE, warning=FALSE, paged.print=FALSE}
+plot(kval,apply(error,2,mean),type="l")
+abline(v=kval[which.min(apply(error,2,mean))],lty=2,col="red")
+paste0("Taux d'erreur moyen le plus faible : ",min(apply(error,2,mean)))
+paste0("K optimal : ",kval[which.min(apply(error,2,mean))])
+```
+
+Le taux d'erreur moyen augmente avec le niveau $k$.
+
+# Prédiction
+
+Nous allons maintenant manipuler le jeu de données Abalone, disponible [ici](https://archive.ics.uci.edu/dataset/1/abalone). Ce dernier contient des informations sur les ormeaux. Ce sont des mollusques marins qui possèdent une seule coquille et qui habitent principalement dans les eaux froides des côtes. La valeur commerciale des ormeaux est étroitement liée à leur âge, qui est le principal critère utilisé pour estimer leur prix. Déterminez l'âge des ormeaux se fait à partir de leurs anneaux (rings). C'est une tâche généralement réalisée en laboratoire qui prend beaucoup de temps. Ainsi, notre objectif est de prédire leur âge (ici la taille de leurs anneaux) à l'aide des variables physiologiques dont nous disposons.
+
+Afin de pouvoir réaliser notre prédiction nous importons les packages suivants.
+
+```{r message=FALSE, warning=FALSE, paged.print=FALSE}
+# Import library ---------------
+library(kknn)
+library(Metrics)
+library(ggplot2)
+```
+
+-   Le package **kknn** est une implémentation de l'algorithme des k plus proches voisins. Il permet notamment de pondérer les plus proches voisins lors de la prédiction.
+
+-   Le package **Metrics** est conçu pour évaluer les performances des modèles prédictifs en calculant diverses mesures d'erreur et de précision. Il est particulièrement utile pour les tâches de régression et de classification, car il propose un ensemble de fonctions pour mesurer l'exactitude des prédictions. Nous l'utiliserons pour calculer l'erreur quadratique moyenne.
+
+-   Le package **ggplot2** permet d'obtenir des visualisations graphiques plus poussées.
+
+Ensuite, nous importons notre jeu de données en nommant les colonnes.
+
+```{r}
+# Import data ---------------
+# Nom des colonnes
+colnames = c("Sex","Length","Diameter","Height","Whole_weight","Shucked_weight",
+             "Viscera_weight","Shell_weight","Rings")
+
+# Import de la table
+abalone <- read.table("data_blog/abalone.data", header = TRUE, sep = ",", col.names = colnames)
+```
+
+Il contient 4 176 observations et 9 variables. Nous supprimons la variable Sex et les observations pour qui la taille (Height) est égale à 0.
+
+```{r}
+# Longeur du jeu de donnees
+dim(abalone)
+
+# Suppression de la variable Sex
+abalone <- abalone[,-1]
+
+# Suppression des valeurs nul
+abalone <- subset(abalone, Height!=0)
+
+# Aucune valeurs manquantes
+sapply(abalone, function(x) sum(is.na(x)))
+```
+
+Ci-dessous, un petit aperçu des données.
+
+```{r}
+head(abalone, 4)
+```
+
+## Analyse descriptive
+
+On procède à une succinte analyse descritpive de notre jeu de données.
+
+```{r}
+summary(abalone)
+```
+
+On observe ci-dessous la distribution de la variable Rings ainsi que la relation entre la longueur et la taille des ormeaux.
+
+```{r}
+ggplot(abalone, aes(x = Rings)) +
+  geom_histogram(fill = "blue") +
+  labs(title = "Distribution de Rings", y = "Fréquence", x = "Rings") + 
+  theme_minimal()
+
+ggplot(abalone, aes(x = Length, y = Height)) +
+  geom_point(col = "blue", pch = 1) +
+  labs(title = "Relation entre Height et Length") +
+  theme_minimal()
+```
+
+## Prédicition de la variable Rings
+
+Comme dans la partie précédente, nous commençons par créer deux sous-échantillons distincts (échantillon d'apprentissage et echantillon de test) à partir du jeu de données complet.
+
+```{r}
+N = round((80/100)*nrow(abalone)) # Calcul du nombre d'observations a sélectionner (80 %) 
+idx1 <- sample(1:nrow(abalone), size = N, replace = FALSE) # Tirage aleatoire des indices qu'on va sélectionner
+dataL <- abalone[idx1,] # Construction du dataset d'apprentissage
+dataV <- abalone[-idx1,] # Construction du dataset de test ou de validite
+```
+
+A présent, on utilise la fonction **kknn()** pour mettre en oeuvre notre algorithme de prédiction en fixant $k = 3$.
+
+```{r}
+pred <- kknn(Rings ~., dataL, dataV, k = 3, kernel = 'rectangular')
+```
+
+Ci-dessous, nous observons nos prédictions en fonction de la variable Rings.
+
+```{r}
+plot(dataV$Rings,pred$fitted.values, xlab = "Rings", ylab = "Prediction", col = "blue")
+abline(0,1, col = "red")
+```
+
+Contrairement à la classification, nous utiliserons l'erreur quadratique moyenne pour mesurer la performance de notre modèle sur l'échantillon de test.
+
+```{r}
+mse <- mse(pred$fitted.values, dataV$Rings)
+paste0("Erreur quadratique moyenne = ",mse)
+```
+
+Enfin, nous allons identifier la valeur de $k$ pour laquelle l'erreur quadratique moyenne est la plus faible. On pourra alors déterminer le niveau optimal de $k$ afin d'améliorer la précision du modèle. La boucle suivante permet de calculer l'erreur quadratique moyenne pour chaque valeur de $k$ sur notre échantillon.
+
+```{r}
+kvec <- 1:100
+error <- rep(NA, length(kvec))
+
+for(i in 1:length(kvec)){
+  pred <- kknn(Rings ~., dataL, dataV, k = i, kernel = 'rectangular')
+  error[i] <- mse(dataV$Rings, pred$fitted.values)
+}
+```
+
+On visualise les résultats sur le graphique ci-dessous.
+
+```{r}
+plot(kvec, error, type = "b", col = "orange")
+min_error_niveau <- which.min(error)
+abline(v = kvec[min_error_niveau], col = "red", lty = 2)
+legend("topright", legend = paste("Erreur min à k =", kvec[min_error_niveau]), col = "red", lty = 2)
+```

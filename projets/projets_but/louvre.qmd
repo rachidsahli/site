@@ -21,9 +21,9 @@ L'objectif final était de pouvoir le 23 novembre 2024, présenter une œuvre en
 
 Afin de comprendre comment il fonctionne, on peut imaginer un jeu entre deux joueurs :
 
-1.  L'artiste (Générateur) : L'objectif du joueur est de créer des images qui se rapprochent le plus de la réalité. Pour cela, il apprend de ses erreurs et réessaie en continu d'obtenir l'œuvre la plus proche du réel.
+1.  L'artiste (**Générateur**) : L'objectif du joueur est de créer des images qui se rapprochent le plus de la réalité. Pour cela, il apprend de ses erreurs et réessaie en continu d'obtenir l'œuvre la plus proche du réel.
 
-2.  Le juge (Discriminateur) : L'objectif de ce joueur est de vérifier si les œuvres réalisées par l'artiste peuvent paraître réelles ou si elles sont encore trop fausses. Pour cela, il compare les œuvres de l'artiste à des œuvres réelles faites par des peintres.
+2.  Le juge (**Discriminateur**) : L'objectif de ce joueur est de vérifier si les œuvres réalisées par l'artiste peuvent paraître réelles ou si elles sont encore trop fausses. Pour cela, il compare les œuvres de l'artiste à des œuvres réelles faites par des peintres.
 
 Tant que l'image n'est pas accepté par le juge, l'artiste continue à produire des œuvres. Voilà, le fonctionnement d'un GAN ou deux réseaux de neurones se font concurrence. De cette manière, il est possible de créer des images, des vidéos ou d'autres contenues de très bonnes qualités.
 
@@ -38,7 +38,7 @@ Un portrait a retenu notre attention, le portrait d'Edmond de Belamy. Ce tableau
 ::: panel-tabset
 ## Portrait de Belamy
 
-[![](image_but/belamy.jpeg){fig-align="center"}](https://obvious-art.com/portfolio/edmond-de-belamy/)
+[![Portrait d'Edmond de Belamy, Collectif Obvious](image_but/belamy.png){fig-align="center" width="447"}](https://obvious-art.com/portfolio/edmond-de-belamy/)
 
 ## Portrait de Jean de Bray
 
