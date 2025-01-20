@@ -1,0 +1,109 @@
+---
+title: "Carte d'aide pour les Volontaires de Paris 2024"
+lang: "fr"
+categories: ["R", "OPENDATA"]
+description: "Carte interactive des volontaires de Paris 2024, réalisée à partir de l'opendata."
+image: image_blog/volontaires.jpeg
+date: 9 septembre 2024
+---
+
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+# Import library ---------------
+library(dplyr)
+library(leaflet)
+library(tidyr)
+library(plotly)
+library(leaflet.extras)
+
+# Import data ---------------
+carte <- read.csv("data_blog/carte-aide-volontaires.csv", header = TRUE, sep = ",")
+
+# Suppression de 2 colonnes inutiles
+carte <- subset(carte,  select = -c(X.1,X))
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+# Realisation de la carte
+
+# Couleurs et Icons
+carte <- carte %>% 
+  mutate(Icon = case_when(
+    Lieu == "Distributeur automatique de billets" ~ "money",
+    Lieu == "Fontaine à eau" ~ "tint",
+    Lieu == "Ilots de fraicheur" ~ "leaf",
+    Lieu == "Parking vélo" ~ "bicycle",
+    Lieu == "Sanisette (toilettes publiques)" ~ "male",
+    Lieu == "Toilettes publiques" ~ "female",
+    Lieu == "Club 2024" ~ "user",
+    Lieu == "Porte d'accès spectateurs" ~ "sign-in",
+    Lieu == "Pharmacie" ~ "medkit",
+    Lieu == "Autres points" ~ "info-circle",
+    Lieu == "Sanisette (Toilettes publiques)" ~ "male",
+    Lieu == "Taxi / VTC" ~ "taxi",
+    Lieu == "Parking voiture" ~ "car",
+    Lieu == "Boutique officielle" ~ "shopping-cart",
+    Lieu == "Urinoir" ~ "male",
+    Lieu == "Urinoir femmes" ~ "female",
+    TRUE ~ "info-circle"),
+    
+    Couleur = case_when(
+      Lieu == "Distributeur automatique de billets" ~ "yellow",
+      Lieu == "Fontaine à eau" ~ "lightblue",
+      Lieu == "Ilots de fraicheur" ~ "lightblue",
+      Lieu == "Parking vélo" ~ "lightgreen",
+      Lieu == "Sanisette (toilettes publiques)" ~ "blue",
+      Lieu == "Toilettes publiques" ~ "blue",
+      Lieu == "Club 2024" ~ "purple",
+      Lieu == "Porte d'accès spectateurs" ~ "maroon",
+      Lieu == "Pharmacie" ~ "red",
+      Lieu == "Autres points" ~ "grey",
+      Lieu == "Sanisette (Toilettes publiques)" ~ "blue",
+      Lieu == "Taxi / VTC" ~ "green",
+      Lieu == "Parking voiture" ~ "orange",
+      Lieu == "Boutique officielle" ~ "pink",
+      Lieu == "Urinoir" ~ "blue",
+      Lieu == "Urinoir femmes" ~ "blue",
+      TRUE ~ "grey")
+    )
+
+
+# Carte
+leaflet(data = carte) %>% 
+  addTiles() %>% 
+  addAwesomeMarkers(
+    ~Longitude, ~Latitude,
+    popup = ~paste0(Lieu, "<br>Accès PMR: ", ACCES_PMR),
+    icon = ~awesomeIcons(
+      icon = ~Icon,
+      iconColor = "black",
+      library = "fa", 
+      markerColor = ~Couleur
+    ),
+    clusterOptions = markerClusterOptions(),
+    group = "marqueurs" # Groupe pour vos marqueurs
+  ) %>% 
+  addSearchOSM(
+    options = searchOptions(
+      zoom = 15,
+      #openPopup = TRUE,
+      textPlaceholder = "Rechercher un lieu en France..."
+    )
+  ) %>%
+  addFullscreenControl() %>% 
+  setView(lng = 2.2137, lat = 46.6034, zoom = 6)
+```
+
+<br> Cette carte a été réalisée à partir des données mises en opendata par les acteurs suivants :
+
+-   Fontaines à eau : opendata de la Ville de Paris
+
+-   Toilettes publiques : opendata de la Ville de Paris
+
+-   Distributeurs automatiques de billets : Opendatasoft hub
+
+-   Parkings vélo : opendata de Paris 2024
+
+-   Site de compétitions des Jeux Olympiques
+
+-   Paralympiques : opendata de Paris 2024
+

@@ -1,0 +1,1577 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="Mise en pratique d’un modèle de régression logistique afin de prédire, en se basant sur des mesures diagnostiques, si un patient est atteint du diabète ou non. De plus, nous comparons ce modèle à la méthode des k plus proches voisins.">
+
+<title>Régression logistique en pratique – Rachid Sahli</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Pas de résultats",
+    "search-matching-documents-text": "documents trouvés",
+    "search-copy-link-title": "Copier le lien vers la recherche",
+    "search-hide-matches-text": "Cacher les correspondances additionnelles",
+    "search-more-match-text": "correspondance de plus dans ce document",
+    "search-more-matches-text": "correspondances de plus dans ce document",
+    "search-clear-button-title": "Effacer",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Annuler",
+    "search-submit-button-title": "Envoyer",
+    "search-label": "Recherche"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Rachid Sahli</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Recherche"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Basculer la navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Accueil</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../about.html"> 
+<span class="menu-text">À propos</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../projets.html"> 
+<span class="menu-text">Projets</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../blog.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/rachidsahli"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="mailto:sahlirachid427@gmail.com"> <i class="bi bi-envelope" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/rachidsahli/"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://github.com/rachidsahli"> <i class="bi bi-file-person" role="img">
+</i> 
+<span class="menu-text">CV</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Basculer le mode sombre"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Sur cette page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">1</span> Introduction</a></li>
+  <li><a href="#import-et-nettoyage-des-données" id="toc-import-et-nettoyage-des-données" class="nav-link" data-scroll-target="#import-et-nettoyage-des-données"><span class="header-section-number">2</span> Import et nettoyage des données</a></li>
+  <li><a href="#statistique-descriptive" id="toc-statistique-descriptive" class="nav-link" data-scroll-target="#statistique-descriptive"><span class="header-section-number">3</span> Statistique descriptive</a></li>
+  <li><a href="#modele-de-regression-logistique" id="toc-modele-de-regression-logistique" class="nav-link" data-scroll-target="#modele-de-regression-logistique"><span class="header-section-number">4</span> Modele de regression logistique</a></li>
+  <li><a href="#calcul-des-odds-ratios-et-de-leurs-intervalles-de-confiance" id="toc-calcul-des-odds-ratios-et-de-leurs-intervalles-de-confiance" class="nav-link" data-scroll-target="#calcul-des-odds-ratios-et-de-leurs-intervalles-de-confiance"><span class="header-section-number">5</span> Calcul des odds-ratios et de leurs intervalles de confiance</a></li>
+  <li><a href="#méthode-de-sélection-de-variable" id="toc-méthode-de-sélection-de-variable" class="nav-link" data-scroll-target="#méthode-de-sélection-de-variable"><span class="header-section-number">6</span> Méthode de sélection de variable</a></li>
+  <li><a href="#classification-avec-le-modèle-de-régression-logistique" id="toc-classification-avec-le-modèle-de-régression-logistique" class="nav-link" data-scroll-target="#classification-avec-le-modèle-de-régression-logistique"><span class="header-section-number">7</span> Classification avec le modèle de régression logistique</a></li>
+  <li><a href="#comparaison-de-la-régression-logistique-avec-lalgorithme-des-k-plus-proches-voisins" id="toc-comparaison-de-la-régression-logistique-avec-lalgorithme-des-k-plus-proches-voisins" class="nav-link" data-scroll-target="#comparaison-de-la-régression-logistique-avec-lalgorithme-des-k-plus-proches-voisins"><span class="header-section-number">8</span> Comparaison de la régression logistique avec l’algorithme des k-plus proches voisins</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="header-section-number">9</span> Conclusion</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content column-page-left" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Régression logistique en pratique</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">R</div>
+    <div class="quarto-category">Machine learning</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Mise en pratique d’un modèle de régression logistique afin de prédire, en se basant sur des mesures diagnostiques, si un patient est atteint du diabète ou non. De plus, nous comparons ce modèle à la méthode des <span class="math inline">\(k\)</span> plus proches voisins.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta column-page-left">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Date de publication</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">10 octobre 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="image_blog/reg_logistique_image.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="500"></p>
+</figure>
+</div>
+<section id="introduction" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Introduction</h1>
+<p>Ce document a pour objectif d’étudier le modèle de régression logistique et de le comparer ainsi à la méthode des <span class="math inline">\(k\)</span> plus proches voisins. Ces deux méthodes sont des algorithmes d’apprentissage supervisé. Le but de l’apprentissage supervisé est de prévoir l’étiquette (classification) <span class="math inline">\(Y\)</span> ou la valeur de <span class="math inline">\(Y\)</span> (régression) associée à une nouvelle entrée <span class="math inline">\(X\)</span>, où il est sous-entendu que (<span class="math inline">\(X,Y\)</span>) est une nouvelle réalisation des données, indépendante de l’échantillon observé.</p>
+<p>La régression logistique est une méthode de classification. Ce modèle de classification binaire permet d’expliquer une variable (<span class="math inline">\(Y\)</span>) par p variables explicatives (<span class="math inline">\(X_1,...,X_j\)</span>. La variable <span class="math inline">\(Y\)</span> ne peut prendre que deux modalités <span class="math inline">\(\left\{0 ;1\right\}\)</span>. Les variables <span class="math inline">\(X_j\)</span> sont exclusivement continues ou binaires (on re-code les variables qualitatives avec des 0 et 1).</p>
+<p>L’algorithme des <span class="math inline">\(k\)</span> plus proches voisins fonctionne de la façon suivante pour la classification. On détermine les <span class="math inline">\(k\)</span> plus proches <span class="math inline">\(X_i\)</span> de l’échantillon par rapport à <span class="math inline">\(X\)</span> et on attribue la modalité dominante parmi les <span class="math inline">\(k\)</span> modalités observées (on parle de vote majoritaire).</p>
+<p>Nous allons utiliser ces deux méthodes de classification afin de prédire, en se basant sur des mesures diagnostiques, si un patient est atteint du diabète ou non.</p>
+</section>
+<section id="import-et-nettoyage-des-données" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Import et nettoyage des données</h1>
+<p>Dans un premier temps, nous importons le jeu de données “diabetes.csv”. Nous allons mettre en pratique nos méthodes de régression logistique et <span class="math inline">\(k\)</span> plus proches voisins sur ce dernier. Ce jeu de données est issu de l’Institut national du diabète et des maladies digestives et rénales. Tous les patients ici sont des femmes d’au moins 21 ans d’origine Pima. Il contient les mesures suivantes.</p>
+<table class="caption-top table">
+<caption>Description des variables</caption>
+<colgroup>
+<col style="width: 23%">
+<col style="width: 52%">
+<col style="width: 23%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Variable</th>
+<th style="text-align: center;">Description</th>
+<th style="text-align: center;">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Pregnancies</td>
+<td style="text-align: center;">Nombre de grossesses</td>
+<td style="text-align: center;">Quanti continue</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Glucose</td>
+<td style="text-align: center;">Concentration de glucose plasmatique</td>
+<td style="text-align: center;">Quanti discrète</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">BloodPressure</td>
+<td style="text-align: center;">Pression artérielle diastolique (mm Hg)</td>
+<td style="text-align: center;">Quanti discrète</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">SkinThickness</td>
+<td style="text-align: center;">Épaisseur du pli cutané du triceps (mm)</td>
+<td style="text-align: center;">Quanti discrète</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Insulin</td>
+<td style="text-align: center;">Insuline sérique à 2 heures (mu U/ml)</td>
+<td style="text-align: center;">Quanti discrète</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">BMI</td>
+<td style="text-align: center;">Indice de masse corporelle (poids en kg / (taille en m)²)</td>
+<td style="text-align: center;">Quanti continue</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">DiabetesPedigree</td>
+<td style="text-align: center;">Fonction de prédisposition au diabète</td>
+<td style="text-align: center;">Quanti continue</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Age</td>
+<td style="text-align: center;">Âge (années)</td>
+<td style="text-align: center;">Quanti discrète</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Outcome</td>
+<td style="text-align: center;">Statut diabétique (oui ou non)</td>
+<td style="text-align: center;">Quanti discrète</td>
+</tr>
+</tbody>
+</table>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import library ---------------</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gridExtra)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(class)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Import data ---------------</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>diabetes <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data_blog/diabetes.csv"</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>diabetes<span class="sc">$</span>Outcome <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(diabetes<span class="sc">$</span>Outcome)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Nous avons en même temps importé 3 packages qui nous seront utiles dans la réalisation de notre travail. À savoir, ggplot pour la réalisation de graphique, et class pour la classification de l’algorithme des <span class="math inline">\(k\)</span> plus proches voisins.</p>
+<p>Voici un petit aperçu de nos données.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(diabetes)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Pregnancies Glucose BloodPressure SkinThickness Insulin  BMI
+1           6     148            72            35       0 33.6
+2           1      85            66            29       0 26.6
+3           8     183            64             0       0 23.3
+4           1      89            66            23      94 28.1
+5           0     137            40            35     168 43.1
+6           5     116            74             0       0 25.6
+  DiabetesPedigreeFunction Age Outcome
+1                    0.627  50       1
+2                    0.351  31       0
+3                    0.672  32       1
+4                    0.167  21       0
+5                    2.288  33       1
+6                    0.201  30       0</code></pre>
+</div>
+</div>
+<p>Notre jeu de données ne présente pas de valeurs manquantes (NA), mais contient des observations pour lesquelles la valeur est égale à 0. Nous considérerons ces valeurs comme manquantes et les supprimons. Nous faisons cela uniquement sur 5 variables pour qui l’on juge que la valeur 0 est une vraie donnée manquante. Par exemple, nous ne le faisons pas pour la variable Pregnancies pour qui le 0 veut tout simplement dire que la personne n’a jamais été enceinte. Nous conservons alors 392 individus sur les 768 initiaux.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Suppression des 0</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>diabetes <span class="ot">&lt;-</span> diabetes[diabetes<span class="sc">$</span>SkinThickness<span class="sc">!=</span><span class="dv">0</span>,]</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>diabetes <span class="ot">&lt;-</span> diabetes[diabetes<span class="sc">$</span>Insulin<span class="sc">!=</span><span class="dv">0</span>,]</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>diabetes <span class="ot">&lt;-</span> diabetes[diabetes<span class="sc">$</span>Glucose<span class="sc">!=</span><span class="dv">0</span>,]</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>diabetes <span class="ot">&lt;-</span> diabetes[diabetes<span class="sc">$</span>BloodPressure<span class="sc">!=</span><span class="dv">0</span>,]</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>diabetes <span class="ot">&lt;-</span> diabetes[diabetes<span class="sc">$</span>BMI<span class="sc">!=</span><span class="dv">0</span>,] </span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Cette suppression à pour objectif de ne pas fausser les relations que nous cherchons à modéliser. Par exemple, avoir une insuline à 0 n’est premièrement pas cohérent et peut influencer de manière disproportionnée le modèle, car les autres observations sont éloignées. En somme, nous essayons de garantir que le modèle représente fidèlement la relation entre les variables.</p>
+</section>
+<section id="statistique-descriptive" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Statistique descriptive</h1>
+<p>À présent, nous allons étudier nos données de manière descriptive afin d’en obtenir un aperçu et ainsi de visualiser la répartition de la variable <span class="math inline">\(Y\)</span> (Outcome). De plus, nous analyserons les corrélations entre les co-variables elles-mêmes, ainsi qu’entre celles-ci et la variable <span class="math inline">\(Y\)</span>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(diabetes)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Pregnancies        Glucose      BloodPressure    SkinThickness  
+ Min.   : 0.000   Min.   : 56.0   Min.   : 24.00   Min.   : 7.00  
+ 1st Qu.: 1.000   1st Qu.: 99.0   1st Qu.: 62.00   1st Qu.:21.00  
+ Median : 2.000   Median :119.0   Median : 70.00   Median :29.00  
+ Mean   : 3.301   Mean   :122.6   Mean   : 70.66   Mean   :29.15  
+ 3rd Qu.: 5.000   3rd Qu.:143.0   3rd Qu.: 78.00   3rd Qu.:37.00  
+ Max.   :17.000   Max.   :198.0   Max.   :110.00   Max.   :63.00  
+    Insulin            BMI        DiabetesPedigreeFunction      Age       
+ Min.   : 14.00   Min.   :18.20   Min.   :0.0850           Min.   :21.00  
+ 1st Qu.: 76.75   1st Qu.:28.40   1st Qu.:0.2697           1st Qu.:23.00  
+ Median :125.50   Median :33.20   Median :0.4495           Median :27.00  
+ Mean   :156.06   Mean   :33.09   Mean   :0.5230           Mean   :30.86  
+ 3rd Qu.:190.00   3rd Qu.:37.10   3rd Qu.:0.6870           3rd Qu.:36.00  
+ Max.   :846.00   Max.   :67.10   Max.   :2.4200           Max.   :81.00  
+ Outcome
+ 0:262  
+ 1:130  
+        
+        
+        
+        </code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="reg_logistique_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="384"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Dans notre échantillon, 262 patients (67 %) ne sont pas atteints de diabète, tandis que 130 patients (33 %) en sont atteints. Les personnes non-diabétiques sont donc largement plus nombreuses.</p>
+<p>Environ 14,3 % des patients n’ont jamais eu de grossesse. Il y a 23,7 % des patients qui ont eu une unique grossesse, et nous constatons une diminution progressive du nombre de patients à mesure que le nombre de grossesses augmente. La majorité des patients ont eu au moins une grossesse, ce qui indique que les grossesses sont relativement courantes dans cet échantillon.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="reg_logistique_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="384"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>On observe ci-dessous, l’âge des patients. Le plus jeune patient a 21 ans, tandis que le plus âgé a 81 ans. Ce dernier se distingue clairement en haut de la boîte à moustaches, où il se situe assez éloigné des autres patients. On note également 5 autres valeurs aberrantes avec un âge très élevé. L’âge médian dans l’échantillon est de 29 ans. Il est proche du Q1, on peut donc penser à une représentation assez élevée de patients plutôt jeunes.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="reg_logistique_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="384"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>À présent, nous observons les différentes corrélations entre nos variables quantitatives continues. L’objectif du coefficient de corrélation est de muserer la force de relation linéaire entre deux variables. Il se calcule de la manière suivante :</p>
+<p><span class="math display">\[
+R(x, y) = \frac{\text{Cov}(x, y)}{\sigma_x \sigma_y}
+\]</span></p>
+<p>Le coefficient de corrélation est compris entre -1 et 1 :</p>
+<ul>
+<li><p>Si <span class="math inline">\(R(x,y)\)</span> est proche de 0 : La relation linéaire est nulle.</p></li>
+<li><p>Si <span class="math inline">\(R(x,y)\)</span> est proche de -1 : La relation linéaire est forte mais négative.</p></li>
+<li><p>Si <span class="math inline">\(R(x,y)\)</span> est proche de 1 : La relation linéaire est forte.</p></li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(diabetes[,<span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="sc">-</span><span class="dv">9</span>)])</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                           Glucose BloodPressure SkinThickness   Insulin
+Glucose                  1.0000000     0.2100266     0.1988558 0.5812230
+BloodPressure            0.2100266     1.0000000     0.2325712 0.0985115
+SkinThickness            0.1988558     0.2325712     1.0000000 0.1821991
+Insulin                  0.5812230     0.0985115     0.1821991 1.0000000
+BMI                      0.2095159     0.3044034     0.6643549 0.2263965
+DiabetesPedigreeFunction 0.1401802    -0.0159711     0.1604985 0.1359058
+Age                      0.3436415     0.3000389     0.1677611 0.2170820
+                               BMI DiabetesPedigreeFunction        Age
+Glucose                  0.2095159               0.14018018 0.34364150
+BloodPressure            0.3044034              -0.01597110 0.30003895
+SkinThickness            0.6643549               0.16049853 0.16776114
+Insulin                  0.2263965               0.13590578 0.21708199
+BMI                      1.0000000               0.15877104 0.06981380
+DiabetesPedigreeFunction 0.1587710               1.00000000 0.08502911
+Age                      0.0698138               0.08502911 1.00000000</code></pre>
+</div>
+</div>
+<p>Les variables sont toutes moyennement corrélées positivement.</p>
+<p>Nous représentons ci-dessous les relations entre les co-variables et notre variable <span class="math inline">\(Y\)</span> (Outcome).</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="reg_logistique_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="reg_logistique_files/figure-html/unnamed-chunk-9-2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>On observe une corrélation entre nos variables quantitatives continues et la variable Outcome (<span class="math inline">\(Y\)</span>). On le voit par exemple à travers le lien entre la variable Glucose et la variable <span class="math inline">\(Y\)</span>. Les patients atteints de diabète présentent un taux de glucose significativement plus élevé que ceux qui ne sont pas atteints par la maladie.</p>
+</section>
+<section id="modele-de-regression-logistique" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Modele de regression logistique</h1>
+<p>Nous pouvons mettre en place notre modèle de régression logistique. Nous commençons par le modèle complet. C’est-à-dire que nous sélectionnons toutes les co-variables pour expliquer <span class="math inline">\(Y\)</span>. On rappel qu’on cherche à prédire les valeurs de la variable Outcom (<span class="math inline">\(Y\)</span>) à l’aide des variables explicatives présentent dans notre jeu de données.</p>
+<p>On utilise pour cela la fonction <strong>glm()</strong> (Fitting Generalized Linear Models).</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>model_complet <span class="ot">&lt;-</span> <span class="fu">glm</span>(Outcome<span class="sc">~</span>., <span class="at">family =</span> <span class="st">"binomial"</span>, <span class="at">data =</span> diabetes)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_complet)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = Outcome ~ ., family = "binomial", data = diabetes)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-2.7823  -0.6603  -0.3642   0.6409   2.5612  
+
+Coefficients:
+                           Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)              -1.004e+01  1.218e+00  -8.246  &lt; 2e-16 ***
+Pregnancies               8.216e-02  5.543e-02   1.482  0.13825    
+Glucose                   3.827e-02  5.768e-03   6.635 3.24e-11 ***
+BloodPressure            -1.420e-03  1.183e-02  -0.120  0.90446    
+SkinThickness             1.122e-02  1.708e-02   0.657  0.51128    
+Insulin                  -8.253e-04  1.306e-03  -0.632  0.52757    
+BMI                       7.054e-02  2.734e-02   2.580  0.00989 ** 
+DiabetesPedigreeFunction  1.141e+00  4.274e-01   2.669  0.00760 ** 
+Age                       3.395e-02  1.838e-02   1.847  0.06474 .  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 498.10  on 391  degrees of freedom
+Residual deviance: 344.02  on 383  degrees of freedom
+AIC: 362.02
+
+Number of Fisher Scoring iterations: 5</code></pre>
+</div>
+</div>
+<p>Le paramètre <strong>family = binomial</strong> indique que nous utilisons une régression logistique et que notre variable est binaire.</p>
+<p>Nous nous concentrons sur la significativité statistique de chaque coefficient. En effet, la <span class="math inline">\(p-valeur\)</span> nous indique la probabilité que l’effet de la variable explicative soit dû au hasard. Plus sa valeur est faible, plus l’effet de la variable explicative sur notre variable <span class="math inline">\(Y\)</span> (Outcome) est statistiquement significatif. Au contraire, si elle est supérieure à 0.05, cela suggère que l’effet de la variable explicative sur notre variable <span class="math inline">\(Y\)</span> n’est pas significatif et pourrait être dû au hasard.</p>
+<p>Ici, les variables explicatives avec des p-valeurs inférieur à 5 % sont :</p>
+<ul>
+<li><p>Glucose (<span class="math inline">\(p-valeur\)</span> = <span class="math inline">\(3,24 * 10^{-11}\)</span>) : L’effet de la variable glucose sur la probabilité de la variable diabète est significatif.</p></li>
+<li><p>BMI (<span class="math inline">\(p-valeur\)</span> = <span class="math inline">\(0.00989\)</span>) : L’effet de la variable BMI sur la probabilité de la variable diabète est significatif.</p></li>
+<li><p>DiabetesPedigreeFunction (<span class="math inline">\(p-valeur\)</span> = <span class="math inline">\(0.00760\)</span>) : L’effet de la variable DiabetesPedigreeFunction sur la probabilité de la variable diabète est significatif.</p></li>
+</ul>
+<p>Les variables restantes ont des <span class="math inline">\(p-valeur\)</span> &gt; <span class="math inline">\(5 \%\)</span>, on en conclut donc qu’elles ne sont pas liées au risque de diabète.</p>
+</section>
+<section id="calcul-des-odds-ratios-et-de-leurs-intervalles-de-confiance" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Calcul des odds-ratios et de leurs intervalles de confiance</h1>
+<p>L’odds-ratio est une mesure statistique exprimant le degré de dépendance entre des variables aléatoires qualitatives. Il permet de mesurer l’effet d’un facteur en comparant les chances qu’un évènement se produise dans un groupe par rapport à un autre groupe.</p>
+<p>Ici, l’odds-ratio va représenter l’impact de nos variables explicatives sur les chances que notre variable <span class="math inline">\(Y\)</span> (Outcome) prenne la valeur diabétique (1) ou non-diabétique.</p>
+<p>Nous calculons ci-dessous les odds-ratios de toutes les variables, ainsi que leurs intervalles de confiance qui nous permetteront d’être sur à 95 % que l’odds-ratio se trouve entre les bornes inférieurs et supérieurs.</p>
+<p>Afin d’obtenir les odds-ratios à partir des coefficients de régression logistique, nous avons pris l’exponentielle des coefficients.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Permet la realisation de tableau</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">exp</span>(model_complet<span class="sc">$</span>coefficients[<span class="sc">-</span><span class="dv">1</span>]), <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Variable"</span>, <span class="st">"Odd-ratios"</span>))</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Variable</th>
+<th style="text-align: right;">Odd-ratios</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Pregnancies</td>
+<td style="text-align: right;">1.0856289</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Glucose</td>
+<td style="text-align: right;">1.0390112</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BloodPressure</td>
+<td style="text-align: right;">0.9985807</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SkinThickness</td>
+<td style="text-align: right;">1.0112846</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Insulin</td>
+<td style="text-align: right;">0.9991750</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BMI</td>
+<td style="text-align: right;">1.0730849</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">DiabetesPedigreeFunction</td>
+<td style="text-align: right;">3.1296107</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Age</td>
+<td style="text-align: right;">1.0345346</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">exp</span>(<span class="fu">confint</span>(model_complet)[<span class="sc">-</span><span class="dv">1</span>, ]), <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Variable"</span>, <span class="st">"IC_inf"</span>, <span class="st">"IC_sup"</span>))</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Variable</th>
+<th style="text-align: right;">IC_inf</th>
+<th style="text-align: right;">IC_sup</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Pregnancies</td>
+<td style="text-align: right;">0.9743237</td>
+<td style="text-align: right;">1.211631</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Glucose</td>
+<td style="text-align: right;">1.0277173</td>
+<td style="text-align: right;">1.051303</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BloodPressure</td>
+<td style="text-align: right;">0.9757909</td>
+<td style="text-align: right;">1.022307</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SkinThickness</td>
+<td style="text-align: right;">0.9778466</td>
+<td style="text-align: right;">1.045780</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Insulin</td>
+<td style="text-align: right;">0.9966180</td>
+<td style="text-align: right;">1.001767</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BMI</td>
+<td style="text-align: right;">1.0178269</td>
+<td style="text-align: right;">1.133537</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">DiabetesPedigreeFunction</td>
+<td style="text-align: right;">1.3783799</td>
+<td style="text-align: right;">7.368273</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Age</td>
+<td style="text-align: right;">0.9985446</td>
+<td style="text-align: right;">1.073523</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Nous nous intéressons uniquement aux variables ayant un effet significatif sur la probabilité de la variable Outcome. Ce sont les variables <strong>Glucose</strong>, <strong>BMI</strong> et <strong>DiabetesPedigreeFunction</strong>.</p>
+<p>On note ici qu’une augmentation de 20 de BMI correspond à <span class="math inline">\(1.0730849^{20} = 4.09\)</span> plus de risque d’avoir du diabète que de ne pas en avoir. Une augmentation de 30 de glucose correspond à <span class="math inline">\(1.0390112^{30} = 3.15\)</span> plus de risque d’avoir du diabète que de ne pas en avoir. Enfin, une augmentation de 2 de DiabetesPedigreeFunction correspond à <span class="math inline">\(3.1296107^{2} = 9.79\)</span> plus de risque d’avoir du diabète que de ne pas en avoir.</p>
+<p>Nous allons maintenant exhiber des profils d’individus particulièrement à risque d’être diabétiques à l’aide des coefficients de notre modèle de régression logistique.</p>
+<p>Par exemple, un individu particulièrement à risque d’avoir du diabète sera un individu ayant un taux de glucose égale à 160, 40 de BMI et 1.5 de DiabetesPedigreeFunction. Son risque de diabète est alors égal à environ 99.9 %.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>score <span class="ot">&lt;-</span> <span class="fu">exp</span>(model_complet<span class="sc">$</span>coefficients[<span class="dv">1</span>]<span class="sc">+</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>             <span class="dv">160</span><span class="sc">*</span>model_complet<span class="sc">$</span>coefficients[<span class="dv">3</span>]<span class="sc">+</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>             <span class="dv">60</span><span class="sc">*</span>model_complet<span class="sc">$</span>coefficients[<span class="dv">7</span>]<span class="sc">+</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>             <span class="fl">1.5</span><span class="sc">*</span>model_complet<span class="sc">$</span>coefficients[<span class="dv">8</span>])</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(score)<span class="sc">/</span>(<span class="dv">1</span><span class="sc">+</span><span class="fu">exp</span>(score))</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(Intercept) 
+  0.9994916 </code></pre>
+</div>
+</div>
+<p>Cependant, si ce même individu avait eu un BMI de 20 au lieu de 40, son risque de diabète aurait grandement diminué (71.4 %).</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>score <span class="ot">&lt;-</span> <span class="fu">exp</span>(model_complet<span class="sc">$</span>coefficients[<span class="dv">1</span>]<span class="sc">+</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>             <span class="dv">160</span><span class="sc">*</span>model_complet<span class="sc">$</span>coefficients[<span class="dv">3</span>]<span class="sc">+</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>             <span class="dv">30</span><span class="sc">*</span>model_complet<span class="sc">$</span>coefficients[<span class="dv">7</span>]<span class="sc">+</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>             <span class="fl">1.5</span><span class="sc">*</span>model_complet<span class="sc">$</span>coefficients[<span class="dv">8</span>])</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(score)<span class="sc">/</span>(<span class="dv">1</span><span class="sc">+</span><span class="fu">exp</span>(score))</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(Intercept) 
+  0.7137806 </code></pre>
+</div>
+</div>
+</section>
+<section id="méthode-de-sélection-de-variable" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Méthode de sélection de variable</h1>
+<p>Toutes les variables ne contribuent pas nécessairement à expliquer notre variable Y, nous allons voir comment sélectionner certaines variables afin de simplifier notre modèle, mais aussi pour améliorer la classification.</p>
+<p>Ici, nous utiliserons l’AIC (Critère d’information d’Akaike) qui est une mesure de la qualité d’un modèle statistique. L’AIC va nous permettre de comparer les différents modèles en utilisant un critère de vraisemblance. Il représente un compromis entre le biais (qui diminue avec le nombre de paramètres) et la parcimonie (nécessité de décrire les données avec le plus petit nombre de paramètres possible).</p>
+<p><span class="math display">\[AIC = -2 \cdot \log(L) + 2 \cdot k\]</span></p>
+<ul>
+<li><p><span class="math inline">\(L\)</span> est la vraisemblance maximisée</p></li>
+<li><p><span class="math inline">\(k\)</span> est le nombre de paramètres dans le modèle</p></li>
+<li><p><span class="math inline">\(-2 \cdot \log(L)\)</span> est la déviance du modèle. Elle pénalise par 2 fois le nombre de paramètres</p></li>
+</ul>
+<p>La fonction <strong>step()</strong> de R, nous permet d’effectuer une sélection descendante. On commence par le modèle complet incluant toutes les variables explicatives, puis on retire progressivement les variables qui contribuent le moins à l’ajustement du modèle, jusqu’à obtenir un modèle optimal.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>model_final <span class="ot">&lt;-</span> <span class="fu">step</span>(model_complet)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Start:  AIC=362.02
+Outcome ~ Pregnancies + Glucose + BloodPressure + SkinThickness + 
+    Insulin + BMI + DiabetesPedigreeFunction + Age
+
+                           Df Deviance    AIC
+- BloodPressure             1   344.04 360.04
+- Insulin                   1   344.42 360.42
+- SkinThickness             1   344.45 360.45
+&lt;none&gt;                          344.02 362.02
+- Pregnancies               1   346.24 362.24
+- Age                       1   347.55 363.55
+- BMI                       1   350.89 366.89
+- DiabetesPedigreeFunction  1   351.58 367.58
+- Glucose                   1   396.95 412.95
+
+Step:  AIC=360.04
+Outcome ~ Pregnancies + Glucose + SkinThickness + Insulin + BMI + 
+    DiabetesPedigreeFunction + Age
+
+                           Df Deviance    AIC
+- Insulin                   1   344.42 358.42
+- SkinThickness             1   344.46 358.46
+&lt;none&gt;                          344.04 360.04
+- Pregnancies               1   346.24 360.24
+- Age                       1   347.60 361.60
+- BMI                       1   351.28 365.28
+- DiabetesPedigreeFunction  1   351.67 365.67
+- Glucose                   1   397.31 411.31
+
+Step:  AIC=358.42
+Outcome ~ Pregnancies + Glucose + SkinThickness + BMI + DiabetesPedigreeFunction + 
+    Age
+
+                           Df Deviance    AIC
+- SkinThickness             1   344.89 356.89
+&lt;none&gt;                          344.42 358.42
+- Pregnancies               1   346.74 358.74
+- Age                       1   347.87 359.87
+- BMI                       1   351.32 363.32
+- DiabetesPedigreeFunction  1   351.90 363.90
+- Glucose                   1   411.11 423.11
+
+Step:  AIC=356.89
+Outcome ~ Pregnancies + Glucose + BMI + DiabetesPedigreeFunction + 
+    Age
+
+                           Df Deviance    AIC
+&lt;none&gt;                          344.89 356.89
+- Pregnancies               1   347.23 357.23
+- Age                       1   348.72 358.72
+- DiabetesPedigreeFunction  1   352.72 362.72
+- BMI                       1   360.44 370.44
+- Glucose                   1   411.85 421.85</code></pre>
+</div>
+</div>
+<p>Le meilleur modèle est celui possédant l’AIC le plus <strong>faible</strong>.</p>
+<p>Ici, le meilleur modèle inclut les variables Age, Pregnancies, BMI, DiabetesPedigreeFunction et Age.</p>
+<p>Ci-dessous les résultats de notre modèle.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_final)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = Outcome ~ Pregnancies + Glucose + BMI + DiabetesPedigreeFunction + 
+    Age, family = "binomial", data = diabetes)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-2.8827  -0.6535  -0.3694   0.6521   2.5814  
+
+Coefficients:
+                          Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)              -9.992080   1.086866  -9.193  &lt; 2e-16 ***
+Pregnancies               0.083953   0.055031   1.526 0.127117    
+Glucose                   0.036458   0.004978   7.324 2.41e-13 ***
+BMI                       0.078139   0.020605   3.792 0.000149 ***
+DiabetesPedigreeFunction  1.150913   0.424242   2.713 0.006670 ** 
+Age                       0.034360   0.017810   1.929 0.053692 .  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 498.10  on 391  degrees of freedom
+Residual deviance: 344.89  on 386  degrees of freedom
+AIC: 356.89
+
+Number of Fisher Scoring iterations: 5</code></pre>
+</div>
+</div>
+<p>Mis à part la variable Pregnancies, tous ont des <span class="math inline">\(p-valeur\)</span> significative. Elles ont toutes un impact positif sur la probabilité du patient à avoir le diabète.</p>
+<p>Maintenant, nous calculons les odds-ratio de ce modèle.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Variable</th>
+<th style="text-align: right;">Odd-ratios</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Pregnancies</td>
+<td style="text-align: right;">1.087578</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Glucose</td>
+<td style="text-align: right;">1.037130</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BMI</td>
+<td style="text-align: right;">1.081273</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">DiabetesPedigreeFunction</td>
+<td style="text-align: right;">3.161077</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Age</td>
+<td style="text-align: right;">1.034957</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Variable</th>
+<th style="text-align: right;">IC_inf</th>
+<th style="text-align: right;">IC_sup</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Pregnancies</td>
+<td style="text-align: right;">0.9769517</td>
+<td style="text-align: right;">1.212971</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Glucose</td>
+<td style="text-align: right;">1.0274079</td>
+<td style="text-align: right;">1.047716</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BMI</td>
+<td style="text-align: right;">1.0395095</td>
+<td style="text-align: right;">1.127321</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">DiabetesPedigreeFunction</td>
+<td style="text-align: right;">1.4016639</td>
+<td style="text-align: right;">7.398164</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Age</td>
+<td style="text-align: right;">0.9999761</td>
+<td style="text-align: right;">1.072664</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="classification-avec-le-modèle-de-régression-logistique" class="level1" data-number="7">
+<h1 data-number="7"><span class="header-section-number">7</span> Classification avec le modèle de régression logistique</h1>
+<p>Nous allons maintenant classifier nos données à l’aide de notre modèle de <strong>régression logistique</strong>.</p>
+<p>Dans un premier temps, nous allons séparer notre jeu de données en deux sous-échantillons.</p>
+<ul>
+<li><p>Echantillon d’apprentissage : Ce dernier contient 80 % de notre jeu de données. Notre modèle va apprendre à prédire sur cet échantillon.</p></li>
+<li><p>Echantillon de test : Cet échantillon contient les 20 % restants. Il va nous servir à tester notre modèle et à comparer les résultats avec les vraies valeurs de cet échantillon.</p></li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># On fixe la graine (resultat reproductible)</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">75016</span>)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Nombres d'observations dans notre jeu de donnees</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(diabetes)</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Nombres d'observations a selectionne dans l'echant d'apprentissage</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="fu">floor</span>(n<span class="sc">*</span><span class="fl">0.8</span>)</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Selection des individus aleatoirement</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>idx <span class="ot">&lt;-</span> <span class="fu">sample</span>(n, N, <span class="at">replace =</span> F)</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Echantillon d'apprentissage (80%)</span></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>dataL <span class="ot">&lt;-</span> diabetes[idx,]</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Echantillon de test (20%)</span></span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>dataV <span class="ot">&lt;-</span> diabetes[<span class="sc">-</span><span class="fu">c</span>(idx),]</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>On entraîne notre <strong>modèle final</strong> (choisi précédemment à l’aide de l’AIC) sur l’échantillon d’apprentissage et on utilise la fonction predict qui permet de prédire pour tout individu de l’échantillon de test, sa probabilité d’être diabétique.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Entrainement du meilleur modele sur echantillon d'apprentissage (DataL)</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>model_final_train <span class="ot">&lt;-</span> <span class="fu">glm</span>(Outcome <span class="sc">~</span> Pregnancies <span class="sc">+</span> Glucose <span class="sc">+</span> BMI <span class="sc">+</span> DiabetesPedigreeFunction <span class="sc">+</span> Age , <span class="at">data =</span> dataL, <span class="at">family =</span> <span class="st">"binomial"</span>)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Prediction de la probabilite d'etre diabetique sur echantillon de test (DataV)</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>prediction_modele <span class="ot">&lt;-</span> <span class="fu">predict</span>(model_final_train,dataV, <span class="at">type =</span> <span class="st">"response"</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Nous calculons ensuite le <strong>taux de mauvaise classification moyen</strong>. Ce dernier est tout simplement une comparaison des classifications à leurs vraies étiquettes. On calcule ensuite le pourcentage de données mal classifiées.</p>
+<p>Dans notre cas, nous allons créer une règle de classification. Si la prédiction est inférieure à 0.5 alors le patient prendre la valeur 0 (non-diabétique) dans le cas contraire, il prendra la valeur 1 (diabétique).</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Regle de classification</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>prediction_regle <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(prediction_modele <span class="sc">&gt;=</span> <span class="fl">0.5</span>, <span class="dv">1</span>,<span class="dv">0</span>)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>erreur <span class="ot">&lt;-</span> <span class="fu">mean</span>(prediction_regle <span class="sc">!=</span> dataV<span class="sc">$</span>Outcome)</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="fu">paste0</span>(<span class="st">"Le taux d'erreur moyen est de "</span>, <span class="fu">round</span>(erreur,<span class="dv">3</span>)<span class="sc">*</span><span class="dv">100</span>,<span class="st">" %"</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Le taux d'erreur moyen est de 25.3 %"</code></pre>
+</div>
+</div>
+</section>
+<section id="comparaison-de-la-régression-logistique-avec-lalgorithme-des-k-plus-proches-voisins" class="level1" data-number="8">
+<h1 data-number="8"><span class="header-section-number">8</span> Comparaison de la régression logistique avec l’algorithme des k-plus proches voisins</h1>
+<p>Précédemment, nous avons réalisé une classification sur ce même jeu de données en utilisant l’algorithme des <span class="math inline">\(k\)</span> plus proches voisins. La valeur de <span class="math inline">\(k\)</span> optimal était <span class="math inline">\(k\)</span> = 19, c’est-à-dire la valeur de <span class="math inline">\(k\)</span> avec laquelle le taux de mauvaise classification était le plus faible.</p>
+<p>Nous mettons donc en place notre algorithme des <span class="math inline">\(k\)</span> plus proches voisins avec <span class="math inline">\(k\)</span> = 19, et on réalise nos prédictions à l’aide de la fonction <em>knn()</em> du package class.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>prediction_knn <span class="ot">&lt;-</span> <span class="fu">knn</span>(<span class="at">train =</span> dataL[,<span class="sc">-</span><span class="dv">9</span>], <span class="at">test =</span> dataV[,<span class="sc">-</span><span class="dv">9</span>], <span class="at">cl =</span> dataL[,<span class="dv">9</span>], <span class="at">k =</span> <span class="dv">19</span>, <span class="at">prob =</span> F)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co"># resultat des k plus proches voisins</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>prediction_knn</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 1 1 0 1 0 0 0 0 0 0 1 0 1 0 0 0 0 1 0 0 0 0 0 1 0 0 1 1 0 0 0 0 0 0 0 0 0 0
+[39] 0 0 0 0 0 0 0 0 0 0 0 1 0 0 1 0 0 0 0 0 0 0 0 0 1 1 1 0 1 1 0 0 0 0 1 0 1 0
+[77] 0 0 0
+Levels: 0 1</code></pre>
+</div>
+</div>
+<p>On calcule ensuite notre taux d’erreur moyen.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>erreur_knn <span class="ot">&lt;-</span> <span class="fu">mean</span>(prediction_knn <span class="sc">!=</span> dataV[,<span class="dv">9</span>])</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">paste0</span>(<span class="st">"Le taux d'erreur moyen est de "</span>, <span class="fu">round</span>(erreur_knn,<span class="dv">3</span>)<span class="sc">*</span><span class="dv">100</span>, <span class="st">" %"</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Le taux d'erreur moyen est de 20.3 %"</code></pre>
+</div>
+</div>
+<p>Maintenant, que nous avons réalisé nos prédictions avec nos deux méthodes, nous sommes en mesure de comparer les deux taux d’erreur moyens. Le taux d’erreur le plus bas est évidemment préférable. Ici, les taux d’erreur moyens sont proches bien que celui de la régression logistique est plus élevée (25.3 %) que celui de l’algorithme des <span class="math inline">\(k\)</span> plus proches voisins (20.3 %).</p>
+</section>
+<section id="conclusion" class="level1" data-number="9">
+<h1 data-number="9"><span class="header-section-number">9</span> Conclusion</h1>
+<p>Enfin, nous allons faire varier le seuil utilisé dans le critère de classification et calculer la sensibilité et la spécificité pour chacune des valeurs du seuil possible.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluation de 100 seuils differents</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>l <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Predicition</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>preds <span class="ot">&lt;-</span> <span class="fu">predict</span>(model_final_train, dataV, <span class="at">type =</span> <span class="st">"response"</span>)</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Sequence de seuils</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>c <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fl">1.001</span> <span class="sc">*</span> <span class="fu">min</span>(preds), <span class="fl">0.999</span> <span class="sc">*</span> <span class="fu">max</span>(preds), <span class="at">length.out =</span> l)</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialisation des vecteurs sensibilite et specificite</span></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>Se <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>,l)</span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>Sp <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>,l)</span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>l) {</span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>  mod.final.classif <span class="ot">&lt;-</span> (preds <span class="sc">&gt;=</span> c[j])  <span class="co"># Classe (TRUE ou FALSE) de la prédiction</span></span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>  pt <span class="ot">&lt;-</span> <span class="fu">table</span>(mod.final.classif, dataV<span class="sc">$</span>Outcome)  <span class="co"># Comparaison des classes prédites</span></span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">nrow</span>(pt) <span class="sc">&gt;=</span> <span class="dv">2</span> <span class="sc">&amp;&amp;</span> <span class="fu">ncol</span>(pt) <span class="sc">&gt;=</span> <span class="dv">2</span>) {</span>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a>    Se[j] <span class="ot">&lt;-</span> <span class="fu">prop.table</span>(pt, <span class="at">margin=</span><span class="dv">2</span>)[<span class="dv">2</span>, <span class="dv">2</span>]  <span class="co"># Sensibilité</span></span>
+<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a>    Sp[j] <span class="ot">&lt;-</span> <span class="fu">prop.table</span>(pt, <span class="at">margin=</span><span class="dv">2</span>)[<span class="dv">1</span>, <span class="dv">1</span>]  <span class="co"># Spécificité</span></span>
+<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-24"><a href="#cb29-24" aria-hidden="true" tabindex="-1"></a>    Se[j] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb29-25"><a href="#cb29-25" aria-hidden="true" tabindex="-1"></a>    Sp[j] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb29-26"><a href="#cb29-26" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb29-27"><a href="#cb29-27" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb29-28"><a href="#cb29-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-29"><a href="#cb29-29" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb29-30"><a href="#cb29-30" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(c,Se,<span class="at">main=</span><span class="st">"Sensibilité"</span>,<span class="at">type=</span><span class="st">'s'</span>, <span class="at">col =</span> <span class="st">"orange"</span>)</span>
+<span id="cb29-31"><a href="#cb29-31" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(c,Sp,<span class="at">main=</span><span class="st">"Specificité"</span>,<span class="at">type=</span><span class="st">'s'</span>, <span class="at">col =</span> <span class="st">"purple"</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="reg_logistique_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Sur les deux graphiques ci-dessus, la courbe de sensibilité montre comment le taux de détection des diabétiques varie en fonction des différents seuils de classification. Tandis que la courbe de spécificité montre comment le taux de détection des non-diabétiques varie également en fonction des différents seuils de classification.</p>
+<p>On cherche à maximiser la sensibilité et la spécificité. Cependant une augmentation de la sensibilité peut entraîner une diminution de la spécificité et vice versa.</p>
+<p>En somme, ces deux mesures permettent de déterminer à quel point le modèle est efficace dans la classification des cas positifs et négatifs, et d’ajuster les seuils de décision en fonction des besoins spécifiques.</p>
+<p>Puis, nous pouvons calculer la courbe ROC. Elle sert à évaluer la performance d’un modèle de classification binaire et en particulier les modèles qui prédisent une probabilité. Elle représente la sensibilité en fonction de 1 – spécificité pour toutes les valeurs seuils possibles du marqueur étudié.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">1</span><span class="sc">-</span>Sp,Se,<span class="at">type=</span><span class="st">'s'</span>,<span class="at">main=</span><span class="st">"Courbe ROC"</span>)</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="at">col=</span><span class="st">'blue'</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="reg_logistique_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Notre classification est plutôt bonne au vu de la courbe ROC. La courbe est assez proche du coin supérieur gauche du graphique, ce qui indique un taux élevé de vrais positifs (sensibilité). Notre modèle arrive assez bien à identifier les personnes diabétiques en minimisant les erreurs de classification des cas négatifs. De plus, la courbe est largement supérieure à la courbe 0,1.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copié");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copié");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>Copyright 2025, Rachid SAHLI</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

@@ -1,0 +1,429 @@
+---
+title: "Régression logistique en pratique"
+description: "Application d'un modèle de régression logistique pour prédire si un patient est atteint de diabète. Le modèle est également comparé à la méthode des $k$ plus proches voisins."
+lang: fr
+date: 10 octobre 2024
+categories: ["R","Machine learning"]
+toc: true
+number-sections: true
+image: image_blog/reg_logistique_image.png
+---
+
+![](image_blog/reg_logistique_image.png){fig-align="center" width="500"}
+
+# Introduction
+
+Ce billet de blog a pour objectif d'étudier le modèle de régression logistique et de le comparer ainsi à la méthode des $k$ plus proches voisins. Ces deux méthodes sont des algorithmes d'apprentissage supervisé. Le but de l’apprentissage supervisé est de prévoir l’étiquette (classification) $Y$ ou la valeur de $Y$ (régression) associée à une nouvelle entrée $X$, où il est sous-entendu que ($X,Y$) est une nouvelle réalisation des données, indépendante de l’échantillon observé.
+
+La régression logistique est une méthode de classification. Ce modèle de classification binaire permet d'expliquer une variable ($Y$) par p variables explicatives ($X_1,...,X_j$. La variable $Y$ ne peut prendre que deux modalités $\left\{0 ;1\right\}$. Les variables $X_j$ sont exclusivement continues ou binaires (on re-code les variables qualitatives avec des 0 et 1).
+
+L'algorithme des $k$ plus proches voisins fonctionne de la façon suivante pour la classification. On détermine les $k$ plus proches $X_i$ de l'échantillon par rapport à $X$ et on attribue la modalité dominante parmi les $k$ modalités observées (on parle de vote majoritaire).
+
+Nous allons utiliser ces deux méthodes de classification afin de prédire, en se basant sur des mesures diagnostiques, si un patient est atteint du diabète ou non.
+
+# Import et nettoyage des données
+
+Dans un premier temps, nous importons le jeu de données "diabetes.csv". Nous allons mettre en pratique nos méthodes de régression logistique et $k$ plus proches voisins sur ce dernier. Ce jeu de données est issu de l'Institut national du diabète et des maladies digestives et rénales. Tous les patients ici sont des femmes d'au moins 21 ans d'origine Pima. Il contient les mesures suivantes.
+
+|     Variable     |                        Description                        |      Type       |
+|:---------------:|:------------------------------------:|:---------------:|
+|   Pregnancies    |                   Nombre de grossesses                    | Quanti continue |
+|     Glucose      |           Concentration de glucose plasmatique            | Quanti discrète |
+|  BloodPressure   |          Pression artérielle diastolique (mm Hg)          | Quanti discrète |
+|  SkinThickness   |          Épaisseur du pli cutané du triceps (mm)          | Quanti discrète |
+|     Insulin      |           Insuline sérique à 2 heures (mu U/ml)           | Quanti discrète |
+|       BMI        | Indice de masse corporelle (poids en kg / (taille en m)²) | Quanti continue |
+| DiabetesPedigree |           Fonction de prédisposition au diabète           | Quanti continue |
+|       Age        |                       Âge (années)                        | Quanti discrète |
+|     Outcome      |              Statut diabétique (oui ou non)               | Quanti discrète |
+
+: Description des variables
+
+```{r echo=TRUE, fig.align='center', fig.height=4, fig.width=4, message=FALSE, warning=FALSE, paged.print=FALSE}
+# Import library ---------------
+library(ggplot2)
+library(gridExtra)
+library(class)
+
+# Import data ---------------
+diabetes <- read.csv("data_blog/diabetes.csv")
+
+diabetes$Outcome <- as.factor(diabetes$Outcome)
+```
+
+Nous avons en même temps importé 3 packages qui nous seront utiles dans la réalisation de notre travail. À savoir, ggplot pour la réalisation de graphique, et class pour la classification de l'algorithme des $k$ plus proches voisins.
+
+Voici un petit aperçu de nos données.
+
+```{r echo=TRUE, fig.align='center', fig.height=4, fig.width=4, message=FALSE, warning=FALSE, paged.print=FALSE}
+head(diabetes)
+```
+
+Notre jeu de données ne présente pas de valeurs manquantes (NA), mais contient des observations pour lesquelles la valeur est égale à 0. Nous considérerons ces valeurs comme manquantes et les supprimons. Nous faisons cela uniquement sur 5 variables pour qui l'on juge que la valeur 0 est une vraie donnée manquante. Par exemple, nous ne le faisons pas pour la variable Pregnancies pour qui le 0 veut tout simplement dire que la personne n'a jamais été enceinte. Nous conservons alors 392 individus sur les 768 initiaux.
+
+```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
+# Suppression des 0
+diabetes <- diabetes[diabetes$SkinThickness!=0,]
+diabetes <- diabetes[diabetes$Insulin!=0,]
+diabetes <- diabetes[diabetes$Glucose!=0,]
+diabetes <- diabetes[diabetes$BloodPressure!=0,]
+diabetes <- diabetes[diabetes$BMI!=0,] 
+```
+
+Cette suppression à pour objectif de ne pas fausser les relations que nous cherchons à modéliser. Par exemple, avoir une insuline à 0 n'est premièrement pas cohérent et peut influencer de manière disproportionnée le modèle, car les autres observations sont éloignées. En somme, nous essayons de garantir que le modèle représente fidèlement la relation entre les variables.
+
+# Statistique descriptive
+
+À présent, nous allons étudier nos données de manière descriptive afin d'en obtenir un aperçu et ainsi de visualiser la répartition de la variable $Y$ (Outcome). De plus, nous analyserons les corrélations entre les co-variables elles-mêmes, ainsi qu'entre celles-ci et la variable $Y$.
+
+```{r echo=TRUE, fig.align='center', fig.height=4, fig.width=4, message=FALSE, warning=FALSE, paged.print=FALSE}
+summary(diabetes)
+```
+
+```{r echo=FALSE, fig.height=3, fig.width=4, fig.align='center'}
+ggplot(as.data.frame(table(diabetes$Outcome)), aes(x = Var1, y = Freq, fill = Var1)) +
+  geom_bar(stat = "identity", show.legend = FALSE) +
+  scale_fill_manual(values = c("lightgreen", "red")) +
+  labs(
+    x = "Statut diabétique",
+    y = "Patients",
+    title = "Répartition du statut diabétique des patients"
+  ) +
+  theme_classic() +
+  theme(plot.title = element_text(size = 10))
+```
+
+Dans notre échantillon, 262 patients (67 %) ne sont pas atteints de diabète, tandis que 130 patients (33 %) en sont atteints. Les personnes non-diabétiques sont donc largement plus nombreuses.
+
+Environ 14,3 % des patients n'ont jamais eu de grossesse. Il y a 23,7 % des patients qui ont eu une unique grossesse, et nous constatons une diminution progressive du nombre de patients à mesure que le nombre de grossesses augmente. La majorité des patients ont eu au moins une grossesse, ce qui indique que les grossesses sont relativement courantes dans cet échantillon.
+
+```{r echo=FALSE, fig.height=3, fig.width=4, fig.align='center'}
+ggplot(as.data.frame(table(as.factor(diabetes$Pregnancies))), aes(x = Var1, y = Freq)) +
+  geom_bar(stat = "identity", fill = "lightgreen", show.legend = FALSE) +
+  labs(
+    x = "Nombre de grossesses",
+    y = "Patients",
+    title = "Distribution des grossesses des patients"
+  ) +
+  theme_classic() +
+  theme(plot.title = element_text(size = 10))
+```
+
+On observe ci-dessous, l'âge des patients. Le plus jeune patient a 21 ans, tandis que le plus âgé a 81 ans. Ce dernier se distingue clairement en haut de la boîte à moustaches, où il se situe assez éloigné des autres patients. On note également 5 autres valeurs aberrantes avec un âge très élevé. L'âge médian dans l'échantillon est de 29 ans. Il est proche du Q1, on peut donc penser à une représentation assez élevée de patients plutôt jeunes.
+
+```{r echo=FALSE, fig.align='center', fig.height=3, fig.width=4, message=FALSE, warning=FALSE, paged.print=FALSE}
+ggplot(diabetes) +
+  aes(x = "", y = Age) +
+  geom_boxplot(fill = "lightgreen") +
+  labs(x = " ", title = "Distribution de l'âge des patients") +
+  theme_classic() +
+  theme(plot.title = element_text(size = 10))
+```
+
+À présent, nous observons les différentes corrélations entre nos variables quantitatives continues. L'objectif du coefficient de corrélation est de muserer la force de relation linéaire entre deux variables. Il se calcule de la manière suivante :
+
+$$
+R(x, y) = \frac{\text{Cov}(x, y)}{\sigma_x \sigma_y}
+$$
+
+Le coefficient de corrélation est compris entre -1 et 1 :
+
+-   Si $R(x,y)$ est proche de 0 : La relation linéaire est nulle.
+
+-   Si $R(x,y)$ est proche de -1 : La relation linéaire est forte mais négative.
+
+-   Si $R(x,y)$ est proche de 1 : La relation linéaire est forte.
+
+```{r echo=TRUE, fig.align='center', fig.height=4, fig.width=4, message=FALSE, warning=FALSE, paged.print=FALSE}
+cor(diabetes[,c(-1,-9)])
+```
+
+Les variables sont toutes moyennement corrélées positivement.
+
+Nous représentons ci-dessous les relations entre les co-variables et notre variable $Y$ (Outcome).
+
+```{r echo=FALSE, fig.align='center', message=FALSE, warning=FALSE, paged.print=FALSE}
+p1 <- ggplot(diabetes) +
+  aes(x = Outcome, y = Glucose, fill = Outcome) +
+  geom_boxplot() +
+  scale_fill_hue(direction = 1) +
+  theme_classic()
+
+p2 <- ggplot(diabetes) +
+  aes(x = Outcome, y = BloodPressure, fill = Outcome) +
+  geom_boxplot() +
+  scale_fill_hue(direction = 1) +
+  theme_classic()
+
+p3 <- ggplot(diabetes) +
+  aes(x = Outcome, y = SkinThickness, fill = Outcome) +
+  geom_boxplot() +
+  scale_fill_hue(direction = 1) +
+  theme_classic()
+
+p4 <- ggplot(diabetes) +
+  aes(x = Outcome, y = Insulin, fill = Outcome) +
+  geom_boxplot() +
+  scale_fill_hue(direction = 1) +
+  theme_classic()
+
+p5 <- ggplot(diabetes) +
+  aes(x = Outcome, y = BMI, fill = Outcome) +
+  geom_boxplot() +
+  scale_fill_hue(direction = 1) +
+  theme_classic()
+
+p6 <- ggplot(diabetes) +
+  aes(x = Outcome, y = Age, fill = Outcome) +
+  geom_boxplot() +
+  scale_fill_hue(direction = 1) +
+  theme_classic()
+
+p7 <- ggplot(diabetes) +
+  aes(x = Outcome, y = DiabetesPedigreeFunction, fill = Outcome) +
+  geom_boxplot() +
+  scale_fill_hue(direction = 1) +
+  theme_classic()
+
+
+grid.arrange(p1, p2, p3, p4, ncol = 2)
+grid.arrange(p5, p6, p7,  ncol = 2)
+```
+
+On observe une corrélation entre nos variables quantitatives continues et la variable Outcome ($Y$). On le voit par exemple à travers le lien entre la variable Glucose et la variable $Y$. Les patients atteints de diabète présentent un taux de glucose significativement plus élevé que ceux qui ne sont pas atteints par la maladie.
+
+# Modele de regression logistique
+
+Nous pouvons mettre en place notre modèle de régression logistique. Nous commençons par le modèle complet. C'est-à-dire que nous sélectionnons toutes les co-variables pour expliquer $Y$. On rappel qu'on cherche à prédire les valeurs de la variable Outcom ($Y$) à l'aide des variables explicatives présentent dans notre jeu de données.
+
+On utilise pour cela la fonction **glm()** (Fitting Generalized Linear Models).
+
+```{r echo=TRUE, fig.align='center', fig.height=4, fig.width=4, message=FALSE, warning=FALSE, paged.print=FALSE}
+model_complet <- glm(Outcome~., family = "binomial", data = diabetes)
+summary(model_complet)
+```
+
+Le paramètre **family = binomial** indique que nous utilisons une régression logistique et que notre variable est binaire.
+
+Nous nous concentrons sur la significativité statistique de chaque coefficient. En effet, la $p-valeur$ nous indique la probabilité que l'effet de la variable explicative soit dû au hasard. Plus sa valeur est faible, plus l'effet de la variable explicative sur notre variable $Y$ (Outcome) est statistiquement significatif. Au contraire, si elle est supérieure à 0.05, cela suggère que l'effet de la variable explicative sur notre variable $Y$ n'est pas significatif et pourrait être dû au hasard.
+
+Ici, les variables explicatives avec des p-valeurs inférieur à 5 % sont :
+
+-   Glucose ($p-valeur$ = $3,24 * 10^{-11}$) : L'effet de la variable glucose sur la probabilité de la variable diabète est significatif.
+
+-   BMI ($p-valeur$ = $0.00989$) : L'effet de la variable BMI sur la probabilité de la variable diabète est significatif.
+
+-   DiabetesPedigreeFunction ($p-valeur$ = $0.00760$) : L'effet de la variable DiabetesPedigreeFunction sur la probabilité de la variable diabète est significatif.
+
+Les variables restantes ont des $p-valeur$ \> $5 \%$, on en conclut donc qu'elles ne sont pas liées au risque de diabète.
+
+# Calcul des odds-ratios et de leurs intervalles de confiance
+
+L'odds-ratio est une mesure statistique exprimant le degré de dépendance entre des variables aléatoires qualitatives. Il permet de mesurer l'effet d'un facteur en comparant les chances qu'un évènement se produise dans un groupe par rapport à un autre groupe.
+
+Ici, l'odds-ratio va représenter l'impact de nos variables explicatives sur les chances que notre variable $Y$ (Outcome) prenne la valeur diabétique (1) ou non-diabétique.
+
+Nous calculons ci-dessous les odds-ratios de toutes les variables, ainsi que leurs intervalles de confiance qui nous permetteront d'être sur à 95 % que l'odds-ratio se trouve entre les bornes inférieurs et supérieurs.
+
+Afin d'obtenir les odds-ratios à partir des coefficients de régression logistique, nous avons pris l'exponentielle des coefficients.
+
+```{r echo=TRUE, fig.align='center', fig.height=4, fig.width=4, message=FALSE, warning=FALSE, paged.print=FALSE}
+# Permet la realisation de tableau
+library(knitr)
+
+kable(exp(model_complet$coefficients[-1]), col.names = c("Variable", "Odd-ratios"))
+kable(exp(confint(model_complet)[-1, ]), col.names = c("Variable", "IC_inf", "IC_sup"))
+```
+
+Nous nous intéressons uniquement aux variables ayant un effet significatif sur la probabilité de la variable Outcome. Ce sont les variables **Glucose**, **BMI** et **DiabetesPedigreeFunction**.
+
+On note ici qu'une augmentation de 20 de BMI correspond à $1.0730849^{20} = 4.09$ plus de risque d'avoir du diabète que de ne pas en avoir. Une augmentation de 30 de glucose correspond à $1.0390112^{30} = 3.15$ plus de risque d'avoir du diabète que de ne pas en avoir. Enfin, une augmentation de 2 de DiabetesPedigreeFunction correspond à $3.1296107^{2} = 9.79$ plus de risque d'avoir du diabète que de ne pas en avoir.
+
+Nous allons maintenant exhiber des profils d'individus particulièrement à risque d'être diabétiques à l'aide des coefficients de notre modèle de régression logistique.
+
+Par exemple, un individu particulièrement à risque d'avoir du diabète sera un individu ayant un taux de glucose égale à 160, 40 de BMI et 1.5 de DiabetesPedigreeFunction. Son risque de diabète est alors égal à environ 99.9 %.
+
+```{r echo=TRUE, fig.align='center', fig.height=4, fig.width=4, message=FALSE, warning=FALSE, paged.print=FALSE}
+score <- exp(model_complet$coefficients[1]+
+             160*model_complet$coefficients[3]+
+             60*model_complet$coefficients[7]+
+             1.5*model_complet$coefficients[8])
+exp(score)/(1+exp(score))
+```
+
+Cependant, si ce même individu avait eu un BMI de 20 au lieu de 40, son risque de diabète aurait grandement diminué (71.4 %).
+
+```{r echo=TRUE, fig.align='center', fig.height=4, fig.width=4, message=FALSE, warning=FALSE, paged.print=FALSE}
+score <- exp(model_complet$coefficients[1]+
+             160*model_complet$coefficients[3]+
+             30*model_complet$coefficients[7]+
+             1.5*model_complet$coefficients[8])
+exp(score)/(1+exp(score))
+```
+
+# Méthode de sélection de variable
+
+Toutes les variables ne contribuent pas nécessairement à expliquer notre variable Y, nous allons voir comment sélectionner certaines variables afin de simplifier notre modèle, mais aussi pour améliorer la classification.
+
+Ici, nous utiliserons l'AIC (Critère d'information d'Akaike) qui est une mesure de la qualité d'un modèle statistique. L'AIC va nous permettre de comparer les différents modèles en utilisant un critère de vraisemblance. Il représente un compromis entre le biais (qui diminue avec le nombre de paramètres) et la parcimonie (nécessité de décrire les données avec le plus petit nombre de paramètres possible).
+
+$$AIC = -2 \cdot \log(L) + 2 \cdot k$$
+
+-   $L$ est la vraisemblance maximisée
+
+-   $k$ est le nombre de paramètres dans le modèle
+
+-   $-2 \cdot \log(L)$ est la déviance du modèle. Elle pénalise par 2 fois le nombre de paramètres
+
+La fonction **step()** de R, nous permet d'effectuer une sélection descendante. On commence par le modèle complet incluant toutes les variables explicatives, puis on retire progressivement les variables qui contribuent le moins à l'ajustement du modèle, jusqu'à obtenir un modèle optimal.
+
+```{r echo=TRUE, fig.align='center', fig.height=4, fig.width=4, message=FALSE, warning=FALSE, paged.print=FALSE}
+model_final <- step(model_complet)
+```
+
+Le meilleur modèle est celui possédant l’AIC le plus **faible**.
+
+Ici, le meilleur modèle inclut les variables Age, Pregnancies, BMI, DiabetesPedigreeFunction et Age.
+
+Ci-dessous les résultats de notre modèle.
+
+```{r echo=TRUE, fig.align='center', fig.height=4, fig.width=4, message=FALSE, warning=FALSE, paged.print=FALSE}
+summary(model_final)
+```
+
+Mis à part la variable Pregnancies, tous ont des $p-valeur$ significative. Elles ont toutes un impact positif sur la probabilité du patient à avoir le diabète.
+
+Maintenant, nous calculons les odds-ratio de ce modèle.
+
+```{r echo=FALSE, fig.align='center', fig.height=4, fig.width=4, message=FALSE, warning=FALSE, paged.print=FALSE}
+kable(exp(model_final$coefficients[-1]), col.names = c("Variable", "Odd-ratios"))
+kable(exp(confint(model_final)[-1, ]), col.names = c("Variable", "IC_inf", "IC_sup"))
+```
+
+# Classification avec le modèle de régression logistique
+
+Nous allons maintenant classifier nos données à l'aide de notre modèle de **régression logistique**.
+
+Dans un premier temps, nous allons séparer notre jeu de données en deux sous-échantillons.
+
+-   Echantillon d'apprentissage : Ce dernier contient 80 % de notre jeu de données. Notre modèle va apprendre à prédire sur cet échantillon.
+
+-   Echantillon de test : Cet échantillon contient les 20 % restants. Il va nous servir à tester notre modèle et à comparer les résultats avec les vraies valeurs de cet échantillon.
+
+```{r echo=TRUE, fig.align='center', fig.height=4, fig.width=4, message=FALSE, warning=FALSE, paged.print=FALSE}
+# On fixe la graine (resultat reproductible)
+set.seed(75016)
+
+# Nombres d'observations dans notre jeu de donnees
+n <- nrow(diabetes)
+
+# Nombres d'observations a selectionne dans l'echant d'apprentissage
+N <- floor(n*0.8)
+
+# Selection des individus aleatoirement
+idx <- sample(n, N, replace = F)
+
+# Echantillon d'apprentissage (80%)
+dataL <- diabetes[idx,]
+
+# Echantillon de test (20%)
+dataV <- diabetes[-c(idx),]
+```
+
+On entraîne notre **modèle final** (choisi précédemment à l'aide de l'AIC) sur l'échantillon d'apprentissage et on utilise la fonction predict qui permet de prédire pour tout individu de l'échantillon de test, sa probabilité d'être diabétique.
+
+```{r echo=TRUE, fig.align='center', fig.height=4, fig.width=4, message=FALSE, warning=FALSE, paged.print=FALSE}
+# Entrainement du meilleur modele sur echantillon d'apprentissage (DataL)
+model_final_train <- glm(Outcome ~ Pregnancies + Glucose + BMI + DiabetesPedigreeFunction + Age , data = dataL, family = "binomial")
+
+# Prediction de la probabilite d'etre diabetique sur echantillon de test (DataV)
+prediction_modele <- predict(model_final_train,dataV, type = "response")
+```
+
+Nous calculons ensuite le **taux de mauvaise classification moyen**. Ce dernier est tout simplement une comparaison des classifications à leurs vraies étiquettes. On calcule ensuite le pourcentage de données mal classifiées.
+
+Dans notre cas, nous allons créer une règle de classification. Si la prédiction est inférieure à 0.5 alors le patient prendre la valeur 0 (non-diabétique) dans le cas contraire, il prendra la valeur 1 (diabétique).
+
+```{r echo=TRUE, fig.align='center', fig.height=4, fig.width=4, message=FALSE, warning=FALSE, paged.print=FALSE}
+# Regle de classification
+prediction_regle <- ifelse(prediction_modele >= 0.5, 1,0)
+
+erreur <- mean(prediction_regle != dataV$Outcome)
+paste0("Le taux d'erreur moyen est de ", round(erreur,3)*100," %")
+```
+
+# Comparaison de la régression logistique avec l'algorithme des k-plus proches voisins
+
+Précédemment, nous avons réalisé une classification sur ce même jeu de données en utilisant l'algorithme des $k$ plus proches voisins. La valeur de $k$ optimal était $k$ = 19, c'est-à-dire la valeur de $k$ avec laquelle le taux de mauvaise classification était le plus faible.
+
+Nous mettons donc en place notre algorithme des $k$ plus proches voisins avec $k$ = 19, et on réalise nos prédictions à l'aide de la fonction *knn()* du package class.
+
+```{r echo=TRUE, fig.align='center', fig.height=4, fig.width=4, message=FALSE, warning=FALSE, paged.print=FALSE}
+prediction_knn <- knn(train = dataL[,-9], test = dataV[,-9], cl = dataL[,9], k = 19, prob = F)
+# resultat des k plus proches voisins
+prediction_knn
+```
+
+On calcule ensuite notre taux d'erreur moyen.
+
+```{r echo=TRUE, fig.align='center', fig.height=4, fig.width=4, message=FALSE, warning=FALSE, paged.print=FALSE}
+erreur_knn <- mean(prediction_knn != dataV[,9])
+paste0("Le taux d'erreur moyen est de ", round(erreur_knn,3)*100, " %")
+```
+
+Maintenant, que nous avons réalisé nos prédictions avec nos deux méthodes, nous sommes en mesure de comparer les deux taux d'erreur moyens. Le taux d'erreur le plus bas est évidemment préférable. Ici, les taux d'erreur moyens sont proches bien que celui de la régression logistique est plus élevée (25.3 %) que celui de l'algorithme des $k$ plus proches voisins (20.3 %).
+
+# Conclusion
+
+Enfin, nous allons faire varier le seuil utilisé dans le critère de classification et calculer la sensibilité et la spécificité pour chacune des valeurs du seuil possible.
+
+```{r echo=TRUE, fig.align='center', fig.height=4, message=FALSE, warning=FALSE, paged.print=FALSE}
+# Evaluation de 100 seuils differents
+l <- 100
+
+# Predicition
+preds <- predict(model_final_train, dataV, type = "response")
+
+# Sequence de seuils
+c <- seq(1.001 * min(preds), 0.999 * max(preds), length.out = l)
+
+# Initialisation des vecteurs sensibilite et specificite
+Se <- rep(NA,l)
+Sp <- rep(NA,l)
+
+for (j in 1:l) {
+  mod.final.classif <- (preds >= c[j])  # Classe (TRUE ou FALSE) de la prédiction
+  pt <- table(mod.final.classif, dataV$Outcome)  # Comparaison des classes prédites
+  
+  if (nrow(pt) >= 2 && ncol(pt) >= 2) {
+
+    Se[j] <- prop.table(pt, margin=2)[2, 2]  # Sensibilité
+    Sp[j] <- prop.table(pt, margin=2)[1, 1]  # Spécificité
+  } else {
+
+    Se[j] <- NA
+    Sp[j] <- NA
+  }
+}
+
+par(mfrow=c(1,2))
+plot(c,Se,main="Sensibilité",type='s', col = "orange")
+plot(c,Sp,main="Specificité",type='s', col = "purple")
+```
+
+Sur les deux graphiques ci-dessus, la courbe de sensibilité montre comment le taux de détection des diabétiques varie en fonction des différents seuils de classification. Tandis que la courbe de spécificité montre comment le taux de détection des non-diabétiques varie également en fonction des différents seuils de classification.
+
+On cherche à maximiser la sensibilité et la spécificité. Cependant une augmentation de la sensibilité peut entraîner une diminution de la spécificité et vice versa.
+
+En somme, ces deux mesures permettent de déterminer à quel point le modèle est efficace dans la classification des cas positifs et négatifs, et d'ajuster les seuils de décision en fonction des besoins spécifiques.
+
+Puis, nous pouvons calculer la courbe ROC. Elle sert à évaluer la performance d'un modèle de classification binaire et en particulier les modèles qui prédisent une probabilité. Elle représente la sensibilité en fonction de 1 – spécificité pour toutes les valeurs seuils possibles du marqueur étudié.
+
+```{r echo=TRUE, fig.align='center', fig.height=4, message=FALSE, warning=FALSE, paged.print=FALSE}
+par(mfrow=c(1,1))
+plot(1-Sp,Se,type='s',main="Courbe ROC")
+abline(0,1,col='blue')
+```
+
+Notre classification est plutôt bonne au vu de la courbe ROC. La courbe est assez proche du coin supérieur gauche du graphique, ce qui indique un taux élevé de vrais positifs (sensibilité). Notre modèle arrive assez bien à identifier les personnes diabétiques en minimisant les erreurs de classification des cas négatifs. De plus, la courbe est largement supérieure à la courbe 0,1.
+

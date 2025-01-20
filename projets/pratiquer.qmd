@@ -1,15 +1,18 @@
 ---
 title: "PratiqueR"
-description: "Développement d'un site web interactif fournissant des ressources éducatives et des exercices pratiques pour faciliter l'apprentissage du langage R."
+description: "PratiqueR est un site web interactif fournissant des ressources éducatives et des exercices pratiques pour faciliter l'apprentissage du langage R."
 lang: "fr"
 categories: ["R","Data Science"]
 date: "23 July 2024"
 image: image_projets/pratiquer.jpeg
 ---
 
-J'ai créer PratiqueR pour les raisons suivantes :\
+J'ai développer PratiqueR pour les raisons suivantes :\
+
 - **Expliquer les bases** du langage R de manière claire et progressive.\
+
 - **Illustrer des cas d'utilisation courants** à l'aide d'exemples concrets et applicables.\
+
 - **Proposer des exercices pratiques** pour renforcer vos compétences et faciliter la prise en main.
 
 ## Aperçu du site

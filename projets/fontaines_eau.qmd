@@ -1,0 +1,12 @@
+---
+title: "Où boire de l'eau à Paris ?"
+description: "Création d'une application proposant une carte interactive des points d'eau publics à Paris."
+lang: "fr"
+date: 20 janvier 2024
+categories: ["R","Opendata"]
+toc: true
+number-sections: true
+image: image_projets/fontaine_wallace.jpg
+---
+
+![](image_projets/fontaine_wallace.jpg){fig-align="center" width="270"}
