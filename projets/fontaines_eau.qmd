@@ -9,12 +9,16 @@ number-sections: true
 image: image_projets/fontaine_wallace.jpg
 ---
 
-![](image_projets/fontaine_wallace.jpg){fig-align="center" width="270"}
-
 Ce mini-projet utilise le langage R pour créer une carte interactive des points d'eau publics dans la ville de Paris. Il inclut également une application Shiny, permettant une exploration dynamique et interactive des données.
 
-[Accéder à l'application ici](https://d5s8zi-rs-kaki.shinyapps.io/Map-of-water-points-in-paris/)
+## Aperçu de l'application
 
-L'objectif principal est de fournir une visualisation géographique claire et accessible des points d'eau répartis dans Paris, via une interface conviviale développée avec Shiny. La carte interactive est réalisée grâce au package Leaflet en R, offrant une navigation fluide et des fonctionnalités interactives qui permettent aux utilisateurs d'explorer les différents points d'eau présents dans chaque arrondissement de la capitale. Cette solution permet ainsi de localiser facilement les points d'hydratation publics et de mieux comprendre leur répartition sur le territoire parisien.
+![](image_projets/apercu_app_eau.png){#image-pratiquer fig-align="center" width="1000"}
+
+L'objectif principal de ce projet est de proposer une visualisation géographique claire et accessible des points d'eau répartis dans Paris, grâce à une interface conviviale développée avec Shiny. Les données exploitées proviennent de la Ville de Paris et sont accessibles sur le site [data.gouv](https://www.data.gouv.fr/fr/). Cette application, à la fois fluide et interactive, permet aux utilisateurs d'explorer facilement les différents points d'eau présents dans chaque arrondissement de la capitale.
+
+## Accédez à l'application
+
+[Accéder à l'application ici](https://d5s8zi-rs-kaki.shinyapps.io/Map-of-water-points-in-paris/)
 
 [Repo github](https://github.com/rachidsahli/Map-of-water-points-in-paris)
