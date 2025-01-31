@@ -1,12 +1,16 @@
 ---
 title: "Projets"
 lang: "fr"
+
 listing:
   type: grid
+  sort: "date desc"
+  categories: true
+  sort-ui: true
+  filter-ui: true
   contents: 
         - projets/but_sd.qmd
         - projets/pratiquer.qmd
         - projets/fontaines_eau.qmd
-  fields: [image, title, reading-time, description, categories, date,]
-  categories: true
+  fields: [image, title, reading-time, description, categories, date,]      
 ---

@@ -2,17 +2,17 @@
   {
     "listing": "/blog.html",
     "items": [
-      "/blog/carte_volontaires.html",
+      "/blog/reg_logistique.html",
       "/blog/knn.html",
-      "/blog/reg_logistique.html"
+      "/blog/carte_volontaires.html"
     ]
   },
   {
     "listing": "/projets.html",
     "items": [
-      "/projets/fontaines_eau.html",
+      "/projets/but_sd.html",
       "/projets/pratiquer.html",
-      "/projets/but_sd.html"
+      "/projets/fontaines_eau.html"
     ]
   },
   {

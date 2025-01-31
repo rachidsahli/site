@@ -1,19 +1,12 @@
 ---
 title: "Blog"
-
 lang: "fr"
 
 listing:
-
+  contents: blog
+  sort: "date desc"
   type: default
-  
-  sort: 
-    - "date"
-  
-  contents:
-        - blog/knn.qmd
-        - blog/carte_volontaires.qmd
-        - blog/reg_logistique.qmd
-
   categories: true
+  sort-ui: true
+  filter-ui: true
 ---

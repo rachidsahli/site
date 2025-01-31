@@ -5,8 +5,10 @@ project:
 website:
   title: "Rachid Sahli"
   description: "Site personnel de Rachid Sahli"
-  
+  site-url: "https://www.rachidsahli.com"
   repo-url: https://github.com/rachidsahli/Website
+  cookie-consent: true    
+  search: true
   
   navbar: 
     background: warning
