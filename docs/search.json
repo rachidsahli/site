@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "Rachid SAHLI",
     "section": "",
-    "text": "Je suis étudiant à l’IUT Paris Rives de Seine en Science des données et alternant à l’INSEE. Au sein de la direction des statistiques démographiques et sociales, mes missions portent sur la couverture de différentes bases de sondage et sur l’appariement de gros volumes de données.\nJ’aime les statistiques, le soleil ☀️, le vélo 🚲 , le cinéma 🎞️ et la programmation 👾."
+    "text": "Je suis étudiant à l’IUT Paris Rives de Seine en Science des Données et alternant à l’INSEE. Au sein de la Direction des Statistiques Démographiques et Sociales, mes missions consistent à couvrir différentes bases de sondage et à apparier de gros volumes de données.\nJe travaille principalement avec R et Python, et j’ai créé un site de ressources appelé PratiqueR. Vous pouvez également me retrouver sur YouTube, où je partage des vidéos sur R et son environnement.\nEn dehors de mes études et de mon travail, je consacre mon temps libre à la construction de robots et je partage mes idées sur mon blog, Jiqiren.\nPassionné par les statistiques, la robotique 🦿🤖, le vélo 🚲, le cinéma 🎞️, et la programmation 👾, j’aime explorer et partager mes découvertes dans ces domaines.\nJe suis très curieux et toujours ouvert à de nouvelles idées. N’hésitez pas à me contacter pour discuter d’un projet ou explorer des opportunités de collaboration."
   },
   {
     "objectID": "about.html",
@@ -67,7 +67,7 @@
     "href": "projets/but_sd.html",
     "title": "Projets BUT SD",
     "section": "",
-    "text": "Intégration de données dans un data warehouse\n\n\n1 min\n\n\n\nSQL\n\n\nBase de données\n\n\n\nConstruction d’une moyen de stockage de données et d’un dashboard pour une entreprise de e-commerce.\n\n\n\nJan 13, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNocturne au musée du Louvre\n\n\n4 min\n\n\n\nIA\n\n\n\n\n\n\n\nNov 24, 2023\n\n\n\n\n\n\n\n\nNo matching items"
+    "text": "Intégration de données dans un data warehouse\n\n\n1 min\n\n\n\nSQL\n\n\nBase de données\n\n\n\nConstruction d’une moyen de stockage de données et d’un dashboard pour une entreprise de e-commerce.\n\n\n\nJan 13, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMigration de données : De SQL à NoSQL\n\n\n4 min\n\n\n\nSQL\n\n\nData Science\n\n\n\nCe projet vise à migrer des données d’un environnement SQL vers un environnement NoSQL pour une entreprise automobile.\n\n\n\nDec 28, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNocturne au musée du Louvre\n\n\n4 min\n\n\n\nIA\n\n\n\n\n\n\n\nNov 24, 2023\n\n\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "about.html#formation",
@@ -194,5 +194,33 @@
     "title": "Où boire de l’eau à Paris ?",
     "section": "2 Accédez à l’application",
     "text": "2 Accédez à l’application\nAccéder à l’application ici\nRepo github"
+  },
+  {
+    "objectID": "projets/projets_but/migration.html",
+    "href": "projets/projets_but/migration.html",
+    "title": "Migration de données : De SQL à NoSQL",
+    "section": "",
+    "text": "Ce projet vise à migrer des données d’un environnement SQL vers un environnement NoSQL. Concrètement, il s’agit de transférer les informations stockées dans une base de données relationnelle traditionnelle, où les données sont organisées en tables avec des relations fixes, vers une base de données NoSQL, qui offre une structure plus flexible adaptée aux données non structurées ou semi-structurées.\nNous travaillons avec les données d’une entreprise de voitures qui rencontre des problèmes avec sa base de données actuelle : les requêtes sont lentes et des défaillances serveur entraînent des pertes de données. Pour résoudre ces problèmes, nous avons décidé de passer à un environnement NoSQL. Cette technologie permet de stocker des données sous une forme non structurée, offrant ainsi plus de flexibilité et de performance. Cette migration vise à améliorer la performance des requêtes et à préparer l’infrastructure pour une croissance future.\nVous pouvez consulter le rapport complet ici.\nLe code source utilisé pour ce projet est disponible ici."
+  },
+  {
+    "objectID": "projets/projets_but/migration.html#base-de-données-relationnelle",
+    "href": "projets/projets_but/migration.html#base-de-données-relationnelle",
+    "title": "Migration de données : De SQL à NoSQL",
+    "section": "Base de données relationnelle",
+    "text": "Base de données relationnelle\nLa base de données relationnelle initiale contient des informations sur les véhicules, les clients, les commandes, les employés… La représentation des données est claire et bien organisée. Chaque table dispose de relations avec d’autres tables, ce qui permet de structurer efficacement les informations et de faciliter les requêtes complexes.\n\n\n\nSchéma relationnel de la bdd initial\n\n\nDans un premier temps, nous avons créé des requêtes SQL sur cette base de données. Ces requêtes serviront de tests pour évaluer le succès de la migration. Nous comparerons les résultats obtenus dans la base de données relationnelle avec ceux obtenus dans la base NoSQL pour vérifier l’intégrité et la performance de la migration.\n\n\n\nRequêtes SQL\n\n\nLa base de données est au format SQLite. Nous avons importé le module sqlite3 en Python pour établir la connexion et interagir avec la base. Ensuite, nous avons utilisé la bibliothèque Pandas et notamment sa fonction read_sql_query(), pour exécuter et lire les résultats des requêtes SQL."
+  },
+  {
+    "objectID": "projets/projets_but/migration.html#algorithme-de-migration",
+    "href": "projets/projets_but/migration.html#algorithme-de-migration",
+    "title": "Migration de données : De SQL à NoSQL",
+    "section": "Algorithme de migration",
+    "text": "Algorithme de migration\nIl existe plusieurs types de bases de données NoSQL (Clé-valeur, Document, Colonne et Graphe), chacun adapté à ses propres cas d’usage et ayant ses propres avantages et inconvénients, notamment en termes de scalabilité et de flexibilité. Le choix dépend donc de plusieurs facteurs clés, comme la structure des données, les exigences de performance…\nEn ce qui nous concerne, nous pouvons réaliser une migration vers un environnement NoSQL, car l’entreprise dispose d’une grande quantité de données structurées en constante croissance. De plus, il est possible d’améliorer significativement les performances d’accès aux données en optimisant le traitement de données plus importantes et en réduisant le temps de latence. On souhaite donc une solution qui offre plus de flexibilité et évolutivité, tout en préservant l’intégrité des données de notre base initial.\nAprès mûre réflexion, le format document est celui s’adaptant le mieux à notre objectif. En effet, il permet de structurer naturellement les entités de manière hiérarchique. Par exemple, un client peut être représenté par un document contenant ses commandes, chaque commande incluant les produits associés. De plus, il offre une grande flexibilité, permettant de traiter différents types de données sans modifications complexes du schéma. Enfin, il permet une scalabilité horizontale grâce à la partition de document, c-à-d si les données augmentent, on peut facilement ajouter de nouveaux serveurs pour stocker et gérer plus de documents, sans tout restructurer.\n\n\n\nExemple d’une modélisation au format Document\n\n\nCe modèle présente quelques inconvénients, notamment des performances limitées pour les requêtes complexes ou les jointures entre documents. De plus, les mises à jour simultanées de documents imbriqués peuvent être plus difficiles à gérer.\nNous avons décidé de structurer nos données autour de quatres collections : customers, payments, orders et employees."
+  },
+  {
+    "objectID": "projets/projets_but/migration.html#script-de-migration",
+    "href": "projets/projets_but/migration.html#script-de-migration",
+    "title": "Migration de données : De SQL à NoSQL",
+    "section": "Script de migration",
+    "text": "Script de migration\nAvant de développer un script de migration, nous avons d’abord établi un pseudo-algorithme dans l’objecitf de structurer et organiser la logique de notre programme.\nEnsuite, pour la migration de nos données, nous avons utilisé SQLite comme source et MongoDB comme destination, en exploitant les bibliothèques Python sqlite3, pymongo et pandas. Le processus inclut l’extraction des données de SQLite, leur transformation au format document compatible avec MongoDB, et leur insertion dans les collections appropriées."
   }
 ]

@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr"><head>
 
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.5.57">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="description" content="Ce projet vise à migrer des données d’un environnement SQL vers un environnement NoSQL pour une entreprise automobile.">
 
-<title>Rachid SAHLI – Rachid Sahli</title>
+<title>Migration de données : De SQL à NoSQL – Rachid Sahli</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,25 +24,26 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/cookie-consent/cookie-consent.js"></script>
-<link href="site_libs/cookie-consent/cookie-consent.css" rel="stylesheet">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/cookie-consent/cookie-consent.js"></script>
+<link href="../../site_libs/cookie-consent/cookie-consent.css" rel="stylesheet">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -56,17 +58,17 @@ ul.task-list li input[type="checkbox"] {
   ],
   "show-item-context": false,
   "language": {
-    "search-no-results-text": "No results",
-    "search-matching-documents-text": "matching documents",
-    "search-copy-link-title": "Copy link to search",
-    "search-hide-matches-text": "Hide additional matches",
-    "search-more-match-text": "more match in this document",
-    "search-more-matches-text": "more matches in this document",
-    "search-clear-button-title": "Clear",
+    "search-no-results-text": "Pas de résultats",
+    "search-matching-documents-text": "documents trouvés",
+    "search-copy-link-title": "Copier le lien vers la recherche",
+    "search-hide-matches-text": "Cacher les correspondances additionnelles",
+    "search-more-match-text": "correspondance de plus dans ce document",
+    "search-more-matches-text": "correspondances de plus dans ce document",
+    "search-clear-button-title": "Effacer",
     "search-text-placeholder": "",
-    "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit",
-    "search-label": "Search"
+    "search-detached-cancel-button-title": "Annuler",
+    "search-submit-button-title": "Envoyer",
+    "search-label": "Recherche"
   }
 }</script>
 
@@ -82,14 +84,14 @@ cookieconsent.run({
   "preferences_center_close_button_hide":false,
   "website_name":""
   ,
-"language":"en"
+"language":"fr"
   });
 });
 </script> 
   
 
 
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body class="nav-fixed">
@@ -99,30 +101,30 @@ cookieconsent.run({
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Rachid Sahli</span>
     </a>
   </div>
-            <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+            <div id="quarto-search" class="" title="Recherche"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Basculer la navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
+    <a class="nav-link" href="../../index.html"> 
 <span class="menu-text">Accueil</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">À propos</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./projets.html"> 
+    <a class="nav-link" href="../../projets.html"> 
 <span class="menu-text">Projets</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./blog.html"> 
+    <a class="nav-link" href="../../blog.html"> 
 <span class="menu-text">Blog</span></a>
   </li>  
 </ul>
@@ -150,7 +152,7 @@ cookieconsent.run({
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
-  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Basculer le mode sombre"><i class="bi"></i></a>
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -159,52 +161,120 @@ cookieconsent.run({
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
-<!-- main -->
-<div class="quarto-about-solana column-page">
-  <div class="about-entity">
-    <div class="entity-contents">
-      <header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">Rachid SAHLI</h1>
-</div>
-<div class="quarto-title-meta column-page">
-  </div>
-</header> <div class="about-links">
-  <a href="https://linkedin.com" class="about-link" rel="" target="">
-    <i class="bi bi-linkedin"></i>
-     <span class="about-link-text">Linkedin</span>
-  </a>
-  <a href="https://github.com" class="about-link" rel="" target="">
-    <i class="bi bi-github"></i>
-     <span class="about-link-text">Github</span>
-  </a>
-  <a href="https://cv.hal.science/rachid-sahli" class="about-link" rel="" target="">
-    <i class="bi bi-book"></i>
-     <span class="about-link-text">CV</span>
-  </a>
-  <a href="mailto:sahlirachid427@gmail.com" class="about-link" rel="" target="">
-    <i class="bi bi-envelope"></i>
-     <span class="about-link-text">Mail</span>
-  </a>
-</div>
-      <div class="about-contents"><main class="content column-page" id="quarto-document-content">
-<div id="hero-heading">
-<p>Je suis étudiant à l’IUT Paris Rives de Seine en Science des Données et alternant à l’INSEE. Au sein de la Direction des Statistiques Démographiques et Sociales, mes missions consistent à couvrir différentes bases de sondage et à apparier de gros volumes de données.</p>
-<p>Je travaille principalement avec R et Python, et j’ai créé un site de ressources appelé PratiqueR. Vous pouvez également me retrouver sur YouTube, où je partage des vidéos sur R et son environnement.</p>
-<p>En dehors de mes études et de mon travail, je consacre mon temps libre à la construction de robots et je partage mes idées sur mon blog, Jiqiren.</p>
-<p>Passionné par les statistiques, la robotique 🦿🤖, le vélo 🚲, le cinéma 🎞️, et la programmation 👾, j’aime explorer et partager mes découvertes dans ces domaines.</p>
-<p>Je suis très curieux et toujours ouvert à de nouvelles idées. N’hésitez pas à me contacter pour discuter d’un projet ou explorer des opportunités de collaboration.</p>
-</div>
-
-
-</main></div>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Sur cette page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#méthodologie" id="toc-méthodologie" class="nav-link" data-scroll-target="#méthodologie">Méthodologie</a>
+  <ul class="collapse">
+  <li><a href="#base-de-données-relationnelle" id="toc-base-de-données-relationnelle" class="nav-link" data-scroll-target="#base-de-données-relationnelle">Base de données relationnelle</a></li>
+  <li><a href="#algorithme-de-migration" id="toc-algorithme-de-migration" class="nav-link" data-scroll-target="#algorithme-de-migration">Algorithme de migration</a></li>
+  <li><a href="#script-de-migration" id="toc-script-de-migration" class="nav-link" data-scroll-target="#script-de-migration">Script de migration</a></li>
+  </ul></li>
+  <li><a href="#résultats" id="toc-résultats" class="nav-link" data-scroll-target="#résultats">Résultats</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
     </div>
-    <img src="image/photo_cv.jpeg" class="about-image
-  rounded " style="width: 13em;">
+<!-- main -->
+<main class="content column-page-left" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Migration de données : De SQL à NoSQL</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">SQL</div>
+    <div class="quarto-category">Data Science</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Ce projet vise à migrer des données d’un environnement SQL vers un environnement NoSQL pour une entreprise automobile.
   </div>
 </div>
- <!-- /main -->
+
+
+<div class="quarto-title-meta column-page-left">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Date de publication</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">28 décembre 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>Ce projet vise à migrer des données d’un environnement SQL vers un environnement NoSQL. Concrètement, il s’agit de transférer les informations stockées dans une base de données relationnelle traditionnelle, où les données sont organisées en tables avec des relations fixes, vers une base de données NoSQL, qui offre une structure plus flexible adaptée aux données non structurées ou semi-structurées.</p>
+<p>Nous travaillons avec les données d’une entreprise de voitures qui rencontre des problèmes avec sa base de données actuelle : les requêtes sont lentes et des défaillances serveur entraînent des pertes de données. Pour résoudre ces problèmes, nous avons décidé de passer à un environnement NoSQL. Cette technologie permet de stocker des données sous une forme non structurée, offrant ainsi plus de flexibilité et de performance. Cette migration vise à améliorer la performance des requêtes et à préparer l’infrastructure pour une croissance future.</p>
+<p>Vous pouvez consulter le rapport complet ici.</p>
+<p>Le code source utilisé pour ce projet est disponible ici.</p>
+</section>
+<section id="méthodologie" class="level1">
+<h1>Méthodologie</h1>
+<section id="base-de-données-relationnelle" class="level2">
+<h2 class="anchored" data-anchor-id="base-de-données-relationnelle">Base de données relationnelle</h2>
+<p>La base de données relationnelle initiale contient des informations sur les véhicules, les clients, les commandes, les employés… La représentation des données est claire et bien organisée. Chaque table dispose de relations avec d’autres tables, ce qui permet de structurer efficacement les informations et de faciliter les requêtes complexes.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="image_but/schema_clasicmodel.png" class="img-fluid figure-img" width="791"></p>
+<figcaption>Schéma relationnel de la bdd initial</figcaption>
+</figure>
+</div>
+<p>Dans un premier temps, nous avons créé des requêtes SQL sur cette base de données. Ces requêtes serviront de tests pour évaluer le succès de la migration. Nous comparerons les résultats obtenus dans la base de données relationnelle avec ceux obtenus dans la base NoSQL pour vérifier l’intégrité et la performance de la migration.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="image_but/exemple_requete_sql.png" class="img-fluid figure-img" width="700"></p>
+<figcaption>Requêtes SQL</figcaption>
+</figure>
+</div>
+<p>La base de données est au format <code>SQLite</code>. Nous avons importé le module <code>sqlite3</code> en Python pour établir la connexion et interagir avec la base. Ensuite, nous avons utilisé la bibliothèque Pandas et notamment sa fonction <code>read_sql_query()</code>, pour exécuter et lire les résultats des requêtes SQL.</p>
+</section>
+<section id="algorithme-de-migration" class="level2">
+<h2 class="anchored" data-anchor-id="algorithme-de-migration">Algorithme de migration</h2>
+<p>Il existe plusieurs types de bases de données NoSQL (Clé-valeur, Document, Colonne et Graphe), chacun adapté à ses propres cas d’usage et ayant ses propres avantages et inconvénients, notamment en termes de scalabilité et de flexibilité. Le choix dépend donc de plusieurs facteurs clés, comme la structure des données, les exigences de performance…</p>
+<p>En ce qui nous concerne, nous pouvons réaliser une migration vers un environnement NoSQL, car l’entreprise dispose d’une grande quantité de données structurées en constante croissance. De plus, il est possible d’améliorer significativement les performances d’accès aux données en optimisant le traitement de données plus importantes et en réduisant le temps de latence. On souhaite donc une solution qui offre plus de flexibilité et évolutivité, tout en préservant l’intégrité des données de notre base initial.</p>
+<p>Après mûre réflexion, le format document est celui s’adaptant le mieux à notre objectif. En effet, il permet de structurer naturellement les entités de manière hiérarchique. Par exemple, un client peut être représenté par un document contenant ses commandes, chaque commande incluant les produits associés. De plus, il offre une grande flexibilité, permettant de traiter différents types de données sans modifications complexes du schéma. Enfin, il permet une scalabilité horizontale grâce à la partition de document, c-à-d si les données augmentent, on peut facilement ajouter de nouveaux serveurs pour stocker et gérer plus de documents, sans tout restructurer.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="image_but/exemple_schema_document.png" class="img-fluid figure-img"></p>
+<figcaption>Exemple d’une modélisation au format Document</figcaption>
+</figure>
+</div>
+<p>Ce modèle présente quelques inconvénients, notamment des performances limitées pour les requêtes complexes ou les jointures entre documents. De plus, les mises à jour simultanées de documents imbriqués peuvent être plus difficiles à gérer.</p>
+<p>Nous avons décidé de structurer nos données autour de quatres collections : customers, payments, orders et employees.</p>
+</section>
+<section id="script-de-migration" class="level2">
+<h2 class="anchored" data-anchor-id="script-de-migration">Script de migration</h2>
+<p>Avant de développer un script de migration, nous avons d’abord établi un pseudo-algorithme dans l’objecitf de structurer et organiser la logique de notre programme.</p>
+<p>Ensuite, pour la migration de nos données, nous avons utilisé SQLite comme source et MongoDB comme destination, en exploitant les bibliothèques Python <code>sqlite3</code>, <code>pymongo</code> et <code>pandas</code>. Le processus inclut l’extraction des données de SQLite, leur transformation au format document compatible avec MongoDB, et leur insertion dans les collections appropriées.</p>
+</section>
+</section>
+<section id="résultats" class="level1">
+<h1>Résultats</h1>
+<p>Nous avons évalué la qualité de notre migration en exécutant les mêmes dix requêtes SQL que celles effectuées avant la migration, cette fois sur notre base de données NoSQL. Pour cela, nous avons utilisé le langage de requêtes MongoDB. Toutes les requêtes ont donné les mêmes résultats, à l’exception de la requête 10 (bonus), où nous n’avons pas pu obtenir les mêmes calculs.</p>
+</section>
+<section id="conclusion" class="level1">
+<h1>Conclusion</h1>
+<p>En conclusion, la migration des données vers MongoDB a été un succès. Nous avons pu valider la précision de notre travail en comparant les résultats de nos neuf requêtes SQL avec celles exécutées sur notre base NoSQL, et les résultats se sont révélés identiques.</p>
+<p>Note : 19/20</p>
+
+
+</section>
+
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -369,6 +439,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   } else {
     toggleColorMode(false);
   }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
   const isCodeAnnotation = (el) => {
     for (const clz of el.classList) {
       if (clz.startsWith('code-annotation-')) {                     
@@ -385,12 +462,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // flash "checked"
     button.classList.add('code-copy-button-checked');
     var currentTitle = button.getAttribute("title");
-    button.setAttribute("title", "Copied!");
+    button.setAttribute("title", "Copié");
     let tooltip;
     if (window.bootstrap) {
       button.setAttribute("data-bs-toggle", "tooltip");
       button.setAttribute("data-bs-placement", "left");
-      button.setAttribute("data-bs-title", "Copied!");
+      button.setAttribute("data-bs-title", "Copié");
       tooltip = new bootstrap.Tooltip(button, 
         { trigger: "manual", 
           customClass: "code-copy-button-tooltip",

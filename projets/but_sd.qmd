@@ -12,6 +12,7 @@ listing:
   contents: 
         - projets_but/louvre.qmd
         - projets_but/integration.qmd
+        - projets_but/migration.qmd
   fields: [image, title, reading-time, description, categories, date,]
   categories: true
 ---

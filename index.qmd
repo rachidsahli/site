@@ -4,7 +4,7 @@ title: "Rachid SAHLI"
 about:
   image-width: 13em
 
-  template: jolla
+  template: solana
   image: image/photo_cv.jpeg
   links:
     - icon: linkedin
@@ -22,7 +22,13 @@ about:
 ---
 
 ::: {#hero-heading}
-Je suis étudiant à l'IUT Paris Rives de Seine en Science des données et alternant à l'INSEE.<br> Au sein de la direction des statistiques démographiques et sociales, mes missions portent sur la couverture de différentes bases de sondage et sur l'appariement de gros volumes de données.
+Je suis étudiant à l'IUT Paris Rives de Seine en Science des Données et alternant à l'INSEE. Au sein de la Direction des Statistiques Démographiques et Sociales, mes missions consistent à couvrir différentes bases de sondage et à apparier de gros volumes de données.
 
-J'aime les statistiques, le soleil ☀️, le vélo 🚲 , le cinéma 🎞️ et la programmation 👾.
+Je travaille principalement avec R et Python, et j'ai créé un site de ressources appelé PratiqueR. Vous pouvez également me retrouver sur YouTube, où je partage des vidéos sur R et son environnement.
+
+En dehors de mes études et de mon travail, je consacre mon temps libre à la construction de robots et je partage mes idées sur mon blog, Jiqiren.
+
+Passionné par les statistiques, la robotique 🦿🤖, le vélo 🚲, le cinéma 🎞️, et la programmation 👾, j'aime explorer et partager mes découvertes dans ces domaines.
+
+Je suis très curieux et toujours ouvert à de nouvelles idées. N'hésitez pas à me contacter pour discuter d'un projet ou explorer des opportunités de collaboration.
 :::
