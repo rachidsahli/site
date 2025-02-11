@@ -1,5 +1,5 @@
 ---
-title: "Rachid SAHLI"
+title: "Rachid Sahli"
 
 about:
   image-width: 13em
@@ -19,16 +19,63 @@ about:
     - icon: envelope
       text: Mail
       href: mailto:sahlirachid427@gmail.com
+      
+lang: fr
+toc: false
 ---
 
 ::: {#hero-heading}
 Je suis étudiant à l'IUT Paris Rives de Seine en Science des Données et alternant à l'INSEE. Au sein de la Direction des Statistiques Démographiques et Sociales, mes missions consistent à couvrir différentes bases de sondage et à apparier de gros volumes de données.
 
-Je travaille principalement avec R et Python, et j'ai créé un site de ressources appelé PratiqueR. Vous pouvez également me retrouver sur YouTube, où je partage des vidéos sur R et son environnement.
+Je travaille principalement avec `R` et `Python`, et j'ai créé un site de ressources appelé `PratiqueR`. Vous pouvez également me retrouver sur YouTube, où je partage des vidéos sur R et son environnement.
 
-En dehors de mes études et de mon travail, je consacre mon temps libre à la construction de robots et je partage mes idées sur mon blog, Jiqiren.
+En dehors de mes études, je consacre mon temps libre à la construction de robots et je partage mes idées sur mon blog, `Jiqiren`.
 
 Passionné par les statistiques, la robotique 🦿🤖, le vélo 🚲, le cinéma 🎞️, et la programmation 👾, j'aime explorer et partager mes découvertes dans ces domaines.
 
 Je suis très curieux et toujours ouvert à de nouvelles idées. N'hésitez pas à me contacter pour discuter d'un projet ou explorer des opportunités de collaboration.
 :::
+
+### Formation
+
+::: {.callout-warning icon="false" appearance="default"}
+## IUT de Paris - Rives de Seine (Université Paris Cité) \| Paris, 75016
+
+*BUT Science des données, parcours exploration et modélisation statistique* \| *Sept 2022 - Juin 2025*\
+**Cours suivis** : Statistique inférentielle, paramétrique et non-paramétrique, Modélisation statistique, Algèbre linéaire, Analyse, Probabilités, Machine learning, Data mining, Programmation, Base de données
+:::
+
+### Expérience
+
+::: {.callout-tip icon="false" appearance="default"}
+## Institut national de la statistique et des études économiques (INSEE) \| Montrouge, 92120
+
+*Statisticien* \| *Sept 2023 - Sept 2025*<br> 
+Au sein de la Direction des statistiques démographiques et sociales, j'ai mené des travaux d'appariement de données administratives. L'objectif de ces travaux était de mesurer et de comparer la couverture de deux bases de sondages. Par ailleurs, j'ai comparé différents algorithmes d'appariement à l'aide d'analyses statistiques.
+De plus, j'ai mis en place des modèles de classification exploitant les données administratives afin de réaliser des prédictions.
+:::
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

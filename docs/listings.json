@@ -10,15 +10,12 @@
   {
     "listing": "/projets.html",
     "items": [
-      "/projets/but_sd.html",
-      "/projets/pratiquer.html",
-      "/projets/fontaines_eau.html"
+      "/projets/but_sd.html"
     ]
   },
   {
     "listing": "/projets/but_sd.html",
     "items": [
-      "/projets/projets_but/integration.html",
       "/projets/projets_but/migration.html",
       "/projets/projets_but/louvre.html"
     ]

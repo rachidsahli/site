@@ -11,37 +11,24 @@ website:
   search: true
   
   navbar: 
-    background: warning
-    foreground: light
+
     
     left:
       - href: index.qmd
         text: Accueil
-      - href: about.qmd
-        text: À propos
       - href: projets.qmd
         text: Projets
       - href: blog.qmd
         text: Blog
         
-    right: 
-      - icon: github
-        href: https://github.com/rachidsahli
-      - icon: envelope
-        href: mailto:sahlirachid427@gmail.com
-      - icon: linkedin
-        href: https://www.linkedin.com/in/rachidsahli/
-      - icon: file-person
-        text: CV
-        href: https://github.com/rachidsahli
         
   page-footer: "Copyright 2025, Rachid SAHLI"
 
 format:
   html:
     theme: 
-          light: Default
-          dark: darkly
+          light: litera
+          dark: [darkly, styles-dark.scss]
     css: styles.css
     toc: true
     page-layout: full

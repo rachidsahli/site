@@ -1,17 +1,18 @@
 ---
 title: "Projets BUT SD"
+subtitle: "Sept 2022 - Juin 2025"
+description: "Voici une liste de mes projets réalisées durant mes 3 années à l'Institut Universitaire de Technologie de Paris."
 
-description: "Voici une liste de mes projets réalisées durant mes 3 années à l'institut universitaire de technologie de Paris Rives de Seine ! (2022 - 2025)"
+lang: fr
 
-categories: ["Science des données","Statistique","R"]
+categories: ["Science des données","Statistique"]
 
-image: image_projets/but.jpeg
+image: image_projets/couverture_projets_but.jpeg
 
 listing:
   type: grid
   contents: 
         - projets_but/louvre.qmd
-        - projets_but/integration.qmd
         - projets_but/migration.qmd
   fields: [image, title, reading-time, description, categories, date,]
   categories: true

@@ -1,22 +1,11 @@
-/* css styles */
+/*-- scss:defaults --*/
 
-/* --- Open Image preatiquer --- */
+@import 'https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible&display=swap';
 
-#image-pratiquer {
-    transition: transform 0.3s, opacity 0.3s; /* Durée de l'effet */
-    border-radius: 15px; /* Ajuste la valeur pour le degré d'arrondi */
-}
+$font-family: "Atkinson Hyperlegible", sans-serif;
+$font-family-serif: "Atkinson Hyperlegible", sans-serif;
 
-#image-pratiquer:hover {
-    transform: scale(1.1); /* Zoom de 10% au survol */
-}
-
-#image-pratiquer:active {
-    opacity: 0.8; /* Diminue l'opacité au clic */
-
-}
-
-/* --- Close Image preatiquer --- */
+/*-- scss:rules --*/
 
 
 /* --- Open Card projets --- */
@@ -27,9 +16,4 @@
 .card:hover {
     transform: scale(1.05); /* Zoom de 5% au survol */
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Ombre au survol */
-}
-/* --- Close Card projets --- */
-
-.page-description {
-  display: none;
 }

@@ -2,9 +2,9 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Rachid SAHLI",
+    "title": "Rachid Sahli",
     "section": "",
-    "text": "Je suis étudiant à l’IUT Paris Rives de Seine en Science des Données et alternant à l’INSEE. Au sein de la Direction des Statistiques Démographiques et Sociales, mes missions consistent à couvrir différentes bases de sondage et à apparier de gros volumes de données.\nJe travaille principalement avec R et Python, et j’ai créé un site de ressources appelé PratiqueR. Vous pouvez également me retrouver sur YouTube, où je partage des vidéos sur R et son environnement.\nEn dehors de mes études et de mon travail, je consacre mon temps libre à la construction de robots et je partage mes idées sur mon blog, Jiqiren.\nPassionné par les statistiques, la robotique 🦿🤖, le vélo 🚲, le cinéma 🎞️, et la programmation 👾, j’aime explorer et partager mes découvertes dans ces domaines.\nJe suis très curieux et toujours ouvert à de nouvelles idées. N’hésitez pas à me contacter pour discuter d’un projet ou explorer des opportunités de collaboration."
+    "text": "Je suis étudiant à l’IUT Paris Rives de Seine en Science des Données et alternant à l’INSEE. Au sein de la Direction des Statistiques Démographiques et Sociales, mes missions consistent à couvrir différentes bases de sondage et à apparier de gros volumes de données.\nJe travaille principalement avec R et Python, et j’ai créé un site de ressources appelé PratiqueR. Vous pouvez également me retrouver sur YouTube, où je partage des vidéos sur R et son environnement.\nEn dehors de mes études, je consacre mon temps libre à la construction de robots et je partage mes idées sur mon blog, Jiqiren.\nPassionné par les statistiques, la robotique 🦿🤖, le vélo 🚲, le cinéma 🎞️, et la programmation 👾, j’aime explorer et partager mes découvertes dans ces domaines.\nJe suis très curieux et toujours ouvert à de nouvelles idées. N’hésitez pas à me contacter pour discuter d’un projet ou explorer des opportunités de collaboration.\n\n\nFormation\n\n\n\n\n\n\nIUT de Paris - Rives de Seine (Université Paris Cité) | Paris, 75016\n\n\n\nBUT Science des données, parcours exploration et modélisation statistique | Sept 2022 - Juin 2025\nCours suivis : Statistique inférentielle, paramétrique et non-paramétrique, Modélisation statistique, Algèbre linéaire, Analyse, Probabilités, Machine learning, Data mining, Programmation, Base de données\n\n\n\n\nExpérience\n\n\n\n\n\n\nInstitut national de la statistique et des études économiques (INSEE) | Montrouge, 92120\n\n\n\nStatisticien | Sept 2023 - Sept 2025 Au sein de la Direction des statistiques démographiques et sociales, j’ai mené des travaux d’appariement de données administratives. L’objectif de ces travaux était de mesurer et de comparer la couverture de deux bases de sondages. Par ailleurs, j’ai comparé différents algorithmes d’appariement à l’aide d’analyses statistiques. De plus, j’ai mis en place des modèles de classification exploitant les données administratives afin de réaliser des prédictions."
   },
   {
     "objectID": "about.html",
@@ -32,7 +32,7 @@
     "href": "projets.html",
     "title": "Projets",
     "section": "",
-    "text": "Trier par\n       Ordre par défaut\n         \n          Titre\n        \n         \n          Date - Le plus ancien\n        \n         \n          Date - Le plus récent\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nProjets BUT SD\n\n\n1 min.\n\n\n\nScience des données\n\n\nStatistique\n\n\nR\n\n\n\nVoici une liste de mes projets réalisées durant mes 3 années à l’institut universitaire de technologie de Paris Rives de Seine ! (2022 - 2025)\n\n\n\n\n\n\n\n\n\n\n\n\n\nPratiqueR\n\n\n1 min.\n\n\n\nR\n\n\nData Science\n\n\n\nPratiqueR est un site web interactif fournissant des ressources éducatives et des exercices pratiques pour faciliter l’apprentissage du langage R.\n\n\n\n23 juil. 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOù boire de l’eau à Paris ?\n\n\n1 min.\n\n\n\nR\n\n\nOpendata\n\n\n\nCréation d’une application proposant une carte interactive des points d’eau publics à Paris.\n\n\n\n20 janv. 2024\n\n\n\n\n\n\n\n\nAucun article correspondant"
+    "text": "Trier par\n       Ordre par défaut\n         \n          Titre\n        \n         \n          Date - Le plus ancien\n        \n         \n          Date - Le plus récent\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nProjets BUT SD\n\n\n1 min.\n\n\n\nScience des données\n\n\nStatistique\n\n\n\nVoici une liste de mes projets réalisées durant mes 3 années à l’Institut Universitaire de Technologie de Paris.\n\n\n\n\n\n\n\nAucun article correspondant"
   },
   {
     "objectID": "projets/projets_but/louvre.html",
@@ -67,7 +67,7 @@
     "href": "projets/but_sd.html",
     "title": "Projets BUT SD",
     "section": "",
-    "text": "Intégration de données dans un data warehouse\n\n\n1 min\n\n\n\nSQL\n\n\nBase de données\n\n\n\nConstruction d’une moyen de stockage de données et d’un dashboard pour une entreprise de e-commerce.\n\n\n\nJan 13, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMigration de données : De SQL à NoSQL\n\n\n4 min\n\n\n\nSQL\n\n\nData Science\n\n\n\nCe projet vise à migrer des données d’un environnement SQL vers un environnement NoSQL pour une entreprise automobile.\n\n\n\nDec 28, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNocturne au musée du Louvre\n\n\n4 min\n\n\n\nIA\n\n\n\n\n\n\n\nNov 24, 2023\n\n\n\n\n\n\n\n\nNo matching items"
+    "text": "Migration de données : De SQL à NoSQL\n\n\n4 min.\n\n\n\nSQL\n\n\nData Science\n\n\n\nCe projet vise à migrer des données d’un environnement SQL vers un environnement NoSQL pour une entreprise automobile.\n\n\n\n28 déc. 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNocturne au musée du Louvre\n\n\n4 min.\n\n\n\nIA\n\n\n\nPrésentation d’une œuvre générée par une IA aux visiteurs du Musée du Louvre.\n\n\n\n24 nov. 2023\n\n\n\n\n\n\n\n\nAucun article correspondant"
   },
   {
     "objectID": "about.html#formation",
@@ -222,5 +222,33 @@
     "title": "Migration de données : De SQL à NoSQL",
     "section": "Script de migration",
     "text": "Script de migration\nAvant de développer un script de migration, nous avons d’abord établi un pseudo-algorithme dans l’objecitf de structurer et organiser la logique de notre programme.\nEnsuite, pour la migration de nos données, nous avons utilisé SQLite comme source et MongoDB comme destination, en exploitant les bibliothèques Python sqlite3, pymongo et pandas. Le processus inclut l’extraction des données de SQLite, leur transformation au format document compatible avec MongoDB, et leur insertion dans les collections appropriées."
+  },
+  {
+    "objectID": "index.html#formation",
+    "href": "index.html#formation",
+    "title": "Rachid SAHLI",
+    "section": "Formation",
+    "text": "Formation\n\n\n\n\n\n\nIUT de Paris - Rives de Seine (Université Paris Cité) | Paris, France\n\n\n\nBachelor universitaire de technologie en Science des données | Sept 2022 - Juin 2025\nCours suivis : Algèbre, Statistique, Probabilités, Programmation, Base de données, Économie"
+  },
+  {
+    "objectID": "index.html#expérience",
+    "href": "index.html#expérience",
+    "title": "Rachid SAHLI",
+    "section": "Expérience",
+    "text": "Expérience\n\n\n\n\n\n\nInstitut national de la statistique et des études économiques (INSEE) | Montrouge, France\n\n\n\nProgrammeur Statistique | 2023 - 2025 Au sein de la Direction des statistiques démographiques et sociales, j’ai mené des travaux d’appariement de données administratives. L’objectif de ces travaux était de mesurer et de comparer la couverture de deux bases de sondages. Par ailleurs, j’ai comparé différents algorithmes d’appariement à l’aide d’analyses statistiques.\nMes missions ont inclus la manipulation de données brutes, le nettoyage des données, l’appariement de grands volumes de données, ainsi que leur analyse statistique."
+  },
+  {
+    "objectID": "index.html#iut-de-paris---rives-de-seine-université-paris-cité-paris-france",
+    "href": "index.html#iut-de-paris---rives-de-seine-université-paris-cité-paris-france",
+    "title": "Rachid SAHLI",
+    "section": "IUT de Paris - Rives de Seine (Université Paris Cité) | Paris, France",
+    "text": "IUT de Paris - Rives de Seine (Université Paris Cité) | Paris, France\nBachelor universitaire de technologie en Science des données | Sept 2022 - Juin 2025\nCours suivis : Algèbre, Statistique, Probabilités, Programmation, Base de données, Économie"
+  },
+  {
+    "objectID": "index.html#institut-national-de-la-statistique-et-des-études-économiques-insee-montrouge-france",
+    "href": "index.html#institut-national-de-la-statistique-et-des-études-économiques-insee-montrouge-france",
+    "title": "Rachid SAHLI",
+    "section": "Institut national de la statistique et des études économiques (INSEE) | Montrouge, France",
+    "text": "Institut national de la statistique et des études économiques (INSEE) | Montrouge, France\nStatisticien | Sept 2023 - Sept 2025 Au sein de la Direction des statistiques démographiques et sociales, j’ai mené des travaux d’appariement de données administratives. L’objectif de ces travaux était de mesurer et de comparer la couverture de deux bases de sondages. Par ailleurs, j’ai comparé différents algorithmes d’appariement à l’aide d’analyses statistiques.\nMes missions ont inclus la manipulation de données brutes, le nettoyage des données, l’appariement de grands volumes de données, ainsi que leur analyse statistique."
   }
 ]

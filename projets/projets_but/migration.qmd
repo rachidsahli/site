@@ -4,7 +4,7 @@ description: "Ce projet vise à migrer des données d'un environnement SQL vers 
 lang: "fr"
 categories: ["SQL","Data Science"]
 date: "28 December 2024"
-image: image_but/couverture_migration.jpg
+image: image_but/couverture_migration.png
 ---
 
 # Introduction

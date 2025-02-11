@@ -10,7 +10,5 @@ listing:
   filter-ui: true
   contents: 
         - projets/but_sd.qmd
-        - projets/pratiquer.qmd
-        - projets/fontaines_eau.qmd
   fields: [image, title, reading-time, description, categories, date,]      
 ---
