@@ -1,14 +1,10 @@
 ---
 title: "Nocturne au musée du Louvre"
-
-lang: fr
-categories: ["IA"]
-
 description: "Présentation d'une œuvre générée par une IA aux visiteurs du Musée du Louvre."
-
-image: image_but/louvre.jpg
-
+lang: fr
 date: "24 november 2023"
+categories: ["IA"]
+image: image_but/louvre.jpg
 ---
 
 ![](image_but/louvre.jpg){fig-align="center" width="700"}

@@ -96,7 +96,7 @@ leaflet(data = carte) %>%
   setView(lng = 2.2137, lat = 46.6034, zoom = 6)
 ```
 
-<br> Cette carte a été créée à l’aide du package leaflet, en utilisant les données disponibles en open data fournies par les acteurs suivants :
+<br> Cette carte a été créée à l’aide du package `leaflet`, en utilisant les données disponibles en open data fournies par les acteurs suivants :
 
 -   Fontaines à eau : opendata de la Ville de Paris
 

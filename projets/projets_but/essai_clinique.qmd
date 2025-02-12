@@ -21,7 +21,7 @@ Notre objectif est d'évaluer l'effet du voxelotor en mesurant l'amélioration d
 
 Le rapport peut être consulté ici. Vous trouverez également le code R ici.
 
-# Méthodes
+# Méthodologie
 
 # Résultat
 
