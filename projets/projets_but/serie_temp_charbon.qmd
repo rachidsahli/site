@@ -1,0 +1,12 @@
+---
+title: "Série Temporelle : Production de charbon aux États-Unis"
+description: "La prévision de la production de charbon aux États-Unis est réalisée à partir de l'analyse de la saisonnalité des séries temporelles et de la modélisation via trois méthodes de prévision, avec une comparaison des erreurs sur 2022, le tout visualisé à l'aide d'une application RShiny."
+lang: "fr"
+categories: ["R","RShiny", "Statistique"]
+date: "19 janvier 2024"
+image: image_but/couverture_serie_temp_charbon.jpg
+---
+
+# Introduction
+
+# Méthodes

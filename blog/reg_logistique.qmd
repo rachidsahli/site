@@ -5,11 +5,9 @@ lang: fr
 date: 10 octobre 2024
 categories: ["R","Machine learning"]
 toc: true
-number-sections: true
 image: image_blog/reg_logistique_image.png
+page-layout: article
 ---
-
-![](image_blog/reg_logistique_image.png){fig-align="center" width="500"}
 
 # Introduction
 
@@ -21,7 +19,7 @@ L'algorithme des $k$ plus proches voisins fonctionne de la façon suivante pour 
 
 Nous allons utiliser ces deux méthodes de classification afin de prédire, en se basant sur des mesures diagnostiques, si un patient est atteint du diabète ou non.
 
-# Import et nettoyage des données
+# Import et préparation des données
 
 Dans un premier temps, nous importons le jeu de données "diabetes.csv". Nous allons mettre en pratique nos méthodes de régression logistique et $k$ plus proches voisins sur ce dernier. Ce jeu de données est issu de l'Institut national du diabète et des maladies digestives et rénales. Tous les patients ici sont des femmes d'au moins 21 ans d'origine Pima. Il contient les mesures suivantes.
 
@@ -83,7 +81,6 @@ summary(diabetes)
 ```{r echo=FALSE, fig.height=3, fig.width=4, fig.align='center'}
 ggplot(as.data.frame(table(diabetes$Outcome)), aes(x = Var1, y = Freq, fill = Var1)) +
   geom_bar(stat = "identity", show.legend = FALSE) +
-  scale_fill_manual(values = c("lightgreen", "red")) +
   labs(
     x = "Statut diabétique",
     y = "Patients",
@@ -99,7 +96,7 @@ Environ 14,3 % des patients n'ont jamais eu de grossesse. Il y a 23,7 % des pati
 
 ```{r echo=FALSE, fig.height=3, fig.width=4, fig.align='center'}
 ggplot(as.data.frame(table(as.factor(diabetes$Pregnancies))), aes(x = Var1, y = Freq)) +
-  geom_bar(stat = "identity", fill = "lightgreen", show.legend = FALSE) +
+  geom_bar(stat = "identity", fill = "lightblue", show.legend = FALSE) +
   labs(
     x = "Nombre de grossesses",
     y = "Patients",
@@ -114,7 +111,7 @@ On observe ci-dessous, l'âge des patients. Le plus jeune patient a 21 ans, tand
 ```{r echo=FALSE, fig.align='center', fig.height=3, fig.width=4, message=FALSE, warning=FALSE, paged.print=FALSE}
 ggplot(diabetes) +
   aes(x = "", y = Age) +
-  geom_boxplot(fill = "lightgreen") +
+  geom_boxplot(fill = "lightblue") +
   labs(x = " ", title = "Distribution de l'âge des patients") +
   theme_classic() +
   theme(plot.title = element_text(size = 10))
@@ -192,7 +189,7 @@ grid.arrange(p5, p6, p7,  ncol = 2)
 
 On observe une corrélation entre nos variables quantitatives continues et la variable Outcome ($Y$). On le voit par exemple à travers le lien entre la variable Glucose et la variable $Y$. Les patients atteints de diabète présentent un taux de glucose significativement plus élevé que ceux qui ne sont pas atteints par la maladie.
 
-# Modele de regression logistique
+# Modèle de regression logistique
 
 Nous pouvons mettre en place notre modèle de régression logistique. Nous commençons par le modèle complet. C'est-à-dire que nous sélectionnons toutes les co-variables pour expliquer $Y$. On rappel qu'on cherche à prédire les valeurs de la variable Outcom ($Y$) à l'aide des variables explicatives présentent dans notre jeu de données.
 

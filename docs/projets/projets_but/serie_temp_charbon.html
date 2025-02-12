@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="Ce projet vise à migrer des données d’un environnement SQL vers un environnement NoSQL pour une entreprise automobile.">
+<meta name="description" content="La prévision de la production de charbon aux États-Unis est réalisée à partir de l’analyse de la saisonnalité des séries temporelles et de la modélisation via trois méthodes de prévision, avec une comparaison des erreurs sur 2022, le tout visualisé à l’aide d’une application RShiny.">
 
-<title>Migration de données : De SQL à NoSQL – Rachid Sahli</title>
+<title>Série Temporelle : Production de charbon aux États-Unis – Rachid Sahli</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -141,14 +141,7 @@ cookieconsent.run({
    
   <ul>
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
-  <li><a href="#méthodologie" id="toc-méthodologie" class="nav-link" data-scroll-target="#méthodologie">Méthodologie</a>
-  <ul class="collapse">
-  <li><a href="#base-de-données-relationnelle" id="toc-base-de-données-relationnelle" class="nav-link" data-scroll-target="#base-de-données-relationnelle">Base de données relationnelle</a></li>
-  <li><a href="#algorithme-de-migration" id="toc-algorithme-de-migration" class="nav-link" data-scroll-target="#algorithme-de-migration">Algorithme de migration</a></li>
-  <li><a href="#script-de-migration" id="toc-script-de-migration" class="nav-link" data-scroll-target="#script-de-migration">Script de migration</a></li>
-  </ul></li>
-  <li><a href="#résultats" id="toc-résultats" class="nav-link" data-scroll-target="#résultats">Résultats</a></li>
-  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#méthodes" id="toc-méthodes" class="nav-link" data-scroll-target="#méthodes">Méthodes</a></li>
   </ul>
 </nav>
     </div>
@@ -157,15 +150,17 @@ cookieconsent.run({
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Migration de données : De SQL à NoSQL</h1>
+<h1 class="title">Série Temporelle : Production de charbon aux États-Unis</h1>
   <div class="quarto-categories">
-    <div class="quarto-category">SQL</div>
+    <div class="quarto-category">R</div>
+    <div class="quarto-category">RShiny</div>
+    <div class="quarto-category">Statistique</div>
   </div>
   </div>
 
 <div>
   <div class="description">
-    Ce projet vise à migrer des données d’un environnement SQL vers un environnement NoSQL pour une entreprise automobile.
+    La prévision de la production de charbon aux États-Unis est réalisée à partir de l’analyse de la saisonnalité des séries temporelles et de la modélisation via trois méthodes de prévision, avec une comparaison des erreurs sur 2022, le tout visualisé à l’aide d’une application RShiny.
   </div>
 </div>
 
@@ -176,7 +171,7 @@ cookieconsent.run({
     <div>
     <div class="quarto-title-meta-heading">Date de publication</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">28 décembre 2024</p>
+      <p class="date">19 janvier 2024</p>
     </div>
   </div>
   
@@ -190,59 +185,9 @@ cookieconsent.run({
 
 <section id="introduction" class="level1">
 <h1>Introduction</h1>
-<p>Ce projet vise à migrer des données d’un environnement SQL vers un environnement NoSQL. Concrètement, il s’agit de transférer les informations stockées dans une base de données relationnelle traditionnelle, où les données sont organisées en tables avec des relations fixes, vers une base de données NoSQL, qui offre une structure plus flexible adaptée aux données non structurées ou semi-structurées.</p>
-<p>Nous travaillons avec les données d’une entreprise de voitures qui rencontre des problèmes avec sa base de données actuelle : les requêtes sont lentes et des défaillances serveur entraînent des pertes de données. Pour résoudre ces problèmes, nous avons décidé de passer à un environnement NoSQL. Cette technologie permet de stocker des données sous une forme non structurée, offrant ainsi plus de flexibilité et de performance. Cette migration vise à améliorer la performance des requêtes et à préparer l’infrastructure pour une croissance future.</p>
-<p>Vous pouvez consulter le rapport complet ici.</p>
-<p>Le code source utilisé pour ce projet est disponible ici.</p>
 </section>
-<section id="méthodologie" class="level1">
-<h1>Méthodologie</h1>
-<section id="base-de-données-relationnelle" class="level2">
-<h2 class="anchored" data-anchor-id="base-de-données-relationnelle">Base de données relationnelle</h2>
-<p>La base de données relationnelle initiale contient des informations sur les véhicules, les clients, les commandes, les employés… La représentation des données est claire et bien organisée. Chaque table dispose de relations avec d’autres tables, ce qui permet de structurer efficacement les informations et de faciliter les requêtes complexes.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="image_but/schema_clasicmodel.png" class="img-fluid figure-img" width="591"></p>
-<figcaption>Schéma relationnel de la bdd initial</figcaption>
-</figure>
-</div>
-<p>Dans un premier temps, nous avons créé des requêtes SQL sur cette base de données. Ces requêtes serviront de tests pour évaluer le succès de la migration. Nous comparerons les résultats obtenus dans la base de données relationnelle avec ceux obtenus dans la base NoSQL pour vérifier l’intégrité et la performance de la migration.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="image_but/exemple_requete_sql.png" class="img-fluid figure-img" width="700"></p>
-<figcaption>Requêtes SQL</figcaption>
-</figure>
-</div>
-<p>La base de données est au format <code>SQLite</code>. Nous avons importé le module <code>sqlite3</code> en Python pour établir la connexion et interagir avec la base. Ensuite, nous avons utilisé la bibliothèque Pandas et notamment sa fonction <code>read_sql_query()</code>, pour exécuter et lire les résultats des requêtes SQL.</p>
-</section>
-<section id="algorithme-de-migration" class="level2">
-<h2 class="anchored" data-anchor-id="algorithme-de-migration">Algorithme de migration</h2>
-<p>Il existe plusieurs types de bases de données NoSQL (Clé-valeur, Document, Colonne et Graphe), chacun adapté à ses propres cas d’usage et ayant ses propres avantages et inconvénients, notamment en termes de scalabilité et de flexibilité. Le choix dépend donc de plusieurs facteurs clés, comme la structure des données, les exigences de performance…</p>
-<p>En ce qui nous concerne, nous pouvons réaliser une migration vers un environnement NoSQL, car l’entreprise dispose d’une grande quantité de données structurées en constante croissance. De plus, il est possible d’améliorer significativement les performances d’accès aux données en optimisant le traitement de données plus importantes et en réduisant le temps de latence. On souhaite donc une solution qui offre plus de flexibilité et évolutivité, tout en préservant l’intégrité des données de notre base initial.</p>
-<p>Après mûre réflexion, le format document est celui s’adaptant le mieux à notre objectif. En effet, il permet de structurer naturellement les entités de manière hiérarchique. Par exemple, un client peut être représenté par un document contenant ses commandes, chaque commande incluant les produits associés. De plus, il offre une grande flexibilité, permettant de traiter différents types de données sans modifications complexes du schéma. Enfin, il permet une scalabilité horizontale grâce à la partition de document, c-à-d si les données augmentent, on peut facilement ajouter de nouveaux serveurs pour stocker et gérer plus de documents, sans tout restructurer.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="image_but/exemple_schema_document.png" class="img-fluid figure-img"></p>
-<figcaption>Exemple d’une modélisation au format Document</figcaption>
-</figure>
-</div>
-<p>Ce modèle présente quelques inconvénients, notamment des performances limitées pour les requêtes complexes ou les jointures entre documents. De plus, les mises à jour simultanées de documents imbriqués peuvent être plus difficiles à gérer.</p>
-<p>Nous avons décidé de structurer nos données autour de quatres collections : customers, payments, orders et employees.</p>
-</section>
-<section id="script-de-migration" class="level2">
-<h2 class="anchored" data-anchor-id="script-de-migration">Script de migration</h2>
-<p>Avant de développer un script de migration, nous avons d’abord établi un pseudo-algorithme dans l’objecitf de structurer et organiser la logique de notre programme.</p>
-<p>Ensuite, pour la migration de nos données, nous avons utilisé SQLite comme source et MongoDB comme destination, en exploitant les bibliothèques Python <code>sqlite3</code>, <code>pymongo</code> et <code>pandas</code>. Le processus inclut l’extraction des données de SQLite, leur transformation au format document compatible avec MongoDB, et leur insertion dans les collections appropriées.</p>
-</section>
-</section>
-<section id="résultats" class="level1">
-<h1>Résultats</h1>
-<p>Nous avons évalué la qualité de notre migration en exécutant les mêmes dix requêtes SQL que celles effectuées avant la migration, cette fois sur notre base de données NoSQL. Pour cela, nous avons utilisé le langage de requêtes MongoDB. Toutes les requêtes ont donné les mêmes résultats, à l’exception de la requête 10 (bonus), où nous n’avons pas pu obtenir les mêmes calculs.</p>
-</section>
-<section id="conclusion" class="level1">
-<h1>Conclusion</h1>
-<p>En conclusion, la migration des données vers MongoDB a été un succès. Nous avons pu valider la précision de notre travail en comparant les résultats de nos neuf requêtes SQL avec celles exécutées sur notre base NoSQL, et les résultats se sont révélés identiques.</p>
-<p>Note : 19/20</p>
+<section id="méthodes" class="level1">
+<h1>Méthodes</h1>
 
 
 </section>

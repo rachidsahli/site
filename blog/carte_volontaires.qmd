@@ -1,11 +1,14 @@
 ---
 title: "Carte d'aide pour les Volontaires de Paris 2024"
-lang: "fr"
-categories: ["R", "OPENDATA"]
-description: "Carte interactive des volontaires de Paris 2024, réalisée à partir de l'opendata."
-image: image_blog/volontaires.jpeg
+description: "Carte interactive des volontaires de Paris 2024."
+lang: fr
 date: 9 septembre 2024
+categories: ["R", "Opendata"]
+image: image_blog/volontaires.jpeg
+page-layout: article
 ---
+
+Lors des Jeux Olympiques de 2024 à Paris, plus de 45 000 volontaires ont été les véritables hommes et femmes de l'ombre. On les a vus partout à Paris grâce à leur [tenue bleue](https://www.decathlon.fr/landing/volontaires-paris-2024/_/R-a-volontaires-paris-2024). Ils ont contribué au succès des Jeux Olympiques. Venant des quatre coins de la France, ils devaient pouvoir se repérer. La carte d’aide pour les volontaires est conçue à cet effet et leur a été très utile durant leur séjour à Paris.
 
 ```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
 # Import library ---------------
@@ -93,7 +96,7 @@ leaflet(data = carte) %>%
   setView(lng = 2.2137, lat = 46.6034, zoom = 6)
 ```
 
-<br> Cette carte a été réalisée à partir des données mises en opendata par les acteurs suivants :
+<br> Cette carte a été créée à l’aide du package leaflet, en utilisant les données disponibles en open data fournies par les acteurs suivants :
 
 -   Fontaines à eau : opendata de la Ville de Paris
 
@@ -107,3 +110,4 @@ leaflet(data = carte) %>%
 
 -   Paralympiques : opendata de Paris 2024
 
+(Denière mis à jour des données le 27 juillet 2024)

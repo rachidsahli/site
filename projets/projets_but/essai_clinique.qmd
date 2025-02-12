@@ -1,0 +1,28 @@
+---
+title: "Etude statistique dans un essai clinique"
+description: ""
+lang: "fr"
+categories: ["R", "Statistique"]
+date: "01 December 2024"
+image: image_but/couverture_essai_clinique.png
+---
+
+# Introduction
+
+Ce projet consiste en la réalisation d'une étude statistique dans le cadre d'un essai clinique. Nous travaillons sur un jeu de données simulées pour effectuer l'analyse statistique d'une étude de phase 3. L'objectif est de fournir au laboratoire une Autorisation de Mise sur le Marché (AMM) avec une indication dans la prise en charge de la drépanocytose.
+
+La drépanocytose est une maladie génétique qui affecte les globules rouges et peut entraîner des complications graves. Elle se manifeste notamment par une anémie, des crises douloureuses et un risque accru d'infections.
+
+![Schéma de la drépanocytose](image_but/globule_rouge.png){fig-align="center" width="500"}
+
+Lors d'une étude de phase 3, les chercheurs comparent un nouveau traitement prometteur au traitement standard, qui est le traitement reconnu et généralement administré pour une affection ou une maladie. Dans notre étude, ce traitement s'appelle le [Voxelotor](https://en.wikipedia.org/wiki/Voxelotor).
+
+Notre objectif est d'évaluer l'effet du voxelotor en mesurant l'amélioration du taux d'hémoglobine chez les patients, comparé à un placebo. Durant notre étude statistique, nous testerons diverses hypothèses et utiliserons des méthodes statistiques pour évaluer l'efficacité de ce traitement.
+
+Le rapport peut être consulté ici. Vous trouverez également le code R ici.
+
+# Méthodes
+
+# Résultat
+
+# Conclusion

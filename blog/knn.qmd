@@ -1,18 +1,13 @@
 ---
 title: "L'algorithme des $k$ plus proches voisins"
-lang : "fr"
 description: "Application sur R de l'algorithme des $k$ plus proches voisins."
+lang : fr
 date: 29 septembre 2024
 categories: ["R","Machine learning"]
 toc: true
-number-sections: true
 image: image_blog/knn.png
-format:
-  html:
-    page-layout: article
+page-layout: article
 ---
-
-![](image_blog/knn.png){fig-align="center" width="400"}
 
 # Introduction
 

@@ -16,8 +16,10 @@
   {
     "listing": "/projets/but_sd.html",
     "items": [
+      "/projets/projets_but/essai_clinique.html",
       "/projets/projets_but/migration.html",
-      "/projets/projets_but/louvre.html"
+      "/projets/projets_but/louvre.html",
+      "/projets/projets_but/serie_temp_charbon.html"
     ]
   }
 ]

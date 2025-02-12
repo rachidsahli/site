@@ -2,7 +2,7 @@
 title: "Migration de données : De SQL à NoSQL"
 description: "Ce projet vise à migrer des données d'un environnement SQL vers un environnement NoSQL pour une entreprise automobile."
 lang: "fr"
-categories: ["SQL","Data Science"]
+categories: ["SQL"]
 date: "28 December 2024"
 image: image_but/couverture_migration.png
 ---
@@ -23,7 +23,7 @@ Le code source utilisé pour ce projet est disponible ici.
 
 La base de données relationnelle initiale contient des informations sur les véhicules, les clients, les commandes, les employés... La représentation des données est claire et bien organisée. Chaque table dispose de relations avec d'autres tables, ce qui permet de structurer efficacement les informations et de faciliter les requêtes complexes.
 
-![Schéma relationnel de la bdd initial](image_but/schema_clasicmodel.png){fig-align="center" width="791"}
+![Schéma relationnel de la bdd initial](image_but/schema_clasicmodel.png){fig-align="center" width="591"}
 
 Dans un premier temps, nous avons créé des requêtes SQL sur cette base de données. Ces requêtes serviront de tests pour évaluer le succès de la migration. Nous comparerons les résultats obtenus dans la base de données relationnelle avec ceux obtenus dans la base NoSQL pour vérifier l'intégrité et la performance de la migration.
 

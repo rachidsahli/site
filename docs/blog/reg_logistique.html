@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="Mise en pratique d’un modèle de régression logistique afin de prédire, en se basant sur des mesures diagnostiques, si un patient est atteint du diabète ou non. De plus, nous comparons ce modèle à la méthode des k plus proches voisins.">
+<meta name="description" content="Application d’un modèle de régression logistique pour prédire si un patient est atteint de diabète. Le modèle est également comparé à la méthode des k plus proches voisins.">
 
 <title>Régression logistique en pratique – Rachid Sahli</title>
 <style>
@@ -65,6 +65,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
+<script src="../site_libs/cookie-consent/cookie-consent.js"></script>
+<link href="../site_libs/cookie-consent/cookie-consent.css" rel="stylesheet">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -103,6 +105,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Recherche"
   }
 }</script>
+
+<script type="text/javascript" charset="UTF-8">
+document.addEventListener('DOMContentLoaded', function () {
+cookieconsent.run({
+  "notice_banner_type":"simple",
+  "consent_type":"implied",
+  "palette":"light",
+  "language":"en",
+  "page_load_consent_levels":["strictly-necessary","functionality","tracking","targeting"],
+  "notice_banner_reject_button_hide":false,
+  "preferences_center_close_button_hide":false,
+  "website_name":""
+  ,
+"language":"fr"
+  });
+});
+</script> 
+  
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -159,38 +179,12 @@ window.Quarto = {
 <span class="menu-text">Accueil</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../about.html"> 
-<span class="menu-text">À propos</span></a>
-  </li>  
-  <li class="nav-item">
     <a class="nav-link" href="../projets.html"> 
 <span class="menu-text">Projets</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="../blog.html"> 
 <span class="menu-text">Blog</span></a>
-  </li>  
-</ul>
-            <ul class="navbar-nav navbar-nav-scroll ms-auto">
-  <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/rachidsahli"> <i class="bi bi-github" role="img">
-</i> 
-<span class="menu-text"></span></a>
-  </li>  
-  <li class="nav-item compact">
-    <a class="nav-link" href="mailto:sahlirachid427@gmail.com"> <i class="bi bi-envelope" role="img">
-</i> 
-<span class="menu-text"></span></a>
-  </li>  
-  <li class="nav-item compact">
-    <a class="nav-link" href="https://www.linkedin.com/in/rachidsahli/"> <i class="bi bi-linkedin" role="img">
-</i> 
-<span class="menu-text"></span></a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="https://github.com/rachidsahli"> <i class="bi bi-file-person" role="img">
-</i> 
-<span class="menu-text">CV</span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -201,7 +195,7 @@ window.Quarto = {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
@@ -209,20 +203,20 @@ window.Quarto = {
     <h2 id="toc-title">Sur cette page</h2>
    
   <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">1</span> Introduction</a></li>
-  <li><a href="#import-et-nettoyage-des-données" id="toc-import-et-nettoyage-des-données" class="nav-link" data-scroll-target="#import-et-nettoyage-des-données"><span class="header-section-number">2</span> Import et nettoyage des données</a></li>
-  <li><a href="#statistique-descriptive" id="toc-statistique-descriptive" class="nav-link" data-scroll-target="#statistique-descriptive"><span class="header-section-number">3</span> Statistique descriptive</a></li>
-  <li><a href="#modele-de-regression-logistique" id="toc-modele-de-regression-logistique" class="nav-link" data-scroll-target="#modele-de-regression-logistique"><span class="header-section-number">4</span> Modele de regression logistique</a></li>
-  <li><a href="#calcul-des-odds-ratios-et-de-leurs-intervalles-de-confiance" id="toc-calcul-des-odds-ratios-et-de-leurs-intervalles-de-confiance" class="nav-link" data-scroll-target="#calcul-des-odds-ratios-et-de-leurs-intervalles-de-confiance"><span class="header-section-number">5</span> Calcul des odds-ratios et de leurs intervalles de confiance</a></li>
-  <li><a href="#méthode-de-sélection-de-variable" id="toc-méthode-de-sélection-de-variable" class="nav-link" data-scroll-target="#méthode-de-sélection-de-variable"><span class="header-section-number">6</span> Méthode de sélection de variable</a></li>
-  <li><a href="#classification-avec-le-modèle-de-régression-logistique" id="toc-classification-avec-le-modèle-de-régression-logistique" class="nav-link" data-scroll-target="#classification-avec-le-modèle-de-régression-logistique"><span class="header-section-number">7</span> Classification avec le modèle de régression logistique</a></li>
-  <li><a href="#comparaison-de-la-régression-logistique-avec-lalgorithme-des-k-plus-proches-voisins" id="toc-comparaison-de-la-régression-logistique-avec-lalgorithme-des-k-plus-proches-voisins" class="nav-link" data-scroll-target="#comparaison-de-la-régression-logistique-avec-lalgorithme-des-k-plus-proches-voisins"><span class="header-section-number">8</span> Comparaison de la régression logistique avec l’algorithme des k-plus proches voisins</a></li>
-  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="header-section-number">9</span> Conclusion</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#import-et-préparation-des-données" id="toc-import-et-préparation-des-données" class="nav-link" data-scroll-target="#import-et-préparation-des-données">Import et préparation des données</a></li>
+  <li><a href="#statistique-descriptive" id="toc-statistique-descriptive" class="nav-link" data-scroll-target="#statistique-descriptive">Statistique descriptive</a></li>
+  <li><a href="#modèle-de-regression-logistique" id="toc-modèle-de-regression-logistique" class="nav-link" data-scroll-target="#modèle-de-regression-logistique">Modèle de regression logistique</a></li>
+  <li><a href="#calcul-des-odds-ratios-et-de-leurs-intervalles-de-confiance" id="toc-calcul-des-odds-ratios-et-de-leurs-intervalles-de-confiance" class="nav-link" data-scroll-target="#calcul-des-odds-ratios-et-de-leurs-intervalles-de-confiance">Calcul des odds-ratios et de leurs intervalles de confiance</a></li>
+  <li><a href="#méthode-de-sélection-de-variable" id="toc-méthode-de-sélection-de-variable" class="nav-link" data-scroll-target="#méthode-de-sélection-de-variable">Méthode de sélection de variable</a></li>
+  <li><a href="#classification-avec-le-modèle-de-régression-logistique" id="toc-classification-avec-le-modèle-de-régression-logistique" class="nav-link" data-scroll-target="#classification-avec-le-modèle-de-régression-logistique">Classification avec le modèle de régression logistique</a></li>
+  <li><a href="#comparaison-de-la-régression-logistique-avec-lalgorithme-des-k-plus-proches-voisins" id="toc-comparaison-de-la-régression-logistique-avec-lalgorithme-des-k-plus-proches-voisins" class="nav-link" data-scroll-target="#comparaison-de-la-régression-logistique-avec-lalgorithme-des-k-plus-proches-voisins">Comparaison de la régression logistique avec l’algorithme des k-plus proches voisins</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
-<main class="content column-page-left" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -235,12 +229,12 @@ window.Quarto = {
 
 <div>
   <div class="description">
-    Mise en pratique d’un modèle de régression logistique afin de prédire, en se basant sur des mesures diagnostiques, si un patient est atteint du diabète ou non. De plus, nous comparons ce modèle à la méthode des <span class="math inline">\(k\)</span> plus proches voisins.
+    Application d’un modèle de régression logistique pour prédire si un patient est atteint de diabète. Le modèle est également comparé à la méthode des <span class="math inline">\(k\)</span> plus proches voisins.
   </div>
 </div>
 
 
-<div class="quarto-title-meta column-page-left">
+<div class="quarto-title-meta">
 
     
     <div>
@@ -258,20 +252,15 @@ window.Quarto = {
 </header>
 
 
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="image_blog/reg_logistique_image.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="500"></p>
-</figure>
-</div>
-<section id="introduction" class="level1" data-number="1">
-<h1 data-number="1"><span class="header-section-number">1</span> Introduction</h1>
-<p>Ce document a pour objectif d’étudier le modèle de régression logistique et de le comparer ainsi à la méthode des <span class="math inline">\(k\)</span> plus proches voisins. Ces deux méthodes sont des algorithmes d’apprentissage supervisé. Le but de l’apprentissage supervisé est de prévoir l’étiquette (classification) <span class="math inline">\(Y\)</span> ou la valeur de <span class="math inline">\(Y\)</span> (régression) associée à une nouvelle entrée <span class="math inline">\(X\)</span>, où il est sous-entendu que (<span class="math inline">\(X,Y\)</span>) est une nouvelle réalisation des données, indépendante de l’échantillon observé.</p>
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>Ce billet de blog a pour objectif d’étudier le modèle de régression logistique et de le comparer ainsi à la méthode des <span class="math inline">\(k\)</span> plus proches voisins. Ces deux méthodes sont des algorithmes d’apprentissage supervisé. Le but de l’apprentissage supervisé est de prévoir l’étiquette (classification) <span class="math inline">\(Y\)</span> ou la valeur de <span class="math inline">\(Y\)</span> (régression) associée à une nouvelle entrée <span class="math inline">\(X\)</span>, où il est sous-entendu que (<span class="math inline">\(X,Y\)</span>) est une nouvelle réalisation des données, indépendante de l’échantillon observé.</p>
 <p>La régression logistique est une méthode de classification. Ce modèle de classification binaire permet d’expliquer une variable (<span class="math inline">\(Y\)</span>) par p variables explicatives (<span class="math inline">\(X_1,...,X_j\)</span>. La variable <span class="math inline">\(Y\)</span> ne peut prendre que deux modalités <span class="math inline">\(\left\{0 ;1\right\}\)</span>. Les variables <span class="math inline">\(X_j\)</span> sont exclusivement continues ou binaires (on re-code les variables qualitatives avec des 0 et 1).</p>
 <p>L’algorithme des <span class="math inline">\(k\)</span> plus proches voisins fonctionne de la façon suivante pour la classification. On détermine les <span class="math inline">\(k\)</span> plus proches <span class="math inline">\(X_i\)</span> de l’échantillon par rapport à <span class="math inline">\(X\)</span> et on attribue la modalité dominante parmi les <span class="math inline">\(k\)</span> modalités observées (on parle de vote majoritaire).</p>
 <p>Nous allons utiliser ces deux méthodes de classification afin de prédire, en se basant sur des mesures diagnostiques, si un patient est atteint du diabète ou non.</p>
 </section>
-<section id="import-et-nettoyage-des-données" class="level1" data-number="2">
-<h1 data-number="2"><span class="header-section-number">2</span> Import et nettoyage des données</h1>
+<section id="import-et-préparation-des-données" class="level1">
+<h1>Import et préparation des données</h1>
 <p>Dans un premier temps, nous importons le jeu de données “diabetes.csv”. Nous allons mettre en pratique nos méthodes de régression logistique et <span class="math inline">\(k\)</span> plus proches voisins sur ce dernier. Ce jeu de données est issu de l’Institut national du diabète et des maladies digestives et rénales. Tous les patients ici sont des femmes d’au moins 21 ans d’origine Pima. Il contient les mesures suivantes.</p>
 <table class="caption-top table">
 <caption>Description des variables</caption>
@@ -378,8 +367,8 @@ window.Quarto = {
 </div>
 <p>Cette suppression à pour objectif de ne pas fausser les relations que nous cherchons à modéliser. Par exemple, avoir une insuline à 0 n’est premièrement pas cohérent et peut influencer de manière disproportionnée le modèle, car les autres observations sont éloignées. En somme, nous essayons de garantir que le modèle représente fidèlement la relation entre les variables.</p>
 </section>
-<section id="statistique-descriptive" class="level1" data-number="3">
-<h1 data-number="3"><span class="header-section-number">3</span> Statistique descriptive</h1>
+<section id="statistique-descriptive" class="level1">
+<h1>Statistique descriptive</h1>
 <p>À présent, nous allons étudier nos données de manière descriptive afin d’en obtenir un aperçu et ainsi de visualiser la répartition de la variable <span class="math inline">\(Y\)</span> (Outcome). De plus, nous analyserons les corrélations entre les co-variables elles-mêmes, ainsi qu’entre celles-ci et la variable <span class="math inline">\(Y\)</span>.</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(diabetes)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -488,8 +477,8 @@ Age                      0.0698138               0.08502911 1.00000000</code></p
 </div>
 <p>On observe une corrélation entre nos variables quantitatives continues et la variable Outcome (<span class="math inline">\(Y\)</span>). On le voit par exemple à travers le lien entre la variable Glucose et la variable <span class="math inline">\(Y\)</span>. Les patients atteints de diabète présentent un taux de glucose significativement plus élevé que ceux qui ne sont pas atteints par la maladie.</p>
 </section>
-<section id="modele-de-regression-logistique" class="level1" data-number="4">
-<h1 data-number="4"><span class="header-section-number">4</span> Modele de regression logistique</h1>
+<section id="modèle-de-regression-logistique" class="level1">
+<h1>Modèle de regression logistique</h1>
 <p>Nous pouvons mettre en place notre modèle de régression logistique. Nous commençons par le modèle complet. C’est-à-dire que nous sélectionnons toutes les co-variables pour expliquer <span class="math inline">\(Y\)</span>. On rappel qu’on cherche à prédire les valeurs de la variable Outcom (<span class="math inline">\(Y\)</span>) à l’aide des variables explicatives présentent dans notre jeu de données.</p>
 <p>On utilise pour cela la fonction <strong>glm()</strong> (Fitting Generalized Linear Models).</p>
 <div class="cell" data-layout-align="center">
@@ -537,8 +526,8 @@ Number of Fisher Scoring iterations: 5</code></pre>
 </ul>
 <p>Les variables restantes ont des <span class="math inline">\(p-valeur\)</span> &gt; <span class="math inline">\(5 \%\)</span>, on en conclut donc qu’elles ne sont pas liées au risque de diabète.</p>
 </section>
-<section id="calcul-des-odds-ratios-et-de-leurs-intervalles-de-confiance" class="level1" data-number="5">
-<h1 data-number="5"><span class="header-section-number">5</span> Calcul des odds-ratios et de leurs intervalles de confiance</h1>
+<section id="calcul-des-odds-ratios-et-de-leurs-intervalles-de-confiance" class="level1">
+<h1>Calcul des odds-ratios et de leurs intervalles de confiance</h1>
 <p>L’odds-ratio est une mesure statistique exprimant le degré de dépendance entre des variables aléatoires qualitatives. Il permet de mesurer l’effet d’un facteur en comparant les chances qu’un évènement se produise dans un groupe par rapport à un autre groupe.</p>
 <p>Ici, l’odds-ratio va représenter l’impact de nos variables explicatives sur les chances que notre variable <span class="math inline">\(Y\)</span> (Outcome) prenne la valeur diabétique (1) ou non-diabétique.</p>
 <p>Nous calculons ci-dessous les odds-ratios de toutes les variables, ainsi que leurs intervalles de confiance qui nous permetteront d’être sur à 95 % que l’odds-ratio se trouve entre les bornes inférieurs et supérieurs.</p>
@@ -675,8 +664,8 @@ Number of Fisher Scoring iterations: 5</code></pre>
 </div>
 </div>
 </section>
-<section id="méthode-de-sélection-de-variable" class="level1" data-number="6">
-<h1 data-number="6"><span class="header-section-number">6</span> Méthode de sélection de variable</h1>
+<section id="méthode-de-sélection-de-variable" class="level1">
+<h1>Méthode de sélection de variable</h1>
 <p>Toutes les variables ne contribuent pas nécessairement à expliquer notre variable Y, nous allons voir comment sélectionner certaines variables afin de simplifier notre modèle, mais aussi pour améliorer la classification.</p>
 <p>Ici, nous utiliserons l’AIC (Critère d’information d’Akaike) qui est une mesure de la qualité d’un modèle statistique. L’AIC va nous permettre de comparer les différents modèles en utilisant un critère de vraisemblance. Il représente un compromis entre le biais (qui diminue avec le nombre de paramètres) et la parcimonie (nécessité de décrire les données avec le plus petit nombre de paramètres possible).</p>
 <p><span class="math display">\[AIC = -2 \cdot \log(L) + 2 \cdot k\]</span></p>
@@ -854,8 +843,8 @@ Number of Fisher Scoring iterations: 5</code></pre>
 </div>
 </div>
 </section>
-<section id="classification-avec-le-modèle-de-régression-logistique" class="level1" data-number="7">
-<h1 data-number="7"><span class="header-section-number">7</span> Classification avec le modèle de régression logistique</h1>
+<section id="classification-avec-le-modèle-de-régression-logistique" class="level1">
+<h1>Classification avec le modèle de régression logistique</h1>
 <p>Nous allons maintenant classifier nos données à l’aide de notre modèle de <strong>régression logistique</strong>.</p>
 <p>Dans un premier temps, nous allons séparer notre jeu de données en deux sous-échantillons.</p>
 <ul>
@@ -902,8 +891,8 @@ Number of Fisher Scoring iterations: 5</code></pre>
 </div>
 </div>
 </section>
-<section id="comparaison-de-la-régression-logistique-avec-lalgorithme-des-k-plus-proches-voisins" class="level1" data-number="8">
-<h1 data-number="8"><span class="header-section-number">8</span> Comparaison de la régression logistique avec l’algorithme des k-plus proches voisins</h1>
+<section id="comparaison-de-la-régression-logistique-avec-lalgorithme-des-k-plus-proches-voisins" class="level1">
+<h1>Comparaison de la régression logistique avec l’algorithme des k-plus proches voisins</h1>
 <p>Précédemment, nous avons réalisé une classification sur ce même jeu de données en utilisant l’algorithme des <span class="math inline">\(k\)</span> plus proches voisins. La valeur de <span class="math inline">\(k\)</span> optimal était <span class="math inline">\(k\)</span> = 19, c’est-à-dire la valeur de <span class="math inline">\(k\)</span> avec laquelle le taux de mauvaise classification était le plus faible.</p>
 <p>Nous mettons donc en place notre algorithme des <span class="math inline">\(k\)</span> plus proches voisins avec <span class="math inline">\(k\)</span> = 19, et on réalise nos prédictions à l’aide de la fonction <em>knn()</em> du package class.</p>
 <div class="cell" data-layout-align="center">
@@ -927,8 +916,8 @@ Levels: 0 1</code></pre>
 </div>
 <p>Maintenant, que nous avons réalisé nos prédictions avec nos deux méthodes, nous sommes en mesure de comparer les deux taux d’erreur moyens. Le taux d’erreur le plus bas est évidemment préférable. Ici, les taux d’erreur moyens sont proches bien que celui de la régression logistique est plus élevée (25.3 %) que celui de l’algorithme des <span class="math inline">\(k\)</span> plus proches voisins (20.3 %).</p>
 </section>
-<section id="conclusion" class="level1" data-number="9">
-<h1 data-number="9"><span class="header-section-number">9</span> Conclusion</h1>
+<section id="conclusion" class="level1">
+<h1>Conclusion</h1>
 <p>Enfin, nous allons faire varier le seuil utilisé dans le critère de classification et calculer la sensibilité et la spécificité pour chacune des valeurs du seuil possible.</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluation de 100 seuils differents</span></span>
@@ -1228,7 +1217,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp('/' + window.location.host + '/');
+      var filterRegex = new RegExp("https:\/\/www\.rachidsahli\.com");
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
@@ -1564,7 +1553,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>   
     <div class="nav-footer-center">
 <p>Copyright 2025, Rachid SAHLI</p>
-</div>
+<div class="cookie-consent-footer"><a href="#" id="open_preferences_center">Cookie Preferences</a></div></div>
     <div class="nav-footer-right">
       &nbsp;
     </div>

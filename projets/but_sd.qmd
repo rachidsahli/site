@@ -14,6 +14,8 @@ listing:
   contents: 
         - projets_but/louvre.qmd
         - projets_but/migration.qmd
+        - projets_but/essai_clinique.qmd
+        - projets_but/serie_temp_charbon.qmd
   fields: [image, title, reading-time, description, categories, date,]
   categories: true
 ---
