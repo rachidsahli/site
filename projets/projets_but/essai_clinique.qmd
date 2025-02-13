@@ -1,6 +1,6 @@
 ---
 title: "Etude statistique dans un essai clinique"
-description: ""
+description: "Réalisation d'une étude statistique dans un essai clinique qui permettera de déterminer l'effet d'un nouveau médicament chez les patients atteint de drépanocytose."
 lang: "fr"
 categories: ["R", "Statistique"]
 date: "01 December 2024"
@@ -19,10 +19,17 @@ Lors d'une étude de phase 3, les chercheurs comparent un nouveau traitement pro
 
 Notre objectif est d'évaluer l'effet du voxelotor en mesurant l'amélioration du taux d'hémoglobine chez les patients, comparé à un placebo. Durant notre étude statistique, nous testerons diverses hypothèses et utiliserons des méthodes statistiques pour évaluer l'efficacité de ce traitement.
 
-Le rapport peut être consulté ici. Vous trouverez également le code R ici.
+e dépôt GitHub contenant le rapport complet du projet, ainsi que le code R, est disponible [ici](https://github.com/rachidsahli/Projet-iut/tree/main/Essai_clinique).
 
 # Méthodologie
+
+## Plan d'analyse statistique
+
+Nous avons commencer par réaliser les analyses prévues dans le plan d'analyse statistique (SAP, disponible [ici](https://github.com/rachidsahli/Projet-iut/tree/main/Essai_clinique)).
+
 
 # Résultat
 
 # Conclusion
+
+Note 19 / 20

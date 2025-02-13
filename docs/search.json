@@ -67,7 +67,7 @@
     "href": "projets/but_sd.html",
     "title": "Projets BUT SD",
     "section": "",
-    "text": "Etude statistique dans un essai clinique\n\n\n1 min.\n\n\n\nR\n\n\nStatistique\n\n\n\n\n\n\n\n1 déc. 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMigration de données : De SQL à NoSQL\n\n\n4 min.\n\n\n\nSQL\n\n\n\nCe projet vise à migrer des données d’un environnement SQL vers un environnement NoSQL pour une entreprise automobile.\n\n\n\n28 déc. 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNocturne au musée du Louvre\n\n\n4 min.\n\n\n\nIA\n\n\n\nPrésentation d’une œuvre générée par une IA aux visiteurs du Musée du Louvre.\n\n\n\n24 nov. 2023\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSérie Temporelle : Production de charbon aux États-Unis\n\n\n1 min.\n\n\n\nR\n\n\nRShiny\n\n\nStatistique\n\n\n\nLa prévision de la production de charbon aux États-Unis est réalisée à partir de l’analyse de la saisonnalité des séries temporelles et de la modélisation via trois méthodes…\n\n\n\n19 janv. 2024\n\n\n\n\n\n\n\n\nAucun article correspondant"
+    "text": "Etude statistique dans un essai clinique\n\n\n2 min.\n\n\n\nR\n\n\nStatistique\n\n\n\nRéalisation d’une étude statistique dans un essai clinique qui permettera de déterminer l’effet d’un nouveau médicament chez les patients atteint de drépanocytose.\n\n\n\n1 déc. 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMigration de données : De SQL à NoSQL\n\n\n4 min.\n\n\n\nSQL\n\n\n\nCe projet vise à migrer des données d’un environnement SQL vers un environnement NoSQL pour une entreprise automobile.\n\n\n\n28 déc. 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNocturne au musée du Louvre\n\n\n4 min.\n\n\n\nIA\n\n\n\nPrésentation d’une œuvre générée par une IA aux visiteurs du Musée du Louvre.\n\n\n\n24 nov. 2023\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSérie Temporelle : Production de charbon aux États-Unis\n\n\n1 min.\n\n\n\nR\n\n\nRShiny\n\n\nStatistique\n\n\n\nLa prévision de la production de charbon aux États-Unis est réalisée à partir de l’analyse de la saisonnalité des séries temporelles et de la modélisation via trois méthodes…\n\n\n\n19 janv. 2024\n\n\n\n\n\n\n\n\nAucun article correspondant"
   },
   {
     "objectID": "about.html#formation",
@@ -256,7 +256,7 @@
     "href": "projets/projets_but/essai_clinique.html",
     "title": "Etude statistique dans un essai clinique",
     "section": "",
-    "text": "Introduction\nCe projet consiste en la réalisation d’une étude statistique dans le cadre d’un essai clinique. Nous travaillons sur un jeu de données simulées pour effectuer l’analyse statistique d’une étude de phase 3. L’objectif est de fournir au laboratoire une Autorisation de Mise sur le Marché (AMM) avec une indication dans la prise en charge de la drépanocytose.\nLa drépanocytose est une maladie génétique qui affecte les globules rouges et peut entraîner des complications graves. Elle se manifeste notamment par une anémie, des crises douloureuses et un risque accru d’infections.\n\n\n\nSchéma de la drépanocytose\n\n\nLors d’une étude de phase 3, les chercheurs comparent un nouveau traitement prometteur au traitement standard, qui est le traitement reconnu et généralement administré pour une affection ou une maladie. Dans notre étude, ce traitement s’appelle le Voxelotor.\nNotre objectif est d’évaluer l’effet du voxelotor en mesurant l’amélioration du taux d’hémoglobine chez les patients, comparé à un placebo. Durant notre étude statistique, nous testerons diverses hypothèses et utiliserons des méthodes statistiques pour évaluer l’efficacité de ce traitement.\nLe rapport peut être consulté ici. Vous trouverez également le code R ici.\n\n\nMéthodologie\n\n\nRésultat\n\n\nConclusion"
+    "text": "Ce projet consiste en la réalisation d’une étude statistique dans le cadre d’un essai clinique. Nous travaillons sur un jeu de données simulées pour effectuer l’analyse statistique d’une étude de phase 3. L’objectif est de fournir au laboratoire une Autorisation de Mise sur le Marché (AMM) avec une indication dans la prise en charge de la drépanocytose.\nLa drépanocytose est une maladie génétique qui affecte les globules rouges et peut entraîner des complications graves. Elle se manifeste notamment par une anémie, des crises douloureuses et un risque accru d’infections.\n\n\n\nSchéma de la drépanocytose\n\n\nLors d’une étude de phase 3, les chercheurs comparent un nouveau traitement prometteur au traitement standard, qui est le traitement reconnu et généralement administré pour une affection ou une maladie. Dans notre étude, ce traitement s’appelle le Voxelotor.\nNotre objectif est d’évaluer l’effet du voxelotor en mesurant l’amélioration du taux d’hémoglobine chez les patients, comparé à un placebo. Durant notre étude statistique, nous testerons diverses hypothèses et utiliserons des méthodes statistiques pour évaluer l’efficacité de ce traitement.\ne dépôt GitHub contenant le rapport complet du projet, ainsi que le code R, est disponible ici."
   },
   {
     "objectID": "projets/projets_but/serie_temp_charbon.html",
@@ -264,5 +264,12 @@
     "title": "Série Temporelle : Production de charbon aux États-Unis",
     "section": "",
     "text": "Introduction\n\n\nMéthodologie\n\n\nRésultat"
+  },
+  {
+    "objectID": "projets/projets_but/essai_clinique.html#plan-danalyse-statistique",
+    "href": "projets/projets_but/essai_clinique.html#plan-danalyse-statistique",
+    "title": "Etude statistique dans un essai clinique",
+    "section": "Plan d’analyse statistique",
+    "text": "Plan d’analyse statistique\nNous avons commencer par réaliser les analyses prévues dans le plan d’analyse statistique (SAP, disponible ici)."
   }
 ]

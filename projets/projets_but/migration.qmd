@@ -13,7 +13,7 @@ Ce projet vise à migrer des données d'un environnement SQL vers un environneme
 
 Nous travaillons avec les données d'une entreprise de voitures qui rencontre des problèmes avec sa base de données actuelle : les requêtes sont lentes et des défaillances serveur entraînent des pertes de données. Pour résoudre ces problèmes, nous avons décidé de passer à un environnement NoSQL. Cette technologie permet de stocker des données sous une forme non structurée, offrant ainsi plus de flexibilité et de performance. Cette migration vise à améliorer la performance des requêtes et à préparer l'infrastructure pour une croissance future.
 
-Le dépôt GitHub contenant le rapport complet du projet, ainsi que les requêtes SQL et NoSQL associées, est disponible [ici](https://github.com/rachidsahli/Projet-datascience/tree/main/Migration_nosql).
+Le dépôt GitHub contenant le rapport complet du projet, ainsi que les requêtes SQL et NoSQL associées, est disponible [ici](https://github.com/rachidsahli/Projet-but/tree/main/Migration_nosql).
 
 # Méthodologie
 
