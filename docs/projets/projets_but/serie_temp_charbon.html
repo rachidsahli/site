@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="La prévision de la production de charbon aux États-Unis est réalisée à partir de l’analyse de la saisonnalité des séries temporelles et de la modélisation via trois méthodes de prévision, avec une comparaison des erreurs sur 2022, le tout visualisé à l’aide d’une application RShiny.">
+<meta name="description" content="Ce projet consiste en l’analyse de la production d’éléctricité par combustion aux États-Unis entre 2001 et 2022. Nous réalisons également une prévision pour l’année 2023.">
 
-<title>Série Temporelle : Production de charbon aux États-Unis – Rachid Sahli</title>
+<title>Série Temporelle : Production d’éléctricité par combustion aux États-Unis – Rachid Sahli</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -31,8 +31,6 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
-<script src="../../site_libs/cookie-consent/cookie-consent.js"></script>
-<link href="../../site_libs/cookie-consent/cookie-consent.css" rel="stylesheet">
 <script src="../../site_libs/quarto-html/quarto.js"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -72,24 +70,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
-<script type="text/javascript" charset="UTF-8">
-document.addEventListener('DOMContentLoaded', function () {
-cookieconsent.run({
-  "notice_banner_type":"simple",
-  "consent_type":"implied",
-  "palette":"light",
-  "language":"en",
-  "page_load_consent_levels":["strictly-necessary","functionality","tracking","targeting"],
-  "notice_banner_reject_button_hide":false,
-  "preferences_center_close_button_hide":false,
-  "website_name":""
-  ,
-"language":"fr"
-  });
-});
-</script> 
-  
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../../styles.css">
 </head>
@@ -141,8 +150,13 @@ cookieconsent.run({
    
   <ul>
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
-  <li><a href="#méthodologie" id="toc-méthodologie" class="nav-link" data-scroll-target="#méthodologie">Méthodologie</a></li>
+  <li><a href="#méthodologie" id="toc-méthodologie" class="nav-link" data-scroll-target="#méthodologie">Méthodologie</a>
+  <ul class="collapse">
+  <li><a href="#tendance-de-la-série" id="toc-tendance-de-la-série" class="nav-link" data-scroll-target="#tendance-de-la-série">Tendance de la série</a></li>
+  <li><a href="#décomposition-de-la-série" id="toc-décomposition-de-la-série" class="nav-link" data-scroll-target="#décomposition-de-la-série">Décomposition de la série</a></li>
+  <li><a href="#prévision-de-la-série" id="toc-prévision-de-la-série" class="nav-link" data-scroll-target="#prévision-de-la-série">Prévision de la série</a></li>
   <li><a href="#résultat" id="toc-résultat" class="nav-link" data-scroll-target="#résultat">Résultat</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -151,7 +165,7 @@ cookieconsent.run({
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Série Temporelle : Production de charbon aux États-Unis</h1>
+<h1 class="title">Série Temporelle : Production d’éléctricité par combustion aux États-Unis</h1>
   <div class="quarto-categories">
     <div class="quarto-category">R</div>
     <div class="quarto-category">RShiny</div>
@@ -161,7 +175,7 @@ cookieconsent.run({
 
 <div>
   <div class="description">
-    La prévision de la production de charbon aux États-Unis est réalisée à partir de l’analyse de la saisonnalité des séries temporelles et de la modélisation via trois méthodes de prévision, avec une comparaison des erreurs sur 2022, le tout visualisé à l’aide d’une application RShiny.
+    Ce projet consiste en l’analyse de la production d’éléctricité par combustion aux États-Unis entre 2001 et 2022. Nous réalisons également une prévision pour l’année 2023.
   </div>
 </div>
 
@@ -186,14 +200,52 @@ cookieconsent.run({
 
 <section id="introduction" class="level1">
 <h1>Introduction</h1>
+<p>L’objectif est d’analyser et de modéliser statistiquement une série temporelle liée à la production d’électricité par combustion aux États-Unis entre 2001 et 2022. Nous étudions l’évolution de cette série au fil du temps afin d’identifier ses principales tendances et composantes. Cette série est issue du site web de l’Administration américaine de l’information sur l’énergie. Nous réalisons ensuite une application Shiny afin de visualiser les résultats interactivement.</p>
+<p>Le dépot github du projet contenant le code est disponible <a href="https://github.com/rachidsahli/Projet-iut/tree/main/Serie_temp_charbon">ici</a>.</p>
 </section>
 <section id="méthodologie" class="level1">
 <h1>Méthodologie</h1>
+<p>Ce projet a été réalisé en deux étapes majeures. Dans un premier temps, nous avons réalisé l’étude de la série temporelle, puis nous avons procédé à la construction de l’application.</p>
+<section id="tendance-de-la-série" class="level2">
+<h2 class="anchored" data-anchor-id="tendance-de-la-série">Tendance de la série</h2>
+<p>Afin de modéliser la série, nous commençons par analyser la tendance. Nous utilisons un filtre de moyennes mobiles simples et centrées, ainsi qu’une régression des moyennes annuelles, dans le but de visualiser l’évolution générale de la série.</p>
+<p>Les moyennes mobiles permettent de lisser la série et d’atténuer les fluctuations aléatoires. La moyenne mobile simple est calculée sur une fenêtre fixe, tandis que la moyenne mobile centrée est déterminée de manière symétrique autour de chaque point. Cela permet d’identifier la tendance sous-jacente de la série entre 2001 et 2022, qui s’est avérée être décroissante. On se sert également de la moyenne mobile pour éléminer la composante saisonnière de période <span class="math inline">\(p\)</span> de notre série et réduire au maximum l’amplitude des fluctuations irrégulières.</p>
+<p>La moyenne mobile qui s’ajuste le mieux à la série est celle d’ordre 12.</p>
+<p>De plus, la courbe de régression des moyennes annuelles permet de modéliser la tendance à long terme de la série en s’appuyant sur les moyennes calculées pour chaque année. On trace sur notre nuage de point une courbe linéaire qui nous indique une tendance décroissante de la production d’éléctricité par combustion.</p>
 </section>
-<section id="résultat" class="level1">
-<h1>Résultat</h1>
+<section id="décomposition-de-la-série" class="level2">
+<h2 class="anchored" data-anchor-id="décomposition-de-la-série">Décomposition de la série</h2>
+<p>À présent, nous procédons à la décomposition de notre série à l’aide d’un modèle additif. Il s’écrit de la manière suivante :</p>
+<p><span class="math display">\[ y_i = f_i + s_i + e_i \quad \text{pour } i = 1, \dots, n \quad \text{avec }  \sum_{j=1}^{p} s_j = 0 \quad \text{et} \quad \sum_{j=1}^{n} e_j = 0 \]</span></p>
+<p>Dans ce modèle, l’amplitude de la composante saisonnière et du bruit reste constante au cours du temps. Cela se traduit graphiquement par des fluctuations autour de la tendance d’amplitude constante. L’utilisation de la méthode de la bande, qui consiste à tracer la courbe reliant les minima sur une période ainsi que celle reliant les maxima, a montré que ces deux courbes sont parallèles, indiquant ainsi que le modèle est additif.</p>
+<p>On rappelle qu’une série chronologique résulte de trois composantes fondamentales : la <strong>tendance</strong> (<span class="math inline">\(f_i\)</span>), la composante <strong>saisonnière</strong> (<span class="math inline">\(s_i\)</span>) ou saisonnalité, et la composante <strong>résiduelle</strong> (<span class="math inline">\(e_i\)</span>).</p>
+<p>Nous analysons d’abord l’effet des saisons en calculant les coefficients de variation saisonnière (CVS). Ces variations, qui reviennent chaque année à la même période, sont influencées par des phénomènes naturels ou économiques (comme la météo ou les fêtes) mais n’ont pas d’impact durable sur la tendance.</p>
+<p>Enfin, nous nous intéressons à la composante résiduelle, qui regroupe toutes les variations non expliquées par la tendance et la saisonnalité. Ces fluctuations peuvent être dues à des événements imprévus (crises économiques, accidents, conditions exceptionnelles) ou à des variations aléatoires.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="image_but/decomposition.png" class="img-fluid figure-img" width="700"></p>
+<figcaption>Décomposition de la série</figcaption>
+</figure>
+</div>
+</section>
+<section id="prévision-de-la-série" class="level2">
+<h2 class="anchored" data-anchor-id="prévision-de-la-série">Prévision de la série</h2>
+<p>L’objectif de cette étape est de réaliser deux prévisions (2022 et 2023) de la production d’électricité par combustion en utilisant trois méthodes différentes : <strong>Trend + Saison</strong>, <strong>ARMA</strong> et <strong>Holt-Winters</strong>.</p>
+<p>La méthode Trend + Saison, identifie deux composantes principales dans notre série qui sont la tendance et la saisonnalité. La méthode ARMA repose sur l’idée que la production d’électricité à un instant donné dépend des valeurs passées et des erreurs passées. Pour garantir des prévisions optimales, nous avons sélectionné les paramètres du modèle ARMA en fonction des performances statistiques obtenues. Enfin, le modèle Holt-Winters est une extension de lissage exponentiel qui prend en compte trois éléments, la tendance, la saisonnalité et la moyenne ajustée de la série.</p>
+<p>La prévision sur les données de 2022 a permis de comparer les valeurs estimées avec les valeurs réelles de la série, afin d’évaluer la précision des trois méthodes utilisées. Pour cela, nous avons calculé l’erreur quadratique moyenne (RMSE) pour chacune des méthodes, ce qui nous a permis d’identifier celle offrant les prévisions les plus fiables.</p>
+<p>Parmi les trois approches testées, la méthode Trend + Saison s’est révélée être la plus performante, car elle a obtenu l’erreur quadratique moyenne la plus faible. Cela s’explique par sa capacité à capturer à la fois la tendance de long terme et les variations saisonnières, qui jouent un rôle clé dans l’évolution de la production d’électricité. En revanche, les modèles ARMA et Holt-Winters ont montré des écarts plus importants avec les valeurs réelles, probablement en raison de leurs hypothèses sous-jacentes qui s’adaptent moins bien aux dynamiques spécifiques de notre série temporelle.</p>
+</section>
+<section id="résultat" class="level2">
+<h2 class="anchored" data-anchor-id="résultat">Résultat</h2>
+<p>Ci-dessous, un aperçu de l’application réalisée pour visualiser la modélisation effectuée sur la série.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="image_but/apercu_serie_temp.gif" class="img-fluid quarto-figure quarto-figure-center figure-img" width="700"></p>
+</figure>
+</div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -769,7 +821,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>   
     <div class="nav-footer-center">
 <p>Copyright 2025, Rachid SAHLI</p>
-<div class="cookie-consent-footer"><a href="#" id="open_preferences_center">Cookie Preferences</a></div></div>
+</div>
     <div class="nav-footer-right">
       &nbsp;
     </div>
