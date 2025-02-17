@@ -53,7 +53,7 @@ La prévision sur les données de 2022 a permis de comparer les valeurs estimée
 
 Parmi les trois approches testées, la méthode Trend + Saison s'est révélée être la plus performante, car elle a obtenu l’erreur quadratique moyenne la plus faible. Cela s’explique par sa capacité à capturer à la fois la tendance de long terme et les variations saisonnières, qui jouent un rôle clé dans l’évolution de la production d’électricité. En revanche, les modèles ARMA et Holt-Winters ont montré des écarts plus importants avec les valeurs réelles, probablement en raison de leurs hypothèses sous-jacentes qui s’adaptent moins bien aux dynamiques spécifiques de notre série temporelle.
 
-## Résultat
+# Résultat
 
 Ci-dessous, un aperçu de l'application réalisée pour visualiser la modélisation effectuée sur la série.
 
