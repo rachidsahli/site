@@ -19,7 +19,7 @@ Lors d'une étude de phase 3, les chercheurs comparent un nouveau traitement pro
 
 Notre objectif est d'évaluer l'effet du voxelotor en mesurant l'amélioration du taux d'hémoglobine chez les patients, comparé à un placebo. Durant notre étude statistique, nous testerons diverses hypothèses et utiliserons des méthodes statistiques pour évaluer l'efficacité de ce traitement.
 
-e dépôt GitHub contenant le rapport complet du projet, ainsi que le code R, est disponible [ici](https://github.com/rachidsahli/Projet-iut/tree/main/Essai_clinique).
+Le dépôt GitHub contenant le rapport complet du projet, ainsi que le code R, est disponible [ici](https://github.com/rachidsahli/Projet-iut/tree/main/Essai_clinique).
 
 # Méthodologie
 
@@ -27,9 +27,4 @@ e dépôt GitHub contenant le rapport complet du projet, ainsi que le code R, es
 
 Nous avons commencer par réaliser les analyses prévues dans le plan d'analyse statistique (SAP, disponible [ici](https://github.com/rachidsahli/Projet-iut/tree/main/Essai_clinique)).
 
-
-# Résultat
-
-# Conclusion
-
-Note 19 / 20
+*En cours de rédaction ...*

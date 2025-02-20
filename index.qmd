@@ -15,7 +15,7 @@ about:
       href: https://github.com
     - icon: book
       text: CV
-      href: https://cv.hal.science/rachid-sahli
+      href: CV.pdf
     - icon: envelope
       text: Mail
       href: mailto:sahlirachid427@gmail.com
