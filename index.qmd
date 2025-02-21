@@ -15,7 +15,7 @@ about:
       href: https://github.com
     - icon: book
       text: CV
-      href: CV.pdf
+      href: image/CV.pdf
     - icon: envelope
       text: Mail
       href: mailto:sahlirachid427@gmail.com
@@ -29,7 +29,7 @@ Je suis étudiant à l'IUT Paris Rives de Seine en Science des Données et alter
 
 Je travaille principalement avec `R` et `Python`, et j'ai créé un site de ressources appelé `PratiqueR`. Vous pouvez également me retrouver sur YouTube, où je partage des vidéos sur R et son environnement.
 
-En dehors de mes études, je consacre mon temps libre à la construction de robots et je partage mes idées sur mon blog, `Jiqiren`.
+En dehors de mes études, je consacre mon temps libre à la construction de robots et je partage mes idées sur mon blog, [`Jiqiren`](https://rachidsahli.github.io/Jiqiren/).
 
 Passionné par les statistiques, la robotique 🦿🤖, le vélo 🚲, le cinéma 🎞️, et la programmation 👾, j'aime explorer et partager mes découvertes dans ces domaines.
 
@@ -50,32 +50,5 @@ Je suis très curieux et toujours ouvert à de nouvelles idées. N'hésitez pas 
 ::: {.callout-tip icon="false" appearance="default"}
 ## Institut national de la statistique et des études économiques (INSEE) \| Montrouge, 92120
 
-*Statisticien* \| *Sept 2023 - Sept 2025*<br> 
-Au sein de la Direction des statistiques démographiques et sociales, j'ai mené des travaux d'appariement de données administratives. L'objectif de ces travaux était de mesurer et de comparer la couverture de deux bases de sondages. Par ailleurs, j'ai comparé différents algorithmes d'appariement à l'aide d'analyses statistiques.
-De plus, j'ai mis en place des modèles de classification exploitant les données administratives afin de réaliser des prédictions.
+*Statisticien* \| *Sept 2023 - Sept 2025*<br> Au sein de la Direction des statistiques démographiques et sociales, j'ai mené des travaux d'appariement de données administratives. L'objectif de ces travaux était de mesurer et de comparer la couverture de deux bases de sondages. Par ailleurs, j'ai comparé différents algorithmes d'appariement à l'aide d'analyses statistiques. De plus, j'ai mis en place des modèles de classification exploitant les données administratives afin de réaliser des prédictions.
 :::
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
