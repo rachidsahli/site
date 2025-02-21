@@ -1,6 +1,9 @@
 project:
   type: website
   output-dir: docs
+  resources:
+    - CV.pdf
+  
 
 website:
   title: "Rachid Sahli"
