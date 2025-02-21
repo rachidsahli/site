@@ -132,6 +132,14 @@ window.Quarto = {
 </script>
 
 <link rel="stylesheet" href="../styles.css">
+<meta property="og:title" content="Projets BUT SD – Rachid Sahli">
+<meta property="og:description" content="Voici une liste de mes projets réalisées durant mes 3 années à l’Institut Universitaire de Technologie de Paris.">
+<meta property="og:image" content="image_projets/couverture_projets_but.jpeg">
+<meta property="og:site_name" content="Rachid Sahli">
+<meta name="twitter:title" content="Projets BUT SD – Rachid Sahli">
+<meta name="twitter:description" content="Voici une liste de mes projets réalisées durant mes 3 années à l’Institut Universitaire de Technologie de Paris.">
+<meta name="twitter:image" content="image_projets/couverture_projets_but.jpeg">
+<meta name="twitter:card" content="summary_large_image">
 </head>
 
 <body class="nav-fixed">
@@ -586,7 +594,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp("https:\/\/www\.rachidsahli\.com");
+      var filterRegex = new RegExp('/' + window.location.host + '/');
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
