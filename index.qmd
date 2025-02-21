@@ -15,7 +15,7 @@ about:
       href: https://github.com
     - icon: book
       text: CV
-      href: CV.pdf
+      href: docs/CV.pdf
     - icon: envelope
       text: Mail
       href: mailto:sahlirachid427@gmail.com
