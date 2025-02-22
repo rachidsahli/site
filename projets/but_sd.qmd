@@ -7,6 +7,8 @@ lang: fr
 
 categories: ["Science des données","Statistique"]
 
+sort: "date desc"
+
 image: image_projets/couverture_projets_but.jpeg
 
 listing:

@@ -21,10 +21,29 @@ Notre objectif est d'évaluer l'effet du voxelotor en mesurant l'amélioration d
 
 Le dépôt GitHub contenant le rapport complet du projet, ainsi que le code R, est disponible [ici](https://github.com/rachidsahli/Projet-iut/tree/main/Essai_clinique).
 
-# Méthodologie
+# Étude et analyses
+
+Nous disposons de deux jeux de données : `subjid`, qui regroupe l’ensemble des patients de l’étude ainsi que leurs informations démographiques, et `follow`, qui contient l’ensemble des mesures effectuées sur ces patients à différents moments de l’étude. L'échantillon de l'étude comprend 182 patients, répartis en 92 recevant un placebo et 90 traités avec VOX_1500.
+
+Dans un premier temps, nous cherchons à mieux caractériser la population de l’étude, notamment en comparant les caractéristiques des patients selon le sexe. Cette analyse révèle une légère prédominance féminine dans l’échantillon. Par ailleurs, la distribution de l’âge est très similaire entre les deux sexes, avec une moyenne de 25 ans dans les deux groupes. Cette étude descriptive nous permet également d’identifier un patient masculin âgé de 45 ans, qui se démarque nettement du reste de l’échantillon.
+
+![Étude descriptive](image_but/description_essai_clinique.png){fig-align="center" width="500"}
 
 ## Plan d'analyse statistique
 
-Nous avons commencer par réaliser les analyses prévues dans le plan d'analyse statistique (SAP, disponible [ici](https://github.com/rachidsahli/Projet-iut/tree/main/Essai_clinique)).
+Le plan d'analyse statistique (SAP, disponible [ici](https://github.com/rachidsahli/Projet-iut/blob/main/Essai_clinique/SAP.pdf)) décrit de manière détaillée la stratégie d'analyse des données de l'étude. Il garantit la rigueur, la transparence et la reproductibilité des analyses statistiques. Ce plan est généralement rédigé avant la fin de l'essai, afin d'éviter tout biais pouvant découler des résultats observés.
 
-*En cours de rédaction ...*
+Pour évaluer l'effet du voxelotor sur l'amélioration de l'hémoglobine des patients par rapport au placebo, les analyses définies dans le SAP sont réalisées. Dans un premier temps, l'analyse principale porte sur la réponse en hémoglobine à la semaine 72, qui correspond au maximum du suivi des patients. Ensuite, l'analyse secondaire examine le changement de l'hémoglobine entre le début de l'étude et la semaine 72 sur plusieurs marqueurs cliniques. 
+
+### Analyse principal
+
+La réponse en hémoglobine est définie comme une augmentation de plus de 1g/dL par rapport à la valeur de référence mesurée avant le début du traitement. Cela signifie qu'un patient est considéré comme ayant répondu favorablement au traitement si son taux d'hémoglobine a augmenté d'au moins 1g/dL par rapport à la valeur initiale, mesurée avant l'administration du voxelotor. Si aucune mesure d'hémoglobine n'est disponible à la semaine 72, le patient est imputé comme non-répondeur. Par exemlpe,  si le patient ne se présente pas à la consultation, si les données sont perdues ou invalides, ce patient sera considéré comme n'ayant pas montré de réponse au traitement.
+
+
+
+
+### Analyse secondaire
+
+# Conclusion
+
+Note : 19/20

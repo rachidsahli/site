@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="Réalisation d’une étude statistique dans un essai clinique qui permettera de déterminer l’effet d’un nouveau médicament chez les patients atteint de drépanocytose.">
+<meta name="description" content="Développement de modèles de classification binaire pour distinguer les chiffres 2 et 7 du dataset MNIST-2, ainsi que pour classer les chiffres de 0 à 9 dans le dataset MNIST-10.">
 
-<title>Etude statistique dans un essai clinique – Rachid Sahli</title>
+<title>Classification d’images MNIST-2 et MNIST-10 – Rachid Sahli</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -24,24 +24,24 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../../">
-<script src="../../site_libs/quarto-html/quarto.js"></script>
-<script src="../../site_libs/quarto-html/popper.min.js"></script>
-<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -71,14 +71,14 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 
 
-<link rel="stylesheet" href="../../styles.css">
-<meta property="og:title" content="Etude statistique dans un essai clinique – Rachid Sahli">
-<meta property="og:description" content="Réalisation d’une étude statistique dans un essai clinique qui permettera de déterminer l’effet d’un nouveau médicament chez les patients atteint de drépanocytose.">
-<meta property="og:image" content="image_but/couverture_essai_clinique.png">
+<link rel="stylesheet" href="../styles.css">
+<meta property="og:title" content="Classification d’images MNIST-2 et MNIST-10 – Rachid Sahli">
+<meta property="og:description" content="Développement de modèles de classification binaire pour distinguer les chiffres 2 et 7 du dataset MNIST-2, ainsi que pour classer les chiffres de 0 à 9 dans le dataset MNIST-10.">
+<meta property="og:image" content="image_blog/mnist_2.png">
 <meta property="og:site_name" content="Rachid Sahli">
-<meta name="twitter:title" content="Etude statistique dans un essai clinique – Rachid Sahli">
-<meta name="twitter:description" content="Réalisation d’une étude statistique dans un essai clinique qui permettera de déterminer l’effet d’un nouveau médicament chez les patients atteint de drépanocytose.">
-<meta name="twitter:image" content="image_but/couverture_essai_clinique.png">
+<meta name="twitter:title" content="Classification d’images MNIST-2 et MNIST-10 – Rachid Sahli">
+<meta name="twitter:description" content="Développement de modèles de classification binaire pour distinguer les chiffres 2 et 7 du dataset MNIST-2, ainsi que pour classer les chiffres de 0 à 9 dans le dataset MNIST-10.">
+<meta name="twitter:image" content="image_blog/mnist_2.png">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
@@ -89,7 +89,7 @@ ul.task-list li input[type="checkbox"] {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../../index.html">
+    <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Rachid Sahli</span>
     </a>
   </div>
@@ -100,15 +100,15 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../index.html"> 
+    <a class="nav-link" href="../index.html"> 
 <span class="menu-text">Accueil</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../projets.html"> 
+    <a class="nav-link" href="../projets.html"> 
 <span class="menu-text">Projets</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../blog.html"> 
+    <a class="nav-link" href="../blog.html"> 
 <span class="menu-text">Blog</span></a>
   </li>  
 </ul>
@@ -120,7 +120,7 @@ ul.task-list li input[type="checkbox"] {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
@@ -129,44 +129,35 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
-  <li><a href="#étude-et-analyses" id="toc-étude-et-analyses" class="nav-link" data-scroll-target="#étude-et-analyses">Étude et analyses</a>
-  <ul class="collapse">
-  <li><a href="#plan-danalyse-statistique" id="toc-plan-danalyse-statistique" class="nav-link" data-scroll-target="#plan-danalyse-statistique">Plan d’analyse statistique</a>
-  <ul class="collapse">
-  <li><a href="#analyse-principal" id="toc-analyse-principal" class="nav-link" data-scroll-target="#analyse-principal">Analyse principal</a></li>
-  <li><a href="#analyse-secondaire" id="toc-analyse-secondaire" class="nav-link" data-scroll-target="#analyse-secondaire">Analyse secondaire</a></li>
-  </ul></li>
-  </ul></li>
-  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
-<main class="content column-page-left" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Etude statistique dans un essai clinique</h1>
+<h1 class="title">Classification d’images MNIST-2 et MNIST-10</h1>
   <div class="quarto-categories">
-    <div class="quarto-category">R</div>
-    <div class="quarto-category">Statistique</div>
+    <div class="quarto-category">Python</div>
+    <div class="quarto-category">Machine learning</div>
   </div>
   </div>
 
 <div>
   <div class="description">
-    Réalisation d’une étude statistique dans un essai clinique qui permettera de déterminer l’effet d’un nouveau médicament chez les patients atteint de drépanocytose.
+    Développement de modèles de classification binaire pour distinguer les chiffres 2 et 7 du dataset MNIST-2, ainsi que pour classer les chiffres de 0 à 9 dans le dataset MNIST-10.
   </div>
 </div>
 
 
-<div class="quarto-title-meta column-page-left">
+<div class="quarto-title-meta">
 
     
     <div>
     <div class="quarto-title-meta-heading">Date de publication</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">1 décembre 2024</p>
+      <p class="date">22 février 2025</p>
     </div>
   </div>
   
@@ -180,44 +171,6 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="introduction" class="level1">
 <h1>Introduction</h1>
-<p>Ce projet consiste en la réalisation d’une étude statistique dans le cadre d’un essai clinique. Nous travaillons sur un jeu de données simulées pour effectuer l’analyse statistique d’une étude de phase 3. L’objectif est de fournir au laboratoire une Autorisation de Mise sur le Marché (AMM) avec une indication dans la prise en charge de la drépanocytose.</p>
-<p>La drépanocytose est une maladie génétique qui affecte les globules rouges et peut entraîner des complications graves. Elle se manifeste notamment par une anémie, des crises douloureuses et un risque accru d’infections.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="image_but/globule_rouge.png" class="img-fluid figure-img" width="500"></p>
-<figcaption>Schéma de la drépanocytose</figcaption>
-</figure>
-</div>
-<p>Lors d’une étude de phase 3, les chercheurs comparent un nouveau traitement prometteur au traitement standard, qui est le traitement reconnu et généralement administré pour une affection ou une maladie. Dans notre étude, ce traitement s’appelle le <a href="https://en.wikipedia.org/wiki/Voxelotor">Voxelotor</a>.</p>
-<p>Notre objectif est d’évaluer l’effet du voxelotor en mesurant l’amélioration du taux d’hémoglobine chez les patients, comparé à un placebo. Durant notre étude statistique, nous testerons diverses hypothèses et utiliserons des méthodes statistiques pour évaluer l’efficacité de ce traitement.</p>
-<p>Le dépôt GitHub contenant le rapport complet du projet, ainsi que le code R, est disponible <a href="https://github.com/rachidsahli/Projet-iut/tree/main/Essai_clinique">ici</a>.</p>
-</section>
-<section id="étude-et-analyses" class="level1">
-<h1>Étude et analyses</h1>
-<p>Nous disposons de deux jeux de données : <code>subjid</code>, qui regroupe l’ensemble des patients de l’étude ainsi que leurs informations démographiques, et <code>follow</code>, qui contient l’ensemble des mesures effectuées sur ces patients à différents moments de l’étude. L’échantillon de l’étude comprend 182 patients, répartis en 92 recevant un placebo et 90 traités avec VOX_1500.</p>
-<p>Dans un premier temps, nous cherchons à mieux caractériser la population de l’étude, notamment en comparant les caractéristiques des patients selon le sexe. Cette analyse révèle une légère prédominance féminine dans l’échantillon. Par ailleurs, la distribution de l’âge est très similaire entre les deux sexes, avec une moyenne de 25 ans dans les deux groupes. Cette étude descriptive nous permet également d’identifier un patient masculin âgé de 45 ans, qui se démarque nettement du reste de l’échantillon.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="image_but/description_essai_clinique.png" class="img-fluid figure-img" width="500"></p>
-<figcaption>Étude descriptive</figcaption>
-</figure>
-</div>
-<section id="plan-danalyse-statistique" class="level2">
-<h2 class="anchored" data-anchor-id="plan-danalyse-statistique">Plan d’analyse statistique</h2>
-<p>Le plan d’analyse statistique (SAP, disponible <a href="https://github.com/rachidsahli/Projet-iut/blob/main/Essai_clinique/SAP.pdf">ici</a>) décrit de manière détaillée la stratégie d’analyse des données de l’étude. Il garantit la rigueur, la transparence et la reproductibilité des analyses statistiques. Ce plan est généralement rédigé avant la fin de l’essai, afin d’éviter tout biais pouvant découler des résultats observés.</p>
-<p>Pour évaluer l’effet du voxelotor sur l’amélioration de l’hémoglobine des patients par rapport au placebo, les analyses définies dans le SAP sont réalisées. Dans un premier temps, l’analyse principale porte sur la réponse en hémoglobine à la semaine 72, qui correspond au maximum du suivi des patients. Ensuite, l’analyse secondaire examine le changement de l’hémoglobine entre le début de l’étude et la semaine 72 sur plusieurs marqueurs cliniques.</p>
-<section id="analyse-principal" class="level3">
-<h3 class="anchored" data-anchor-id="analyse-principal">Analyse principal</h3>
-<p>La réponse en hémoglobine est définie comme une augmentation de plus de 1g/dL par rapport à la valeur de référence mesurée avant le début du traitement. Cela signifie qu’un patient est considéré comme ayant répondu favorablement au traitement si son taux d’hémoglobine a augmenté d’au moins 1g/dL par rapport à la valeur initiale, mesurée avant l’administration du voxelotor. Si aucune mesure d’hémoglobine n’est disponible à la semaine 72, le patient est imputé comme non-répondeur. Par exemlpe, si le patient ne se présente pas à la consultation, si les données sont perdues ou invalides, ce patient sera considéré comme n’ayant pas montré de réponse au traitement.</p>
-</section>
-<section id="analyse-secondaire" class="level3">
-<h3 class="anchored" data-anchor-id="analyse-secondaire">Analyse secondaire</h3>
-</section>
-</section>
-</section>
-<section id="conclusion" class="level1">
-<h1>Conclusion</h1>
-<p>Note : 19/20</p>
 
 
 </section>

@@ -1,0 +1,14 @@
+---
+title: "Classification d’images MNIST-2 et MNIST-10"
+description: "Développement de modèles de classification binaire pour distinguer les chiffres 2 et 7 du dataset MNIST-2, ainsi que pour classer les chiffres de 0 à 9 dans le dataset MNIST-10."
+lang : fr
+date: 22 february 2025
+categories: ["Python","Machine learning"]
+toc: true
+image: image_blog/mnist_2.png
+page-layout: article
+
+jupyter: python3
+---
+
+# Introduction

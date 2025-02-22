@@ -7,7 +7,6 @@ listing:
   sort: "date desc"
   categories: true
   sort-ui: true
-  filter-ui: true
   contents: 
         - projets/but_sd.qmd
   fields: [image, title, reading-time, description, categories, date,]      
