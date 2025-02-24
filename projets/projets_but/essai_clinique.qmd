@@ -37,7 +37,7 @@ Pour évaluer l'effet du voxelotor sur l'amélioration de l'hémoglobine des pat
 
 ### Analyse principal
 
-La réponse en hémoglobine est définie comme une augmentation de plus de 1g/dL par rapport à la valeur de référence mesurée avant le début du traitement. Cela signifie qu'un patient est considéré comme ayant répondu favorablement au traitement si son taux d'hémoglobine a augmenté d'au moins 1g/dL par rapport à la valeur initiale, mesurée avant l'administration du voxelotor. Si aucune mesure d'hémoglobine n'est disponible à la semaine 72, le patient est imputé comme non-répondeur. Par exemlpe,  si le patient ne se présente pas à la consultation, si les données sont perdues ou invalides, ce patient sera considéré comme n'ayant pas montré de réponse au traitement.
+La réponse en hémoglobine est définie comme une augmentation de plus de 1g/dL par rapport à la valeur de référence mesurée avant le début du traitement. Cela signifie qu'un patient est considéré comme ayant répondu favorablement au traitement si son taux d'hémoglobine a augmenté d'au moins 1g/dL par rapport à la valeur initiale, mesurée avant l'administration du voxelotor. Si aucune mesure d'hémoglobine n'est disponible à la semaine 72, le patient est imputé comme non-répondeur. Par exemple,  si le patient ne se présente pas à la consultation, si les données sont perdues ou invalides, ce patient sera considéré comme n'ayant pas montré de réponse au traitement.
 
 
 
@@ -45,5 +45,7 @@ La réponse en hémoglobine est définie comme une augmentation de plus de 1g/dL
 ### Analyse secondaire
 
 # Conclusion
+
+Ce projet a permis de s’immerger dans le monde des essais cliniques à travers un cas réel, en analysant l’efficacité du voxelotor dans le traitement de la drépanocytose. Avec une approche à la fois statistique et pragmatique, il a été particulièrement enrichissant d’explorer les différentes facettes de l’évaluation d’un traitement.
 
 Note : 19/20

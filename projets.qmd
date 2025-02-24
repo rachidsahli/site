@@ -9,5 +9,5 @@ listing:
   sort-ui: true
   contents: 
         - projets/but_sd.qmd
-  fields: [image, title, reading-time, description, categories, date,]      
+  fields: [image, title, description, categories, date,]      
 ---
