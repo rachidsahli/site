@@ -9,10 +9,10 @@ about:
   links:
     - icon: linkedin
       text: Linkedin
-      href: https://linkedin.com
+      href: https://www.linkedin.com/in/rachidsahli/
     - icon: github
       text: Github
-      href: https://github.com
+      href: https://github.com/rachidsahli
     - icon: book
       text: CV
       href: https://rachidsahli.github.io/site/CV.pdf
