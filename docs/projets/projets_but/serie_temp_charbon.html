@@ -101,6 +101,14 @@ window.Quarto = {
 </script>
 
 <link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="Série Temporelle : Production d’éléctricité par combustion aux États-Unis – Rachid Sahli">
+<meta property="og:description" content="Ce projet consiste en l’analyse de la production d’éléctricité par combustion aux États-Unis entre 2001 et 2022. Nous réalisons également une prévision pour l’année 2023.">
+<meta property="og:image" content="image_but/couverture_serie_temp_charbon.jpg">
+<meta property="og:site_name" content="Rachid Sahli">
+<meta name="twitter:title" content="Série Temporelle : Production d’éléctricité par combustion aux États-Unis – Rachid Sahli">
+<meta name="twitter:description" content="Ce projet consiste en l’analyse de la production d’éléctricité par combustion aux États-Unis entre 2001 et 2022. Nous réalisons également une prévision pour l’année 2023.">
+<meta name="twitter:image" content="image_but/couverture_serie_temp_charbon.jpg">
+<meta name="twitter:card" content="summary_large_image">
 </head>
 
 <body class="nav-fixed">
@@ -485,7 +493,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp("https:\/\/www\.rachidsahli\.com");
+      var filterRegex = new RegExp('/' + window.location.host + '/');
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }

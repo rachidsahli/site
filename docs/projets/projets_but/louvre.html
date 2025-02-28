@@ -31,8 +31,6 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
-<script src="../../site_libs/cookie-consent/cookie-consent.js"></script>
-<link href="../../site_libs/cookie-consent/cookie-consent.css" rel="stylesheet">
 <script src="../../site_libs/quarto-html/quarto.js"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -72,26 +70,16 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
-<script type="text/javascript" charset="UTF-8">
-document.addEventListener('DOMContentLoaded', function () {
-cookieconsent.run({
-  "notice_banner_type":"simple",
-  "consent_type":"implied",
-  "palette":"light",
-  "language":"en",
-  "page_load_consent_levels":["strictly-necessary","functionality","tracking","targeting"],
-  "notice_banner_reject_button_hide":false,
-  "preferences_center_close_button_hide":false,
-  "website_name":""
-  ,
-"language":"fr"
-  });
-});
-</script> 
-  
-
 
 <link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="Nocturne au musée du Louvre – Rachid Sahli">
+<meta property="og:description" content="Présentation d’une œuvre générée par une IA aux visiteurs du Musée du Louvre.">
+<meta property="og:image" content="image_but/louvre.jpg">
+<meta property="og:site_name" content="Rachid Sahli">
+<meta name="twitter:title" content="Nocturne au musée du Louvre – Rachid Sahli">
+<meta name="twitter:description" content="Présentation d’une œuvre générée par une IA aux visiteurs du Musée du Louvre.">
+<meta name="twitter:image" content="image_but/louvre.jpg">
+<meta name="twitter:card" content="summary_large_image">
 </head>
 
 <body class="nav-fixed">
@@ -486,7 +474,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp("https:\/\/www\.rachidsahli\.com");
+      var filterRegex = new RegExp('/' + window.location.host + '/');
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
@@ -822,7 +810,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>   
     <div class="nav-footer-center">
 <p>Copyright 2025, Rachid SAHLI</p>
-<div class="cookie-consent-footer"><a href="#" id="open_preferences_center">Cookie Preferences</a></div></div>
+</div>
     <div class="nav-footer-right">
       &nbsp;
     </div>

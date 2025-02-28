@@ -1,0 +1,66 @@
+---
+title: "Peut-on prédire les survivants du Titanic ?"
+description: "Bien que la chance ait joué un rôle dans la survie des passagers, certaines catégories de personnes semblent avoir eu un avantage. Est-il possible de prédire ces chances de survie à l'avance ?"
+lang : fr
+date: 01 mars 2025
+categories: ["Python","Machine learning"]
+toc: true
+image: image_titanic/titanic.jpg
+page-layout: article
+
+jupyter: python3
+---
+
+# Introduction
+
+Le naufrage du Titanic est l'un des plus terribles qu'il ait pu exister. Le 15 avril 1912, lors de son voyage inaugural, ce paquebot de 269 mètres de long (une trentaine de mètres de moins que la tour Eiffel) a coulé. Le trajet était le suivant, le 10 avril 1912, le RMS Titanic, quittait Southampton en Angleterre pour une traversée qui devait le conduire jusqu'à New York aux Etats-Unis, après une escale à Cherbourg et en Irlande.
+
+![](image_titanic/trajet_titanic.png){fig-alt="Trajet du titanic" fig-align="center" width="600"}
+
+Il était qualifié d'insubmersible, mais sa collision avec un iceberg en a décidé autrement. Malheureusement, le nombre de canots de sauvetage était inférieur au nombre de passagers à bord. Cela a entraîné la mort de 1502 des 2224 passagers et membre d'équipage. Miracle ! Il y a eu 711 rescapés.
+
+Bien que la chance ait joué un rôle dans la survie des passagers, certaines catégories de personnes semblent avoir eu un avantage. Est-il possible de prédire ces chances de survie à l'avance ? Si oui, quel type de personnes avaient le plus de chance de survivre ?
+
+Nous allons utilisé des méthodes d'`apprentissage supervisé` pour répondre à ces questions. L'objectif de l'apprentissage supervisé est de prévoir l'étiquette $Y$ associée à une nouvelle entrée, où il est sous-entendu que ($X, Y$) est une nouvelle réalisation des données, indépendante de l’échantillon observé. Ici, nous utilserons 4 algorithmes différents : l'algorithme des $k$ plus proches voisins, la régression logistique, un arbre de décision et l'algorithme SVM.
+
+Nous utiliserons Python et la librairie [Scikit-learn](https://scikit-learn.org/stable/), bibliothèque open source d'apprentissage automatique dédiée au machine learning.
+
+# Préparation des données
+
+Nous commençons par importer le très célèbre jeu de données **Titanic** (Discponible [ici](https://www.kaggle.com/datasets/yasserh/titanic-dataset)). De plus, nous faisons appel à quelques librairies (Il est nécessaire des les [installer](https://packaging.python.org/en/latest/tutorials/installing-packages/) avant de les appeler).
+
+``` python
+---
+# Import librairies ----
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Import dataset ----
+
+titanic <- pd.read_csv('titanic.csv')
+---
+```
+
+```{python}
+#| echo: false
+%run imports.py
+
+titanic = pd.read_csv('titanic.csv')
+```
+
+Ci-dessous un petit aperçu des 5 premières lignes du jeu de données.
+
+``` python
+---
+titanic.head()
+---
+```
+
+```{python}
+#| echo: false
+titanic.head()
+```
+
