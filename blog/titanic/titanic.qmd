@@ -3,7 +3,7 @@ title: "Peut-on prédire les survivants du Titanic ?"
 description: "Bien que la chance ait joué un rôle dans la survie des passagers, certaines catégories de personnes semblent avoir eu un avantage. Est-il possible de prédire ces chances de survie à l'avance ?"
 lang : fr
 date: 01 mars 2025
-categories: ["Python","Machine learning"]
+categories: ["Python","Machine learning", "Scikit-Learn"]
 toc: true
 image: image_titanic/titanic.jpg
 page-layout: article
@@ -21,13 +21,13 @@ Il était qualifié d'insubmersible, mais sa collision avec un iceberg en a déc
 
 Bien que la chance ait joué un rôle dans la survie des passagers, certaines catégories de personnes semblent avoir eu un avantage. Est-il possible de prédire ces chances de survie à l'avance ? Si oui, quel type de personnes avaient le plus de chance de survivre ?
 
-Nous allons utilisé des méthodes d'`apprentissage supervisé` pour répondre à ces questions. L'objectif de l'apprentissage supervisé est de prévoir l'étiquette $Y$ associée à une nouvelle entrée, où il est sous-entendu que ($X, Y$) est une nouvelle réalisation des données, indépendante de l’échantillon observé. Ici, nous utilserons 4 algorithmes différents : l'algorithme des $k$ plus proches voisins, la régression logistique, un arbre de décision et l'algorithme SVM.
+Nous allons utilisé des méthodes d'`apprentissage supervisé` pour répondre à ces questions. L'objectif de l'apprentissage supervisé est de prévoir l'étiquette $Y$ ou la valeur de $Y$ (régression) associée à une nouvelle entrée, où il est sous-entendu que ($X, Y$) est une nouvelle réalisation des données, indépendante de l’échantillon observé. Ici, nous utilserons 4 algorithmes différents : l'algorithme des $k$ plus proches voisins, la régression logistique, un arbre de décision et l'algorithme SVM.
 
-Nous utiliserons Python et la librairie [Scikit-learn](https://scikit-learn.org/stable/), bibliothèque open source d'apprentissage automatique dédiée au machine learning.
+Nous utiliserons Python et la librairie [Scikit-learn](https://scikit-learn.org/stable/), bibliothèque open source d'apprentissage automatique dédiée au machine learning pour réalisé une classification. Ici, on est dans un cas de classification et non de régression, car notre variable cible ($Y$) est une étiquette (Survécu ou Non survivant).
 
 # Préparation des données
 
-Nous commençons par importer le très célèbre jeu de données **Titanic** (Discponible [ici](https://www.kaggle.com/datasets/yasserh/titanic-dataset)). De plus, nous faisons appel à quelques librairies (Il est nécessaire des les [installer](https://packaging.python.org/en/latest/tutorials/installing-packages/) avant de les appeler).
+Nous commençons par importer le très célèbre jeu de données **Titanic** (Discponible [ici](https://www.kaggle.com/competitions/titanic)). De plus, nous faisons appel à quelques librairies (Il est nécessaire des les [installer](https://packaging.python.org/en/latest/tutorials/installing-packages/) avant de les appeler).
 
 ``` python
 ---
@@ -47,6 +47,7 @@ titanic <- pd.read_csv('titanic.csv')
 ```{python}
 #| echo: false
 %run imports.py
+sns.set_theme(style="whitegrid")
 
 titanic = pd.read_csv('titanic.csv')
 ```
@@ -63,4 +64,50 @@ titanic.head()
 #| echo: false
 titanic.head()
 ```
+
+Notre jeu de données contient 891 observations et 12 variables. Parmi elles, 11 sont explicatives et contiennent des informations sur les passagers, tandis que la dernière est la variable cible `Survived`. Celle-ci indique si un passager a survécu (1) ou non (0), ce que nous cherchons à prédire.
+
+``` python
+---
+titanic.shape
+---
+```
+
+```{python}
+#| echo: false
+titanic.shape
+```
+
+Maintenant, on analyse nos variables plus en détail.
+
+``` python
+---
+titanic.info()
+---
+```
+
+```{python}
+#| echo: false
+titanic.info()
+```
+
+On remarque que trois variables contiennent des valeurs manquantes : **Age**, **Cabin** et **Fare**. Les modèles d'apprentissage automatique ne peuvent pas gérer directement ces valeurs, donc on va devoir les traiter.
+
+Ensuite, on remarque qu'on a à la fois des variables **quantitatives** et **qualitatives**. Parmi ces dernières, certaines contiennent des informations textuelles. Comme la plupart des modèles sont conçus pour travailler avec des données numériques, il faudra traiter ces variables, par exemple en les transformant en variables binaires (dichotomisation).
+
+Enfin, on sait que la variable **Name** ne nous sera pas utile, car il est peu probable qu'elle ait un lien direct avec la variable cible. De plus, ces informations sont non structurées, car les noms et prénoms sont écrits en texte libre. Cependant, il pourrait y avoir une corrélation entre le titre (M, Mme, Dr, etc.) et la cible, mais ce n'est pas ce que nous allons explorer ici.
+
+Ci-dessous, les statistiques descriptives de nos 7 variables quantitatives.
+
+``` python
+---
+titanic.describe()
+---
+```
+
+```{python}
+#| echo: false
+titanic.describe()
+```
+
 
