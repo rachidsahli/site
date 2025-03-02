@@ -11,8 +11,6 @@ page-layout: article
 jupyter: python3
 ---
 
-# Introduction
-
 Le naufrage du Titanic est l'un des plus terribles qu'il ait pu exister. Le 15 avril 1912, lors de son voyage inaugural, ce paquebot de 269 mètres de long (une trentaine de mètres de moins que la tour Eiffel) a coulé. Le trajet était le suivant, le 10 avril 1912, le RMS Titanic, quittait Southampton en Angleterre pour une traversée qui devait le conduire jusqu'à New York aux Etats-Unis, après une escale à Cherbourg et en Irlande.
 
 ![](image_titanic/trajet_titanic.png){fig-alt="Trajet du titanic" fig-align="center" width="600"}
@@ -36,6 +34,7 @@ Nous commençons par importer le très célèbre jeu de données **Titanic** (Di
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.colors as mcolors
 import seaborn as sns
 
 # Import dataset ----
@@ -97,17 +96,124 @@ Ensuite, on remarque qu'on a à la fois des variables **quantitatives** et **qua
 
 Enfin, on sait que la variable **Name** ne nous sera pas utile, car il est peu probable qu'elle ait un lien direct avec la variable cible. De plus, ces informations sont non structurées, car les noms et prénoms sont écrits en texte libre. Cependant, il pourrait y avoir une corrélation entre le titre (M, Mme, Dr, etc.) et la cible, mais ce n'est pas ce que nous allons explorer ici.
 
-Ci-dessous, les statistiques descriptives de nos 7 variables quantitatives.
+Ci-dessous, les statistiques descriptives de nos 2 variables quantitatives continues.
 
 ``` python
 ---
-titanic.describe()
+titanic[['Age', 'Fare']].describe()
 ---
 ```
 
 ```{python}
 #| echo: false
-titanic.describe()
+titanic[['Age', 'Fare']].describe()
 ```
+
+On observe une forte dispersion des valeurs sur la variable **Fare**, avec des écarts importants entre les prix les plus bas et les plus élevés. Il est donc essentiel de normaliser ces données, surtout lorsque l'on utilise des algorithmes sensibles aux distances. Sans cette mise à l'échelle, les tarifs élevés, notamment ceux de la 1ʳᵉ classe, risquent d'avoir une influence disproportionnée sur le modèle, faussant ainsi les résultats.
+
+## Visualisation graphique
+
+La section précédente nous a permis d'identifier les incohérences et anomalies dans nos données. Dans cette même optique, nous allons maintenant les analyser visuellement afin de mieux comprendre leur répartition.
+
+Nous présentons ici seulement quelques graphiques intéressants, mais il existe bien d'autres visualisations possibles tout aussi intéressantes.
+
+```{python}
+#| warning: false
+#| code-fold: true
+#| code-summary: Cliquer pour voir le code
+#| code-overflow: scroll
+
+cmap = sns.cubehelix_palette(rot=-.2, as_cmap=True)
+colors = [mcolors.rgb2hex(c) for c in cmap.colors]
+
+fig = px.scatter(titanic, 
+x="Age", y="Fare", 
+color="SibSp", size="Pclass",
+color_continuous_scale=colors,
+labels={"Age": "Age", "Fare": "Fare"},
+log_x=True, log_y=True)
+
+fig.update_traces(marker=dict(sizemode='area', 
+opacity=0.7, line=dict(width=0)),
+selector=dict(mode='markers'))
+
+fig.update_layout(
+  template="plotly_white",
+  title_text='Relation entre l\'âge et le prix du Billet selon le Nombre de frères/sœurs et conjoints',
+  )
+
+fig.show()
+```
+
+Les passagers les plus âgés, ayant payé les tarifs les plus élevés, voyagent principalement en 1ʳᵉ classe et sont souvent seuls ou avec un membre de leur famille. En revanche, ceux ayant payé les tarifs les plus bas sont majoritairement en 2ᵉ ou 3ᵉ classe, avec souvent plusieurs frères et sœurs à bord.
+
+```{python}
+#| warning: false
+#| code-fold: true
+#| code-summary: Cliquer pour voir le code
+#| code-overflow: scroll
+
+color_map = {0: 'red', 1: 'green'}
+
+fig = px.strip(titanic, 
+               x="Sex", y="Age", 
+               color="Survived", 
+               category_orders={"Sex": ["male", "female"]}, 
+               labels={"Age": "Age", "Sex": "Sex"},
+               color_discrete_map=color_map)
+
+fig.update_traces(marker=dict(size=8, opacity=0.7, line=dict(width=0)),
+                  selector=dict(mode='markers'))
+
+fig.update_layout(
+    yaxis_title="",
+    template="plotly_white",
+    title_text='Répartition de l\'âge selon le sexe et la survie à bord'
+)
+
+fig.show()
+```
+
+Les femmes (35,2 %) sont beaucoup moins représentées dans le jeu de données que les hommes (64,8 %). On observe qu'il y a une densité élevée de survivantes dans la tranche des jeunes adultes et des adultes moyens. Les hommes sont sur-représentés parmi les non-survivants, avec une concentration plus marquée parmi les adultes jeunes et moyens.
+
+Nous savons que les femmes et les enfants avaient des priorités d'évacuation pendant le naufrage et elles avaient donc une probabilité de survie plus élevée que celle des hommes.
+
+```{python}
+#| warning: false
+#| code-fold: true
+#| code-summary: Cliquer pour voir le code
+#| code-overflow: scroll
+
+fig = px.histogram(titanic, 
+                   x="Age", 
+                   color="Survived", 
+                   facet_col="Survived",
+                   nbins=20,
+                   color_discrete_map={0: 'red', 1: 'green'},
+                   labels={"Age": "Age", "Survived": "Survived"},
+                   histnorm="percent")
+
+fig.update_traces(marker_line_color="black",
+                  marker_line_width=1)
+
+fig.update_layout(
+    title="Répartition de l'âge en fonction de la survie",
+    template="plotly_white",
+    xaxis_title="Âge",
+    yaxis_title="Fréquence (%)"
+)
+
+fig.show()
+```
+
+## Traitement des anomalies
+
+Maintenant que nous avons une vue d'ensemble de nos données, nous allons nous concentrer sur le traitement des anomalies identifiées précédemment, en vue de préparer efficacement la construction du modèle.
+
+Nous commençons par convertir la variable **Sexe ** en une variable binaire. Ici, nous 
+Pour cela, nous créons une nouvelle variable afin de préserver l'intégrité des données d'origine.
+
+
+
 
 
