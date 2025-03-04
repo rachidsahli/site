@@ -46,6 +46,7 @@ titanic <- pd.read_csv('titanic.csv')
 ```{python}
 #| echo: false
 %run imports.py
+import seaborn as sns
 sns.set_theme(style="whitegrid")
 
 titanic = pd.read_csv('titanic.csv')
@@ -206,12 +207,55 @@ fig.update_layout(
 fig.show()
 ```
 
-## Traitement des anomalies
+## Traitement des données
 
 Maintenant que nous avons une vue d'ensemble de nos données, nous allons nous concentrer sur le traitement des anomalies identifiées précédemment, en vue de préparer efficacement la construction du modèle.
 
-Nous commençons par convertir la variable **Sexe ** en une variable binaire. Ici, nous 
-Pour cela, nous créons une nouvelle variable afin de préserver l'intégrité des données d'origine.
+Nous commençons par convertir la variable **Sexe** en une variable binaire. Ici, nous la remplaçons directement en créant une nouvelle version par-dessus. Cependant, il est recommandé de créer une variable distincte afin de préserver l'intégrité des données d'origine.
+
+``` python
+---
+titanic['Sex'] = (titanic['Sex'] == 'female').astype(int)
+---
+```
+
+```{python}
+#| echo: false
+print("Avant conversion :")
+print(titanic['Sex'].head())
+
+titanic['Sex'] = (titanic['Sex'] == 'female').astype(int)
+
+print("\nAprès conversion :")
+print(titanic['Sex'].head())
+```
+
+Nous passons maintenant au traitement des données manquantes. Il existe plusieurs approches pour compléter les données manquantes. Par exemple, la suppresion des observations, l'imputation de ces données par une valeur tel que la moyenne, la médiane ... On introduirait cependant un biais sur cette valeur.
+Il est également possible d'imputer les données manquantes à l'aide d'une méthode statistique (régression, $k$ plus proches voisins).
+
+```{python}
+#| warning: false
+#| code-fold: true
+#| code-summary: Cliquer pour voir le code
+#| code-overflow: scroll
+
+titanic.count().plot(kind='barh')
+```
+
+Dans notre jeu de données, il manque des données pour les variables **Age**, **Embarked** et **Cabin**.
+
+La variable **Cabin** est très peu renseignée. Il est inutile d'imputer les valeurs manquantes par une autre valeur, nous choisissons donc de supprimer cette variable. Toutefois, nous décidons de créer une nouvelle variable indiquant si cette donnée a été renseignée ou non.
+
+``` python
+---
+
+---
+```
+
+```{python}
+#| echo: false
+
+```
 
 
 
