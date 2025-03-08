@@ -34,8 +34,9 @@ Nous commençons par importer le très célèbre jeu de données **Titanic** (Di
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.colors as mcolors
 import seaborn as sns
+import plotly.express as px
+import matplotlib.colors as mcolors
 
 # Import dataset ----
 
@@ -117,6 +118,32 @@ On observe une forte dispersion des valeurs sur la variable **Fare**, avec des �
 La section précédente nous a permis d'identifier les incohérences et anomalies dans nos données. Dans cette même optique, nous allons maintenant les analyser visuellement afin de mieux comprendre leur répartition.
 
 Nous présentons ici seulement quelques graphiques intéressants, mais il existe bien d'autres visualisations possibles tout aussi intéressantes.
+
+```{python}
+#| warning: false
+#| code-fold: true
+#| code-summary: Cliquer pour voir le code
+#| code-overflow: scroll
+
+sex_counts = titanic.groupby(['Sex', 'Survived']).size().unstack(fill_value=0)
+
+sex_counts.plot(kind='bar', stacked=True, color=['red', 'green'], width=0.6)
+
+plt.title("Répartition par Sexe et Survie")
+plt.xlabel("Sexe")
+plt.ylabel("Nombre de passagers")
+plt.legend(["Non Survécu", "Survécu"])
+
+plt.show()
+```
+
+La variable **Survived** 
+
+
+
+
+
+
 
 ```{python}
 #| warning: false
@@ -239,25 +266,128 @@ Il est également possible d'imputer les données manquantes à l'aide d'une mé
 #| code-summary: Cliquer pour voir le code
 #| code-overflow: scroll
 
-titanic.count().plot(kind='barh')
+titanic.count().plot(kind='barh', title="Nombre d'occurrences par variable avant traitement")
 ```
 
 Dans notre jeu de données, il manque des données pour les variables **Age**, **Embarked** et **Cabin**.
 
-La variable **Cabin** est très peu renseignée. Il est inutile d'imputer les valeurs manquantes par une autre valeur, nous choisissons donc de supprimer cette variable. Toutefois, nous décidons de créer une nouvelle variable indiquant si cette donnée a été renseignée ou non.
+La variable **Cabin** est très peu renseignée. Il est inutile d'imputer les valeurs manquantes par une autre valeur, nous choisissons donc de supprimer cette variable. Toutefois, nous décidons de créer une nouvelle variable indiquant si cette donnée a été renseignée ou non {0; 1}.
 
 ``` python
 ---
+titanic['CabinMissing'] = titanic.Cabin.isnull().astype(int) # Variable indicatrice
 
+titanic = titanic.drop('Cabin', axis=1) # Suppresion de Cabin
+
+titanic['CabinMissing'] # Visualisation de CabinMissing
+---
+```
+
+```{python}
+#| echo: false
+titanic['CabinMissing'] = titanic.Cabin.isnull().astype(int) # Variable indicatrice
+
+titanic = titanic.drop('Cabin', axis=1) # Suppresion de Cabin
+
+titanic['CabinMissing'] # Visualisation de CabinMissing
+```
+
+La variable **Age** est bien plus renseigné que la variable **Cabin**, on décide d'imputer ces valeurs manquantes par l'âge médian. Évidemment, cela biaisera notre distribution.
+
+L'âge médian des passagers est de 28 ans. Nous imputerons les 177 valeurs manquantes par cet valeur. 
+
+``` python
+---
+titanic.Age.median()
+---
+```
+
+```{python}
+#| echo: false
+titanic.Age.median()
+```
+
+
+``` python
+---
+age_median = titanic.Age.median()
+
+titanic['Age'] = titanic.Age.fillna(median_age)
 ---
 ```
 
 ```{python}
 #| echo: false
 
+age_median = titanic.Age.median()
+
+titanic['Age'] = titanic.Age.fillna(age_median)
+
+titanic['Age_2'] = titanic.Age.fillna(age_median) # Création pour le graphqiue
+```
+
+Ci-dessous, nous observons les distributions de l'âge avant et après imputation. On remarque clairement que l'imputation a modifié la distribution des données.
+
+```{python}
+#| warning: false
+#| code-fold: true
+#| code-summary: Cliquer pour voir le code
+#| code-overflow: scroll
+
+from plotly.subplots import make_subplots
+import plotly.graph_objects as go
+
+fig = make_subplots(rows=1, cols=2, subplot_titles=["Avant imputation", "Après imputation"], shared_yaxes=True)
+
+fig.add_trace(
+    go.Histogram(x=titanic["Age"], nbinsx=20, name="Age", marker_color="blue"),
+    row=1, col=1
+)
+
+fig.add_trace(
+    go.Histogram(x=titanic["Age_2"], nbinsx=20, name="Age_2", marker_color="darkcyan"),
+    row=1, col=2
+)
+
+fig.update_traces(marker_line_color="black",
+                  marker_line_width=1)
+
+fig.update_layout(
+    title="Distribution de l'âge des passagers du Titanic",
+    template="plotly_white",
+    xaxis_title="Âge",
+    yaxis_title="Nombre de passagers",
+    showlegend=False
+)
+
+fig.show()
+```
+
+```{python}
+#| echo: false
+
+titanic = titanic.drop('Age_2', axis=1)  # Suppression après graphique
+```
+
+Enfin, nous remplaçons les deux valeurs manquantes de la variable **Embarked**, représentant le port de départ, par le port de départ majoritaire des passagers.
+
+``` python
+---
+maj_port = titanic["Embarked"].mode()[0]
+
+titanic["Embarked"].fillna(maj_port, inplace=True)
+---
+```
+
+```{python}
+#| echo: false
+
+titanic.count().plot(kind='barh', color='green', title="Nombre d'occurrences par variable après traitement")
 ```
 
 
+# Modélisation
 
+# Prédiction
 
-
+# Conclusion
