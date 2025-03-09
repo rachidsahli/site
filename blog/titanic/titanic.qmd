@@ -113,37 +113,40 @@ titanic[['Age', 'Fare']].describe()
 
 On observe une forte dispersion des valeurs sur la variable **Fare**, avec des écarts importants entre les prix les plus bas et les plus élevés. Il est donc essentiel de normaliser ces données, surtout lorsque l'on utilise des algorithmes sensibles aux distances. Sans cette mise à l'échelle, les tarifs élevés, notamment ceux de la 1ʳᵉ classe, risquent d'avoir une influence disproportionnée sur le modèle, faussant ainsi les résultats.
 
+```{python}
+#| echo: false
+table = pd.crosstab(titanic["Sex"], titanic["Survived"], normalize="index") * 100
+table.columns = ["Non Survivant", "Survivant"]
+table = table.style.set_caption("Répartition des survivants et non-survivants par sexe") \
+                         .format("{:.2f}%") \
+                         .set_table_styles([{"selector": "caption", 
+                                             "props": [("font-size", "16px"), ("font-weight", "bold")]}])
+table
+```
+
+On observe sur la variable **Survived** une disparité marquée entre les sexes : 74,20 % des femmes ont survécu contre seulement 18,89 % des hommes.
+
+
+```{python}
+#| echo: false
+
+table_survie = titanic["Survived"].value_counts(normalize=True) * 100
+table_survie = pd.DataFrame(table_survie).rename(columns={"Survived": "Pourcentage"})
+table_survie.index = ["Non Survivant", "Survivant"]
+table_survie = table_survie.style.set_caption("Répartition des survivants et non-survivants") \
+                               .format("{:.2f}%") \
+                               .set_table_styles([{"selector": "caption", 
+                                                   "props": [("font-size", "16px"), ("font-weight", "bold")]}])
+table_survie
+```
+
+La variable **Survived** est déséquilibrée, avec une majorité de passagers n'ayant pas survécu. Il y a significativement plus de décès que de survivants, ce qui peut influencer les performances du modèle prédictif. Il sera donc important de prendre en compte ce déséquilibre lors de l'entraînement des algorithmes.
+
 ## Visualisation graphique
 
 La section précédente nous a permis d'identifier les incohérences et anomalies dans nos données. Dans cette même optique, nous allons maintenant les analyser visuellement afin de mieux comprendre leur répartition.
 
 Nous présentons ici seulement quelques graphiques intéressants, mais il existe bien d'autres visualisations possibles tout aussi intéressantes.
-
-```{python}
-#| warning: false
-#| code-fold: true
-#| code-summary: Cliquer pour voir le code
-#| code-overflow: scroll
-
-sex_counts = titanic.groupby(['Sex', 'Survived']).size().unstack(fill_value=0)
-
-sex_counts.plot(kind='bar', stacked=True, color=['red', 'green'], width=0.6)
-
-plt.title("Répartition par Sexe et Survie")
-plt.xlabel("Sexe")
-plt.ylabel("Nombre de passagers")
-plt.legend(["Non Survécu", "Survécu"])
-
-plt.show()
-```
-
-La variable **Survived** 
-
-
-
-
-
-
 
 ```{python}
 #| warning: false
@@ -257,8 +260,7 @@ print("\nAprès conversion :")
 print(titanic['Sex'].head())
 ```
 
-Nous passons maintenant au traitement des données manquantes. Il existe plusieurs approches pour compléter les données manquantes. Par exemple, la suppresion des observations, l'imputation de ces données par une valeur tel que la moyenne, la médiane ... On introduirait cependant un biais sur cette valeur.
-Il est également possible d'imputer les données manquantes à l'aide d'une méthode statistique (régression, $k$ plus proches voisins).
+Nous passons maintenant au traitement des données manquantes. Il existe plusieurs approches pour compléter les données manquantes. Par exemple, la suppresion des observations, l'imputation de ces données par une valeur tel que la moyenne, la médiane ... On introduirait cependant un biais sur cette valeur. Il est également possible d'imputer les données manquantes à l'aide d'une méthode statistique (régression, $k$ plus proches voisins).
 
 ```{python}
 #| warning: false
@@ -266,7 +268,9 @@ Il est également possible d'imputer les données manquantes à l'aide d'une mé
 #| code-summary: Cliquer pour voir le code
 #| code-overflow: scroll
 
-titanic.count().plot(kind='barh', title="Nombre d'occurrences par variable avant traitement")
+titanic.count().plot(kind='barh', title="Nombre d'occurrences par variable avant traitement",
+                                                 xlabel="Nombre d'occurences",
+                                                 ylabel="Variable")
 ```
 
 Dans notre jeu de données, il manque des données pour les variables **Age**, **Embarked** et **Cabin**.
@@ -294,7 +298,7 @@ titanic['CabinMissing'] # Visualisation de CabinMissing
 
 La variable **Age** est bien plus renseigné que la variable **Cabin**, on décide d'imputer ces valeurs manquantes par l'âge médian. Évidemment, cela biaisera notre distribution.
 
-L'âge médian des passagers est de 28 ans. Nous imputerons les 177 valeurs manquantes par cet valeur. 
+L'âge médian des passagers est de 28 ans. Nous imputerons les 177 valeurs manquantes par cet valeur.
 
 ``` python
 ---
@@ -306,7 +310,6 @@ titanic.Age.median()
 #| echo: false
 titanic.Age.median()
 ```
-
 
 ``` python
 ---
@@ -369,7 +372,7 @@ fig.show()
 titanic = titanic.drop('Age_2', axis=1)  # Suppression après graphique
 ```
 
-Enfin, nous remplaçons les deux valeurs manquantes de la variable **Embarked**, représentant le port de départ, par le port de départ majoritaire des passagers.
+Nous remplaçons les deux valeurs manquantes de la variable **Embarked**, représentant le port de départ, par le port de départ majoritaire des passagers.
 
 ``` python
 ---
@@ -379,14 +382,60 @@ titanic["Embarked"].fillna(maj_port, inplace=True)
 ---
 ```
 
+Enfin, nous excluons les variables suivantes :
+
+- **PassengerId** : Il s'agit d'un simple identifiant sans influence sur la survie.
+
+- **Name** : Cette variable contient des informations textuelles difficiles à exploiter directement.
+
+- **Ticket** : Elle présente trop de valeurs uniques et apporte peu d'informations pertinentes.
+
+``` python
+---
+titanic = titanic.drop(columns=["PassengerId", "Name", "Ticket"])
+---
+```
+
 ```{python}
 #| echo: false
+titanic = titanic.drop(columns=["PassengerId", "Name", "Ticket"])
+```
 
-titanic.count().plot(kind='barh', color='green', title="Nombre d'occurrences par variable après traitement")
+Le jeu de données est désormais complet, sans aucune valeur manquante.
+
+```{python}
+#| warning: false
+#| code-fold: true
+#| code-summary: Cliquer pour voir le code
+#| code-overflow: scroll
+
+titanic.count().plot(kind='barh', color='green', title="Nombre d'occurrences par variable après traitement",
+                                                 xlabel="Nombre d'occurences",
+                                                 ylabel="Variable")
+```
+
+# Modélisation
+
+Après avoir exploré et préparé notre jeu de données, nous passons maintenant à la modélisation. L'objectif est de construire un modèle capable de prédire si un passager a survécu ou non en fonction de différentes caractéristiques telles que son sexe, son âge ou sa classe de voyage.
+
+## Variables pertinentes
+
+Nous commençons par mesurer la corrélation entre les variables explicatives et notre variable cible afin d’identifier celles qui ont le plus d’influence sur la prédiction.
+
+``` python
+---
+cor = titanic.corr(numeric_only=True)["Survived"].sort_values(ascending=False)
+cor
+---
+```
+
+```{python}
+#| echo: false
+cor = titanic.corr(numeric_only=True)["Survived"].sort_values(ascending=False)
+cor
 ```
 
 
-# Modélisation
 
 # Prédiction
 
