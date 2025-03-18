@@ -27,7 +27,7 @@ toc: false
 ::: {#hero-heading}
 Je suis étudiant en Science des Données à l'IUT Paris Rives de Seine et alternant à l'INSEE. Au sein de la Direction des Statistiques Démographiques et Sociales, je travaille sur des problématiques liées à la mesure de la couverture des bases de sondage.
 
-Je travaille principalement avec `R` et `Python`, et j'ai créé un site de ressources appelé `PratiqueR`. Vous pouvez également me retrouver sur YouTube, où je partage des vidéos sur R et son environnement.
+Je travaille principalement avec `R` et `Python` et j'ai créé un site de ressources appelé [`PratiqueR`](https://pratiquer.github.io/site/). Vous pouvez également me retrouver sur YouTube, où je partage des vidéos sur R et son environnement.
 
 En-dehors de mes études, je consacre mon temps libre à la construction de robots et je partage mes idées sur mon blog, [`Jiqiren`](https://rachidsahli.github.io/Jiqiren/).
 
