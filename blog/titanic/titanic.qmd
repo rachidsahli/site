@@ -126,7 +126,6 @@ table
 
 On observe sur la variable **Survived** une disparité marquée entre les sexes : 74,20 % des femmes ont survécu contre seulement 18,89 % des hommes.
 
-
 ```{python}
 #| echo: false
 
@@ -384,11 +383,11 @@ titanic["Embarked"].fillna(maj_port, inplace=True)
 
 Enfin, nous excluons les variables suivantes :
 
-- **PassengerId** : Il s'agit d'un simple identifiant sans influence sur la survie.
+-   **PassengerId** : Il s'agit d'un simple identifiant sans influence sur la survie.
 
-- **Name** : Cette variable contient des informations textuelles difficiles à exploiter directement.
+-   **Name** : Cette variable contient des informations textuelles difficiles à exploiter directement.
 
-- **Ticket** : Elle présente trop de valeurs uniques et apporte peu d'informations pertinentes.
+-   **Ticket** : Elle présente trop de valeurs uniques et apporte peu d'informations pertinentes.
 
 ``` python
 ---
@@ -414,13 +413,10 @@ titanic.count().plot(kind='barh', color='green', title="Nombre d'occurrences par
                                                  ylabel="Variable")
 ```
 
-# Modélisation
-
-Après avoir exploré et préparé notre jeu de données, nous passons maintenant à la modélisation. L'objectif est de construire un modèle capable de prédire si un passager a survécu ou non en fonction de différentes caractéristiques telles que son sexe, son âge ou sa classe de voyage.
 
 ## Variables pertinentes
 
-Nous commençons par mesurer la corrélation entre les variables explicatives et notre variable cible afin d’identifier celles qui ont le plus d’influence sur la prédiction.
+Nous mesurons la corrélation entre les variables explicatives et notre variable cible afin d’identifier celles qui ont le plus d’influence sur la prédiction.
 
 ``` python
 ---
@@ -435,8 +431,53 @@ cor = titanic.corr(numeric_only=True)["Survived"].sort_values(ascending=False)
 cor
 ```
 
+Ces résultats montrent que les variables Sex et Fare sont plutôt corrélées positivement avec la survie des passagers. La variable classe, quant à elle, a une correlation négative assez élevée avec la survie des passagers. Cela est cohérent avec l'histoire du Titanic. Les autres variables ont un impact négligeable sur la survie des passagers.
 
+Bien qu'il soit possible d'explorer d'autres analyses, telles que la sélection de variables avancée ou l'importance des features, ces méthodes ne seront pas abordées dans le cadre de cette étude.
 
-# Prédiction
+# Modélisation
+
+Après avoir exploré et préparé notre jeu de données, nous passons maintenant à la modélisation. L'objectif est de construire un modèle capable de prédire si un passager a survécu ou non en fonction de différentes caractéristiques telles que son sexe, son âge ou sa classe de voyage. Maintenant que nous disposons de données propres et prêtes à être utilisées, nous allons entraîner notre modèle pour prédire la survie des passagers à partir des variables explicatives.
+
+Afin de faciliter les prochaines étapes, nous créons deux objets : `X` pour les variables explicatives et `y` pour la variable cible.
+
+``` python
+---
+X = titanic.drop(columns="Survived")
+
+y = titanic[["Survived"]]
+---
+```
+
+```{python}
+#| echo: false
+X = titanic.drop(columns="Survived")
+y = titanic[["Survived"]]
+```
+
+`X` contient toutes les colonnes du DataFrame titanic sauf la variable Survived, tandis que `y` contient uniquement la variable Survived, qui est la variable cible que nous souhaitons prédire.
+
+On commence par diviser notre jeu de données initial en deux sous-ensembles :
+
+-   Un jeu d’entraînement contenant 80 % des données, sur lequel le modèle va apprendre.
+
+-   Un jeu de test contenant les 20 % restants, qui servira à évaluer la performance du modèle.
+
+![](image_titanic/train_test_split.jpg){fig-alt="Trajet du titanic" fig-align="center" width="350"}
+
+L’idée est simple : on entraîne le modèle sur une partie des données, puis on teste sa capacité à faire des prédictions sur des données qu’il n’a jamais vues, pour vérifier s’il généralise bien.
+
+``` python
+---
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 42)
+---
+```
+
+```{python}
+#| echo: false
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 42)
+```
+
+La fonction `train_test_split` permet de réaliser cette séparation. Le paramètre **test_size** indique que, dans notre cas, 20 % des données seront utilisées pour le jeu de test. Le paramètre **random_state** permet de fixer une graine aléatoire afin d’obtenir des résultats reproductibles.
 
 # Conclusion
