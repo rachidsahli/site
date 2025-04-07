@@ -480,4 +480,40 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, rando
 
 La fonction `train_test_split` permet de réaliser cette séparation. Le paramètre **test_size** indique que, dans notre cas, 20 % des données seront utilisées pour le jeu de test. Le paramètre **random_state** permet de fixer une graine aléatoire afin d’obtenir des résultats reproductibles.
 
+Nous allons maintenant mettre en place un modèle de régression logistique, qui permet de prédire une classe, en l'occurrence si un passager a survécu ou non.
+
+``` python
+---
+lr = LogisticRegression(random_state = 42) # Création de l'objet
+
+model_lr = lr.fit(X_train, y_train.values.ravel()) # Entraînement du modèle sur les données d'entrainement
+---
+```
+
+```{python}
+#| echo: false
+lr = LogisticRegression(random_state = 42) # Création de l'objet
+
+model_lr = lr.fit(X_train, y_train) # Entraînement du modèle sur les données d'entrainement
+```
+
+Une fois le modèle entraîné, nous pouvons effectuer des prédictions sur les données de test et d'entraînement.
+
+``` python
+---
+y_pred_lr = model_lr.predict(X_test) # Prédiction test
+
+y_pred_lr_train = model_lr.predict(X_train) # Prédiction entraînement
+---
+```
+
+```{python}
+#| echo: false
+y_pred_lr = model_lr.predict(X_test) # Prédiction test
+
+y_pred_lr_train = model_lr.predict(X_train) # Prédiction entraînement
+```
+
+
+
 # Conclusion
