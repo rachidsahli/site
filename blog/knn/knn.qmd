@@ -11,13 +11,20 @@ page-layout: article
 
 # Introduction
 
+L'algorithme des $k$ plus proches voisins est une méthode d'apprentissage supervisé. On peut l'utiliser pour classifier quand $Y_i$ est une variable qualitative, et ces observations sont appelés étiquettes. Mais on peut également l'utiliser pour prédire si $Y_i \in \mathbb{R}$. Ceci est un cas de régression.
+On note que notre variables $Y_i$ est notre variable à expliquer.
+
+::: {.callout-note title = Apprentissage supervisé vs Non supervisé}
+L'apprentissage supervisé utilise des données d'entraînement étiquetées, contrairement à l'apprentissage non supervisé.
+
 Le but de l'apprentissage supervisé est de prévoir l'étiquette (classification) $Y$ ou la valeur de $Y$ (régression) associée à une nouvelle entrée $X$, où il est sous-entendu que ($X,Y$) est une nouvelle réalisation des données, indépendante de l’échantillon observé.
-
-L'algorithme des $k$ plus proches voisins est une méthode d'apprentissage supervisé. On peut l'utiliser pour classifier quand $Y_i$ est une variable qualitative, les $Y_i$ sont appelés étiquettes. On peut également l'utiliser pour prédire si $Y_i \in \mathbb{R}$. C'est donc une régression et les $Y_i$ sont appelés variables à expliquer.
-
-**Remarque** : On parle d’apprentissage supervisé car pour chaque $X_i$ de l’échantillon d’apprentissage on dispose de $Y_i$, l’étiquette. Au contraire, on parlera d’apprentissage non-supervisé lorsque l’échantillon est simplement constitué des $X_i$.
+:::
 
 # Méthode
+
+L'agorithme des k-plus proches voisins est simple et fonctionne de la même manière pour la classification et la régression. Il diffère seulement dans la façon dont il effectue la prédiction finale.
+
+
 
 **En Classification**, pour un nouveau $X$ on classifie son étiquette $Y$ par la méthode des k-plus proches voisins de la façon suivante. On détermine tout d’abord les $k$ plus proches $X_i$ de l’échantillon par rapport à $X$ et on attribue la modalité dominante parmi les k modalités observées (on parle de vote majoritaire).
 

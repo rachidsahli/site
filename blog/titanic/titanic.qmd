@@ -413,7 +413,6 @@ titanic.count().plot(kind='barh', color='green', title="Nombre d'occurrences par
                                                  ylabel="Variable")
 ```
 
-
 ## Variables pertinentes
 
 Nous mesurons la corrélation entre les variables explicatives et notre variable cible afin d’identifier celles qui ont le plus d’influence sur la prédiction.
@@ -469,7 +468,7 @@ L’idée est simple : on entraîne le modèle sur une partie des données, puis
 
 ``` python
 ---
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 42)
+  X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 42)
 ---
 ```
 
@@ -485,33 +484,9 @@ Nous allons maintenant mettre en place un modèle de régression logistique, qui
 ``` python
 ---
 lr = LogisticRegression(random_state = 42) # Création de l'objet
-
+  
 model_lr = lr.fit(X_train, y_train.values.ravel()) # Entraînement du modèle sur les données d'entrainement
 ---
-```
-
-```{python}
-#| echo: false
-lr = LogisticRegression(random_state = 42) # Création de l'objet
-
-model_lr = lr.fit(X_train, y_train) # Entraînement du modèle sur les données d'entrainement
-```
-
-Une fois le modèle entraîné, nous pouvons effectuer des prédictions sur les données de test et d'entraînement.
-
-``` python
----
-y_pred_lr = model_lr.predict(X_test) # Prédiction test
-
-y_pred_lr_train = model_lr.predict(X_train) # Prédiction entraînement
----
-```
-
-```{python}
-#| echo: false
-y_pred_lr = model_lr.predict(X_test) # Prédiction test
-
-y_pred_lr_train = model_lr.predict(X_train) # Prédiction entraînement
 ```
 
 
