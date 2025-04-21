@@ -2,17 +2,7 @@
   {
     "listing": "/blog.html",
     "items": [
-      "/blog/eau_paris.html",
-      "/blog/titanic/titanic.html",
-      "/blog/reg_logistique.html",
-      "/blog/knn/knn.html",
-      "/blog/carte_volontaires.html"
-    ]
-  },
-  {
-    "listing": "/projets.html",
-    "items": [
-      "/projets/but_sd.html"
+      "/blog/carte_volontaires/carte_volontaires.html"
     ]
   },
   {
@@ -22,6 +12,12 @@
       "/projets/projets_but/migration.html",
       "/projets/projets_but/louvre.html",
       "/projets/projets_but/serie_temp_charbon.html"
+    ]
+  },
+  {
+    "listing": "/projets.html",
+    "items": [
+      "/projets/but_sd.html"
     ]
   }
 ]

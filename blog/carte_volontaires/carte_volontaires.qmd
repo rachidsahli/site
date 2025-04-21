@@ -5,7 +5,7 @@ Venus des quatre coins de la France, cette carte interactive leur permet de se p
 lang: fr
 date: 9 septembre 2024
 categories: ["R", "Opendata"]
-image: image_blog/volontaires.jpeg
+image: volontaires.jpeg
 page-layout: article
 ---
 
@@ -20,7 +20,7 @@ library(plotly)
 library(leaflet.extras)
 
 # Import data ---------------
-carte <- read.csv("data_blog/carte-aide-volontaires.csv", header = TRUE, sep = ",")
+carte <- read.csv("carte-aide-volontaires.csv", header = TRUE, sep = ",")
 
 # Suppression de 2 colonnes inutiles
 carte <- subset(carte,  select = -c(X.1,X))
@@ -97,7 +97,7 @@ leaflet(data = carte) %>%
   setView(lng = 2.2137, lat = 46.6034, zoom = 6)
 ```
 
-<br> Cette carte a été créée à l’aide du package `leaflet`, en utilisant les données disponibles en open data fournies par les acteurs suivants :
+<br> Cette carte a été créée à l’aide du package [`leaflet`](https://rstudio.github.io/leaflet/), en utilisant les données disponibles en open data fournies par les acteurs suivants :
 
 -   Fontaines à eau : opendata de la Ville de Paris
 
@@ -111,4 +111,4 @@ leaflet(data = carte) %>%
 
 -   Paralympiques : opendata de Paris 2024
 
-(Denière mis à jour des données le 27 juillet 2024)
+Au moment de la réalisation de la carte, la dernière mise à jour des données datait du 27 juillet 2024.
