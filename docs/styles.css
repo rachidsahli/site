@@ -17,3 +17,11 @@ $font-family-serif: "Atkinson Hyperlegible", sans-serif;
     transform: scale(1.05); /* Zoom de 5% au survol */
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Ombre au survol */
 }
+
+a {
+  color: #FF3E00;
+}
+
+a:hover {
+  color: #a70000;
+}

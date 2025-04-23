@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.43">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="Réalisation d’une étude statistique dans un essai clinique qui permettera de déterminer l’effet d’un nouveau médicament chez les patients atteint de drépanocytose.">
+
+<title>Etude statistique dans un essai clinique – Rachid Sahli</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<script src="../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-d4d76bf8491c20bad77d141916dc28e1.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark-4379b0ccadffce622b03caf4c46266b3.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-f3f3b78796173cd72355cd19efd44d3f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-aa8888c043cfe08f4ff118c691343ce3.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Pas de résultats",
+    "search-matching-documents-text": "documents trouvés",
+    "search-copy-link-title": "Copier le lien vers la recherche",
+    "search-hide-matches-text": "Cacher les correspondances additionnelles",
+    "search-more-match-text": "correspondance de plus dans ce document",
+    "search-more-matches-text": "correspondances de plus dans ce document",
+    "search-clear-button-title": "Effacer",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Annuler",
+    "search-submit-button-title": "Envoyer",
+    "search-label": "Recherche"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../../styles.css">
+<meta property="og:title" content="Etude statistique dans un essai clinique – Rachid Sahli">
+<meta property="og:description" content="Réalisation d’une étude statistique dans un essai clinique qui permettera de déterminer l’effet d’un nouveau médicament chez les patients atteint de drépanocytose.">
+<meta property="og:image" content="image_essai_clinique/couverture_essai_clinique.png">
+<meta property="og:site_name" content="Rachid Sahli">
+<meta name="twitter:title" content="Etude statistique dans un essai clinique – Rachid Sahli">
+<meta name="twitter:description" content="Réalisation d’une étude statistique dans un essai clinique qui permettera de déterminer l’effet d’un nouveau médicament chez les patients atteint de drépanocytose.">
+<meta name="twitter:image" content="image_essai_clinique/couverture_essai_clinique.png">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">Rachid Sahli</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Recherche"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Basculer la navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../index.html"> 
+<span class="menu-text">Accueil</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../projets.html"> 
+<span class="menu-text">Projets</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../blog.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Basculer le mode sombre"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Sur cette page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#étude-et-analyses" id="toc-étude-et-analyses" class="nav-link" data-scroll-target="#étude-et-analyses">Étude et analyses</a>
+  <ul class="collapse">
+  <li><a href="#plan-danalyse-statistique" id="toc-plan-danalyse-statistique" class="nav-link" data-scroll-target="#plan-danalyse-statistique">Plan d’analyse statistique</a>
+  <ul class="collapse">
+  <li><a href="#analyse-principal" id="toc-analyse-principal" class="nav-link" data-scroll-target="#analyse-principal">Analyse principal</a></li>
+  <li><a href="#analyse-secondaire" id="toc-analyse-secondaire" class="nav-link" data-scroll-target="#analyse-secondaire">Analyse secondaire</a></li>
+  <li><a href="#marqueurs-dhémolyse" id="toc-marqueurs-dhémolyse" class="nav-link" data-scroll-target="#marqueurs-dhémolyse">Marqueurs d’hémolyse</a></li>
+  </ul></li>
+  <li><a href="#nouvel-essai-clinique" id="toc-nouvel-essai-clinique" class="nav-link" data-scroll-target="#nouvel-essai-clinique">Nouvel essai clinique</a></li>
+  </ul></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Etude statistique dans un essai clinique</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">R</div>
+    <div class="quarto-category">Statistique</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Réalisation d’une étude statistique dans un essai clinique qui permettera de déterminer l’effet d’un nouveau médicament chez les patients atteint de drépanocytose.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Date de publication</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">1 décembre 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>Ce projet consiste en la réalisation d’une étude statistique dans le cadre d’un essai clinique. Nous travaillons sur un jeu de données simulées pour effectuer l’analyse statistique d’une étude de phase 3. L’objectif est de fournir au laboratoire une Autorisation de Mise sur le Marché (AMM) avec une indication dans la prise en charge de la drépanocytose.</p>
+<p>La drépanocytose est une maladie génétique qui affecte les globules rouges et peut entraîner des complications graves. Elle se manifeste notamment par une anémie, des crises douloureuses et un risque accru d’infections.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="image_essai_clinique/globule_rouge.png" class="img-fluid figure-img" width="452"></p>
+<figcaption>Schéma de la drépanocytose</figcaption>
+</figure>
+</div>
+<p>Lors d’une étude de phase 3, les chercheurs comparent un nouveau traitement prometteur au traitement standard, qui est le traitement reconnu et généralement administré pour une affection ou une maladie. Dans notre étude statistique, le nouveau traitement s’appelle le <a href="https://en.wikipedia.org/wiki/Voxelotor">Voxelotor</a> et nous comparons ces effets à un placebo (traitement qui n’a aucune action spécifique sur le trouble qu’il vise à soulager). Pour cela, nous réalisons des tests statistiques sur des hypothèses définit en amont.</p>
+<p>Le dépôt GitHub contenant le rapport complet du projet, ainsi que le code R, est disponible <a href="https://github.com/rachidsahli/Projet-iut/tree/main/Essai_clinique">ici</a>.</p>
+</section>
+<section id="étude-et-analyses" class="level1">
+<h1>Étude et analyses</h1>
+<p>Nous disposons de deux jeux de données : <code>subjid</code>, qui regroupe l’ensemble des patients de l’étude ainsi que leurs informations démographiques, et <code>follow</code>, qui contient l’ensemble des mesures mesurées sur ces patients à différents moments de l’étude. Notre population contient 182 patients, répartis en 92 recevant un placebo et 90 traités avec le voxelotor (VOX_1500).</p>
+<p>Dans un premier temps, nous cherchons à mieux caractériser la population de l’étude, notamment en comparant les différentes caractéristiques des patients selon leur sexe. Cette analyse révèle une légère prédominance féminine dans l’échantillon. Par ailleurs, la distribution de l’âge est très similaire entre les deux sexes, avec une moyenne de 25 ans dans les deux groupes. Cette étude descriptive nous permet également d’identifier un patient masculin âgé de 45 ans, qui se démarque nettement du reste de l’échantillon.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="image_essai_clinique/description_essai_clinique.png" class="img-fluid figure-img" width="500"></p>
+<figcaption>Résumé descriptif de la population d’étude</figcaption>
+</figure>
+</div>
+<section id="plan-danalyse-statistique" class="level2">
+<h2 class="anchored" data-anchor-id="plan-danalyse-statistique">Plan d’analyse statistique</h2>
+<p>Le plan d’analyse statistique (SAP, disponible <a href="https://github.com/rachidsahli/Projet-iut/blob/main/Essai_clinique/SAP.pdf">ici</a>) décrit de manière détaillée la stratégie d’analyse des données de l’étude. Il garantit la rigueur, la transparence et la reproductibilité des analyses statistiques. Ce plan est généralement rédigé avant la fin de l’essai, afin d’éviter tout biais pouvant découler des résultats observés.</p>
+<p>Pour évaluer l’effet du voxelotor sur l’amélioration de l’hémoglobine des patients par rapport au placebo, les analyses définies dans le SAP sont toutes réalisées. L’analyse principale porte sur la réponse en hémoglobine à la semaine 72, qui correspond au maximum du suivi des patients. L’analyse secondaire quant à elle examine le changement de l’hémoglobine entre le début de l’étude et la semaine 72 sur plusieurs marqueurs cliniques.</p>
+<section id="analyse-principal" class="level3">
+<h3 class="anchored" data-anchor-id="analyse-principal">Analyse principal</h3>
+<p>La réponse en hémoglobine est définie comme une augmentation de plus de 1g/dL par rapport à la valeur de référence mesurée avant le début du traitement. Cela signifie qu’un patient est considéré comme ayant répondu favorablement au traitement si son taux d’hémoglobine a augmenté d’au moins 1g/dL par rapport à la valeur initiale, mesurée avant l’administration du voxelotor. Si aucune mesure d’hémoglobine n’est disponible à la semaine 72, le patient est imputé comme non-répondeur. Par exemple, si le patient ne se présente pas à la consultation, si les données sont perdues ou invalides, ce patient sera considéré comme n’ayant pas montré de réponse au traitement.</p>
+<p>Nous utilisons un test statistique du <a href="https://fr.wikipedia.org/wiki/Test_du_%CF%87%C2%B2">Chi-2</a> avec correction de Yates pour comparer les taux de réponse en hémoglobine entre le groupe traité par VOX_1500 et le groupe par le placebo, afin de déterminer s’il existe une différence significative.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="image_essai_clinique/tab_essaiclinique.png" class="img-fluid figure-img" width="300"></p>
+<figcaption>Répartition des traitements dans notre population</figcaption>
+</figure>
+</div>
+<p>Les résultats du test indiquent qu’il n’y a pas de preuve statistiquement significative d’une différence entre les taux de réponse en hémoglobine des deux groupes.</p>
+<p>Cependant, certains facteurs pourraient être amenés à faire varier l’efficacité du VOX_1500. C’est pourquoi, nous réalisons le même test statistique avec les mêmes hypothèses sur des sous-populations définis à partir des facteurs suivants : l’âge des patients, l’utilisation préalable d’hydroxyurée (HU) et l’historique des crises vaso-occlusives (VOC).</p>
+<p>Les résultats de cette étude, montrent que le VOX_1500 semble plus efficace chez certains groupes de patients. Premièrement, on observe une différence significative en faveur du traitement chez les non-utilisateurs d’HU. Cela indique une meilleure réponse en hémoglobine par rapport au placebo. En revanche, chez les utilisateurs d’HU, aucune différence notable n’a été trouvée entre les deux traitements.</p>
+<p>Concernant les crises vaso-occlusives, les patients ayant eu une seule crise répondent mieux au VOX_15000, alors que ceux ayant eu plusieurs crises ne montrent aucun signe positif supplémentaire par rapport au placebo.</p>
+<p>Enfin, l’analyse par tranche d’âge révèle des résultats similaires entre les groupes VOX_1500 et placebo, tant chez les adolescents que chez les adultes.</p>
+<p>En somme, ces observations suggèrent que l’efficacité du VOX_1500 pourrait dépendre de certains facteurs cliniques, mais des études supplémentaires seront nécessaires pour valider ces conclusions.</p>
+</section>
+<section id="analyse-secondaire" class="level3">
+<h3 class="anchored" data-anchor-id="analyse-secondaire">Analyse secondaire</h3>
+<p>Dans cette secone partie, nous essayons de déterminer s’il existe une différence dans le changement moyen des taux d’hémoglobine entre les deux groupes (VOX_1500 et placebo). Pour répondre à cette question, nous réalisons une analyse statistique à l’aide de l’<a href="https://fr.wikipedia.org/wiki/Analyse_de_la_variance">ANOVA</a>. Cette dernière est une méthode statistique permettant de comparer les moyennes de plusieurs groupes afin de déterminer si au moins un groupe diffère significativement des autres. Plus concrètement, elle permet d’évaluer si les variations observées dans les données sont dues à des différences entre les groupes ou à des variations aléatoires au sein des groupes eux-mêmes. Elle nous est très utile ici, car elle permet d’ajuster les résultats en tenant compte des valeurs d’hémoglobine de départ (baseline) et de l’utilisation préalable d’hydroxyurée (HU) comme facteur supplémentaire.</p>
+<p>Les résultats révèlent que le VOX_1500 entraîne une augmentation significative du taux d’hémoglobine par rapport au placebo.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="image_essai_clinique/graph1_essaiclinique.png" class="img-fluid figure-img" width="491"></p>
+<figcaption>Représentation graphique du changement ajusté d’hémoglobine entre le départ et la semaine 72</figcaption>
+</figure>
+</div>
+<p>Les patients traités par VOX_1500 présentent une augmentation moyenne de 0,51 g/dL d’hémoglobine, contre 0,23 g/dL pour le groupe placebo. Cette différence est statistiquement significative au risque 5 %. Nous observons, un très faible impact des taux d’hémoglobine au départ sur l’évolution des niveaux observés. Cependant, l’utilisation préalable d’hydroxyurée influence fortement les résultats, les patients sous ce traitement montrant des évolutions différentes de ceux n’en prenant pas. Le traitement peut donc offrir un bénéfice notable en termes d’augmentation de l’hémoglobine, en particulier chez les patients n’utilisant pas d’hydroxyurée.</p>
+</section>
+<section id="marqueurs-dhémolyse" class="level3">
+<h3 class="anchored" data-anchor-id="marqueurs-dhémolyse">Marqueurs d’hémolyse</h3>
+<p>Nous analysons ensuite l’évolution des marqueurs d’hémolyse en utilisant la même méthode. Ces indicateurs biologiques permettent d’évaluer la destruction des globules rouges dans le sang. Deux marqueurs clésretiennent notre attention :</p>
+<ul>
+<li><p>Bilirubine non conjuguée : elle augmente lorsque les globules rouges sont détruits, reflétant une hémolyse active.</p></li>
+<li><p>Pourcentage de réticulocytes : ces globules rouges immatures sont produits en réponse à la destruction des globules matures. Un taux élevé traduit une compensation de l’organisme face à l’hémolyse.</p></li>
+</ul>
+<p>L’analyse de ces paramètres permet de mieux comprendre l’impact du traitement sur la santé des globules rouges.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="image_essai_clinique/tab_essaiclinique2.png" class="img-fluid figure-img" width="500"></p>
+<figcaption>Variations dans les marqueurs d’hémolyse entre la baseline et la semaine 72</figcaption>
+</figure>
+</div>
+<p>L’analyse des marqueurs d’hémolyse révèle que le traitement VOX_1500 a un effet significatif sur la réduction de la bilirubine non conjuguée et des réticulocytes, deux indicateurs clés de la destruction des globules rouges.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="image_essai_clinique/graph2_essaiclinique.png" class="img-fluid figure-img" width="482"></p>
+<figcaption>Représentation graphique du changement dans les marqueurs d’hémolyse</figcaption>
+</figure>
+</div>
+<p>Le traitement VOX_1500 entraîne une diminution moyenne de -8,09 g/dL contre -4,56 g/dL pour le placebo. Cette différence statistiquement significative confirme l’effet notable du traitement. De plus, le VOX_1500 montre également un impact significatif, sans que les valeurs initiales ou l’utilisation d’Hydroxyurée n’influencent les résultats.</p>
+<p>On en conclut que le traitement VOX_1500 a un effet plus marqué que le placebo sur la réduction de la bilirubine non conjuguée et des réticulocytes, comme le montre la différence significative dans les changements moyens ajustés pour ces deux marqueurs d’hémolyse. Le traitement pourrait ainsi être plus efficace pour réduire les caractéristiques d’hémolyse par rapport au placebo.</p>
+</section>
+</section>
+<section id="nouvel-essai-clinique" class="level2">
+<h2 class="anchored" data-anchor-id="nouvel-essai-clinique">Nouvel essai clinique</h2>
+<p>Au vu des facteurs influents vus dans l’analyse principal. Il se peut que le laboratoire envisage de lancer un nouvel essai clinique afin d’évaluer l’efficacité du VOX_1500 chez les adolescents (patient de 12 à 18 ans). En utilisant le même critère principal que précédemment et en se basant sur les résultats obtenus pour le voxelotor dans cette population, tout en supposant un taux de réponse de 10% pour le groupe placebo, nous procédons au calcul du nombre de patients nécessaires pour démontrer l’efficacité du traitement. Ce calcul est effectué en visant une puissance statistique de 90% et un risque alpha de 5%, avec un ratio de traitement 1:1.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="image_essai_clinique/calcul_essaiclinique.png" class="img-fluid figure-img" width="500"></p>
+<figcaption>Programme R du calcul du nombre de patients</figcaption>
+</figure>
+</div>
+<p>La taille de l’échantillon nécessaire pour ce nouvel essai clinique est de 48 patients au total, répartis également entre les deux groupes, soit 24 patients par groupe (placebo et le VOX_1500). Cette estimation garantit une puissance de 90% pour détecter une différence significative entre les groupes 29 avec un risque alpha de 5%.</p>
+</section>
+</section>
+<section id="conclusion" class="level1">
+<h1>Conclusion</h1>
+<p>L’analyse principale n’a pas mis en évidence de différence statistiquement significative entre les traitements étudiés. Pour les analyses secondaires, plusieurs résultats intéressants ont émergé. Ces résultats confirment que le voxelotor a un impact supérieur au placebo sur plusieurs caractéristiques clé, telles que l’augmentation de l’hémoglobine et la réduction de la bilirubine non conjuguée et des réticulocytes. Cela renforce donc son potentiel thérapeutique prometteur pour la gestion de la drépanocytose, en particulier dans des sous-groupes spécifiques de patients.</p>
+<p>Ce projet a permis de s’immerger dans le monde des essais cliniques à travers un cas réel, en analysant l’efficacité du voxelotor dans le traitement de la drépanocytose. Avec une approche à la fois statistique et pragmatique, il a été particulièrement enrichissant d’explorer les différentes facettes de l’évaluation d’un traitement.</p>
+<p>Note : 19/20</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copié");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copié");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>Copyright 2025, Rachid SAHLI</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

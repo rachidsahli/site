@@ -1,12 +1,11 @@
 ---
 title: "Projets"
 lang: "fr"
-
+page-layout: full
 listing:
   type: grid
   sort: "date desc"
   categories: true
-  sort-ui: true
   contents: 
         - projets/but_sd.qmd
   fields: [image, title, description, categories, date,]      

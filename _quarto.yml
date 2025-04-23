@@ -34,7 +34,7 @@ format:
           dark: [darkly, styles-dark.scss]
     css: styles.css
     toc: true
-    page-layout: full
+    page-layout: article
 
 editor: visual
 

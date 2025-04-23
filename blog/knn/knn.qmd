@@ -1,0 +1,54 @@
+---
+title: "L'algorithme des $k$ plus proches voisins"
+description: "Application sur R de l'algorithme des $k$ plus proches voisins."
+lang: fr
+date: 29 septembre 2024
+categories: ["R","Machine learning"]
+toc: true
+page-layout: article
+image: images_knn/couverture_knn.jpg
+---
+
+# Introduction
+
+L’algorithme des $k$ plus proches voisins est une méthode d’apprentissage supervisé. Il peut être utilisé pour la classification lorsque la variable à expliquer ($Y$) est qualitative, mais aussi pour effectuer une régression lorsque $Y \in \mathbb{R}$.
+
+![](images_knn/superv_non_superv.png){width="700"}
+
+En `apprentissage supervisé`, une variable $Y$ est étudiée à partir de variables explicatives $X$ à des fins de description ou de prédiction. En ce qui concerne la prédiction, l’objectif est de prévoir l’étiquette (classification) ou la valeur (régression) de $Y$ associée à une nouvelle entrée $x$. En `apprentissage non supervisé`, le problème est beaucoup moins bien posé. Il s’agit de découvrir des structures intéressantes dans des données non étiquetées, notamment à travers l’analyse exploratoire multidimensionnelle et la classification non supervisé
+
+Ici, nous sommes face à un problème d’apprentissage supervisé : nous disposons d’un jeu de données constitué de $N$ lignes représentant chacune un "individu". Pour chaque individu, on dispose de $n$ caractéristiques (les entrées) et d’une donnée représentant l’étiquette (ou la classe) à laquelle ce dernier appartient. Chaque ligne est donc constituée de $n+1$ données. Notre objectif est de construire un modèle prédictif prenant en entrée $n$ valeurs correspondant aux caractéristiques d’un "individu" et donnant en sortie la classe à laquelle il appartient.
+
+# Méthode des $k$ plus proches voisins
+
+Pour estimer la sortie (étiquette ou valeur) associée à $n$ entrées $(x_1, ..., x_n)$, la méthode des $k$ plus proches voisins consiste à déterminer les $k$ lignes du jeu de données dont les $n$ entrées sont les plus proches des valeurs $(x_1, ..., x_n)$ à travers le calcul d'une distance.
+
+::: {layout="[50,50]"}
+![Source : Cornell Computer Science](images_knn/methode_knn.webp)
+
+Ensuite, l’algorithme regarde les $k$ voisins les plus proches et détermine leur sortie.
+En classification, il attribue à l’individu la classe la plus fréquente parmi ces $k$ voisins (on parle de vote majoritaire). En régression, il calcule simplement la moyenne des valeurs de sortie.
+:::
+
+Il existe différents types de distances pouvant être utilisés pour l'algorithme des $k$ plus proches voisins.
+
+![](images_knn/distance.webp)
+
+Nous utiliserons la distance Euclidienne. C’est tout simplement la racine carrée de la somme des carrés des différences entre chaque coordonnée des deux points. Elle est donnée par la formule ci-dessous et représente la distance la plus courte entre deux points. Elle est également connue sous le nom de norme L2 d’un vecteur.
+
+$$d(x, y) = \sqrt{ \sum_{i=1}^{n} (x_i - y_i)^2 }$$
+
+# Environnement
+
+
+
+
+
+
+
+
+
+
+
+
+

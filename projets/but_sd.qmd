@@ -4,7 +4,7 @@ subtitle: "Sept 2022 - Juin 2025"
 description: "Voici une liste de mes projets réalisées durant mes 3 années à l'Institut Universitaire de Technologie de Paris."
 
 lang: fr
-
+page-layout: full
 categories: ["Science des données","Statistique"]
 
 sort: "date desc"

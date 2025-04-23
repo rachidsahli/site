@@ -2,6 +2,7 @@
   {
     "listing": "/blog.html",
     "items": [
+      "/blog/knn/knn.html",
       "/blog/carte_volontaires/carte_volontaires.html"
     ]
   },
