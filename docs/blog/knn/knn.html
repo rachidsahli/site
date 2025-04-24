@@ -21,6 +21,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -40,8 +74,8 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-4379b0ccadffce622b03caf4c46266b3.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-f3f3b78796173cd72355cd19efd44d3f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-aa8888c043cfe08f4ff118c691343ce3.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-786f9289e82607b31366812ef12d3c42.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-4b434b9876af74f327fb9a8ebf7b6968.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -159,7 +193,8 @@ window.Quarto = {
   <ul>
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
   <li><a href="#méthode-des-k-plus-proches-voisins" id="toc-méthode-des-k-plus-proches-voisins" class="nav-link" data-scroll-target="#méthode-des-k-plus-proches-voisins">Méthode des <span class="math inline">\(k\)</span> plus proches voisins</a></li>
-  <li><a href="#environnement" id="toc-environnement" class="nav-link" data-scroll-target="#environnement">Environnement</a></li>
+  <li><a href="#classification" id="toc-classification" class="nav-link" data-scroll-target="#classification">Classification</a></li>
+  <li><a href="#régression" id="toc-régression" class="nav-link" data-scroll-target="#régression">Régression</a></li>
   </ul>
 </nav>
     </div>
@@ -232,9 +267,201 @@ window.Quarto = {
 <p><img src="images_knn/distance.webp" class="img-fluid"></p>
 <p>Nous utiliserons la distance Euclidienne. C’est tout simplement la racine carrée de la somme des carrés des différences entre chaque coordonnée des deux points. Elle est donnée par la formule ci-dessous et représente la distance la plus courte entre deux points. Elle est également connue sous le nom de norme L2 d’un vecteur.</p>
 <p><span class="math display">\[d(x, y) = \sqrt{ \sum_{i=1}^{n} (x_i - y_i)^2 }\]</span></p>
+<p>Nous appliquerons la méthode des <span class="math inline">\(k\)</span> plus proches voisins à un cas de classification et à un cas de régression, en nous appuyant sur deux jeux de données distincts.</p>
 </section>
-<section id="environnement" class="level1">
-<h1>Environnement</h1>
+<section id="classification" class="level1">
+<h1>Classification</h1>
+<p>Nous commençons par importer le package <a href="https://cran.r-project.org/web/packages/class/class.pdf"><code>class</code></a>. Ce dernier ne contient que des fonctions pour l’algorithme des <span class="math inline">\(k\)</span> plus proches voisins et nous sera utile pour le cas de classification.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="sc">---</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(class)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="sc">---</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Le jeu de données Iris, également connu sous le nom d’<a href="https://fr.wikipedia.org/wiki/Iris_de_Fisher">Iris de Fisher</a>, contient 150 observations de trois espèces d’iris : <code>setosa</code>, <code>virginica</code> et <code>versicolor</code>. Pour chaque fleur, quatre caractéristiques mesurées en centimètres sont renseignées : la longueur et la largeur des sépales, ainsi que la longueur et la largeur des pétales.</p>
+<p>Ce jeu de données est initialement intégré à R. Nous l’importons à l’aide de la commande suivante :</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="sc">---</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(iris)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="sc">---</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Nous disposons donc d’un jeu de données avec 4 variables explicatives, qui sont les caractéristiques de chaque fleur, et une variable à prédire, qui est l’espèce. On observe ci-dessous que la variable Species comporte trois modalités. Afin d’éviter un problème de classification multiclasse, nous choisissons d’exclure la modalité Setosa. L’objectif est de construire un modèle qui se résume à une règle de classification binaire.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="sc">---</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(iris)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="sc">---</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   150 obs. of  5 variables:
+ $ Sepal.Length: num  5.1 4.9 4.7 4.6 5 5.4 4.6 5 4.4 4.9 ...
+ $ Sepal.Width : num  3.5 3 3.2 3.1 3.6 3.9 3.4 3.4 2.9 3.1 ...
+ $ Petal.Length: num  1.4 1.4 1.3 1.5 1.4 1.7 1.4 1.5 1.4 1.5 ...
+ $ Petal.Width : num  0.2 0.2 0.2 0.2 0.2 0.4 0.3 0.2 0.2 0.1 ...
+ $ Species     : Factor w/ 3 levels "setosa","versicolor",..: 1 1 1 1 1 1 1 1 1 1 ...</code></pre>
+</div>
+</div>
+<p>On supprime les 50 observations associées à l’espèce Setosa, puis la modalité correspondante de la variable.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="sc">---</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>iris <span class="ot">&lt;-</span> iris[<span class="sc">!</span>iris<span class="sc">$</span>Species <span class="sc">==</span> <span class="st">"setosa"</span>,]</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>iris<span class="sc">$</span>Species <span class="ot">&lt;-</span> <span class="fu">droplevels</span>(iris<span class="sc">$</span>Species)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="sc">---</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Notre jeu de données compte désormais 50 observations.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="sc">---</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(iris)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="sc">---</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 100   5</code></pre>
+</div>
+</div>
+<p>Iris est un jeu de données souvent utilisé à des fins pédagogiques, car il est déjà propre, équilibré et bien structuré. Il ne comporte pas de valeurs manquantes, les variables sont déjà au format numérique, leurs échelles sont relativement comparables, et la répartition des classes est équilibrée. Nous ne réaliserons donc pas d’analyses descriptives approfondies, mis à part le résumé statistique de notre data frame présenté ci-dessous.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="sc">---</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(iris)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="sc">---</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>  Sepal.Length    Sepal.Width     Petal.Length    Petal.Width   
+ Min.   :4.900   Min.   :2.000   Min.   :3.000   Min.   :1.000  
+ 1st Qu.:5.800   1st Qu.:2.700   1st Qu.:4.375   1st Qu.:1.300  
+ Median :6.300   Median :2.900   Median :4.900   Median :1.600  
+ Mean   :6.262   Mean   :2.872   Mean   :4.906   Mean   :1.676  
+ 3rd Qu.:6.700   3rd Qu.:3.025   3rd Qu.:5.525   3rd Qu.:2.000  
+ Max.   :7.900   Max.   :3.800   Max.   :6.900   Max.   :2.500  
+       Species  
+ versicolor:50  
+ virginica :50  
+                
+                
+                
+                </code></pre>
+</div>
+</div>
+<div>
+
+</div>
+<div class="quarto-layout-panel" data-layout="[60,40]">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 60.0%;justify-content: center;">
+<p><img src="images_knn/app_test.png" class="img-fluid"></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 40.0%;justify-content: flex-start;">
+<p>Afin de pouvoir évaluer notre modèle, nous divisons notre jeu de données en deux sous-ensembles : Un jeu de données d’<code>apprentissage</code> réprésentant 80 % du jeu de données initial. L’algorithme s’entraînera à partir de ces données. Puis un jeu de données de <code>test</code> correspondant aux 20 % restants. Il servira à évaluer les performances du modèle de classification sur des données jamais vues pendant l’apprentissage.</p>
+</div>
+</div>
+</div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="sc">---</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">80</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>idx1 <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">50</span>, N<span class="sc">/</span><span class="dv">2</span>, <span class="at">replace =</span> F)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>idx1 <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">50</span>, N<span class="sc">/</span><span class="dv">2</span>, <span class="at">replace =</span> F) <span class="co"># Tirage aleatoire de 40 indices entre 1 et 50 </span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>                                       <span class="co"># (classe : versicolor)</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>idx0 <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">51</span><span class="sc">:</span><span class="dv">100</span>, N<span class="sc">/</span><span class="dv">2</span>, <span class="at">replace =</span> F) <span class="co"># Tirage aleatoire de 40 indices entre 51 et 100 </span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>                                         <span class="co"># (classe : virginica)</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>dataL <span class="ot">&lt;-</span> iris[<span class="fu">c</span>(idx1,idx0),] <span class="co"># Apprentissage (80 %)</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>dataV <span class="ot">&lt;-</span> iris[<span class="sc">-</span><span class="fu">c</span>(idx1,idx0),] <span class="co"># Test (20 %)</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="sc">---</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Nous pouvons maintenant créer notre fonction de prédiction et l’appliquer à nos données à l’aide de la fonction knn(). Cette fonction prend cinq paramètres principaux :</p>
+<ul>
+<li><p>train : le jeu de données d’apprentissage,</p></li>
+<li><p>test : le jeu de données sur lequel on souhaite faire des prédictions,</p></li>
+<li><p>cl : le vecteur des classes associées aux données d’apprentissage <span class="math inline">\((Y)\)</span>,</p></li>
+<li><p><span class="math inline">\(k\)</span> : le nombre de voisins à considérer pour la classification,</p></li>
+<li><p>prob : un paramètre optionnel qui, s’il est défini à <code>TRUE</code>, renvoie également la probabilité associée à la prédiction.</p></li>
+</ul>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="sc">---</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>prediction <span class="ot">=</span> <span class="fu">knn</span>(<span class="at">train =</span> dataL[,<span class="sc">-</span><span class="dv">5</span>], <span class="at">test =</span> dataV[,<span class="sc">-</span><span class="dv">5</span>],</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">cl =</span> dataL[,<span class="dv">5</span>], <span class="at">k =</span> <span class="dv">3</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="sc">---</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Ici, nous avons choisi de considérer les 3 plus proches voisins pour prédire la classe de la prochaine observation. On voit sur l’image ci-dessous que la valeur de <span class="math inline">\(k\)</span> influence fortement la performance du modèle et la qualité des prédictions.</p>
+<p><img src="images_knn/impact_k.webp" class="img-fluid" width="1000" alt="Source : Towards datascience"> Nous verrons par la suite comment déterminer la valeur optimale de <span class="math inline">\(k\)</span> afin de minimiser le taux de mauvaise classification.</p>
+<p>Nous calculons l’erreur de notre classification, c’est-à-dire le taux de mauvaise classification sur l’échantillon test. Il s’agit simplement de comparer les prédictions aux vraies valeurs, puis de calculer la proportion d’observations mal classées.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="sc">---</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(prediction <span class="sc">!=</span> dataV[,<span class="dv">5</span>])</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="sc">---</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.15</code></pre>
+</div>
+</div>
+<p>Le taux d’erreur de notre classification est de 15 %. Cependant, ce taux peut varier à chaque répétition de l’expérience, car la répartition des données entre l’échantillon d’apprentissage et celui de test change à chaque tirage aléatoire. Nous décidons donc de répéter l’expérience 100 fois, en utilisant des échantillons différents à chaque itération. À l’issue de ces répétitions, nous calculerons la moyenne des taux de mauvaise classification obtenus afin d’obtenir une estimation plus fiable de la performance du modèle.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="sc">---</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>rep <span class="ot">&lt;-</span> <span class="dv">100</span> <span class="co"># Nb de répétitions</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>error <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, rep)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>rep){</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  N <span class="ot">&lt;-</span> <span class="dv">80</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  idx1 <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">50</span>, N<span class="sc">/</span><span class="dv">2</span>, <span class="at">replace =</span> F)</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  idx0 <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">51</span><span class="sc">:</span><span class="dv">100</span>, N<span class="sc">/</span><span class="dv">2</span>, <span class="at">replace =</span> F)</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  dataL <span class="ot">&lt;-</span> iris[<span class="fu">c</span>(idx1,idx0),]</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  dataV <span class="ot">&lt;-</span> iris[<span class="sc">-</span><span class="fu">c</span>(idx1,idx0),]</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>  prediction_100 <span class="ot">&lt;-</span> <span class="fu">knn</span>(<span class="at">train =</span> dataL[,<span class="sc">-</span><span class="dv">5</span>], <span class="at">test =</span> dataV[,<span class="sc">-</span><span class="dv">5</span>],</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>                 <span class="at">cl =</span> dataL[,<span class="dv">5</span>], <span class="at">k =</span> <span class="dv">3</span>)</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>  error[i] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">mean</span>(prediction_100 <span class="sc">!=</span> dataV[,<span class="dv">5</span>]))</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(error)</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a><span class="sc">---</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.053</code></pre>
+</div>
+</div>
+<p>Le taux d’erreur de notre classification est de 5,3 % lorsque nous considérons les 3 plus proches voisins. Il existe de nombreux types de visualisations sur R, tant pour les prédictions que pour les erreurs, que nous ne détaillerons pas ici.</p>
+<p>Nous souhaitons maintenant déterminer le nombre de voisins qui permet la meilleure classification de la nouvelle observation. Pour ce faire, nous allons chercher à identifier la valeur optimale de <span class="math inline">\(k\)</span>, ce qui permettra de réduire le taux d’erreur du modèle précédent. Afin de gagner du temps, nous calculerons le taux d’erreur moyen pour chaque valeur de <span class="math inline">\(k\)</span> à partir de 100 échantillons différents.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="sc">---</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>rep <span class="ot">&lt;-</span> <span class="dv">100</span> <span class="co"># Nb de répétitions</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>kval <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">79</span>, <span class="at">by =</span> <span class="dv">2</span>)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>error <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, rep, <span class="fu">length</span>(kval))</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>rep){</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  N <span class="ot">&lt;-</span> <span class="dv">80</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  idx1 <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">50</span>, N<span class="sc">/</span><span class="dv">2</span>, <span class="at">replace =</span> F)</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  idx0 <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">51</span><span class="sc">:</span><span class="dv">100</span>, N<span class="sc">/</span><span class="dv">2</span>, <span class="at">replace =</span> F)</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  dataL <span class="ot">&lt;-</span> iris[<span class="fu">c</span>(idx1,idx0),]</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>  dataV <span class="ot">&lt;-</span> iris[<span class="sc">-</span><span class="fu">c</span>(idx1,idx0),]</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(<span class="fu">length</span>(kval)))</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>  {</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>    prediction_2 <span class="ot">&lt;-</span> <span class="fu">knn</span>(<span class="at">train =</span> dataL[,<span class="sc">-</span><span class="dv">5</span>], <span class="at">test =</span> dataV[,<span class="sc">-</span><span class="dv">5</span>], </span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>                    <span class="at">cl =</span> dataL[,<span class="dv">5</span>], <span class="at">k =</span> kval[j])</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>    error[i,j] <span class="ot">&lt;-</span> <span class="fu">mean</span>(dataV[,<span class="dv">5</span>] <span class="sc">!=</span> prediction_2)</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a><span class="sc">---</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>On visualise les résultats sur le graphique ci-dessous.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="knn_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Ici, il est nécessaire de considérer 11 voisins pour obtenir le taux de classification le plus faible. Nous réentraînerons donc le modèle en utilisant ce paramètre modifié.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="sc">---</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>rep <span class="ot">&lt;-</span> <span class="dv">100</span> <span class="co"># Nb de répétitions</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>error <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, rep)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>rep){</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  N <span class="ot">&lt;-</span> <span class="dv">80</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  idx1 <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">50</span>, N<span class="sc">/</span><span class="dv">2</span>, <span class="at">replace =</span> F)</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>  idx0 <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">51</span><span class="sc">:</span><span class="dv">100</span>, N<span class="sc">/</span><span class="dv">2</span>, <span class="at">replace =</span> F)</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>  dataL <span class="ot">&lt;-</span> iris[<span class="fu">c</span>(idx1,idx0),]</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>  dataV <span class="ot">&lt;-</span> iris[<span class="sc">-</span><span class="fu">c</span>(idx1,idx0),]</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>  prediction_11 <span class="ot">&lt;-</span> <span class="fu">knn</span>(<span class="at">train =</span> dataL[,<span class="sc">-</span><span class="dv">5</span>], <span class="at">test =</span> dataV[,<span class="sc">-</span><span class="dv">5</span>],</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>                 <span class="at">cl =</span> dataL[,<span class="dv">5</span>], <span class="at">k =</span> <span class="dv">11</span>)</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>  error[i] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">mean</span>(prediction_11 <span class="sc">!=</span> dataV[,<span class="dv">5</span>]))</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(error)</span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a><span class="sc">---</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.039</code></pre>
+</div>
+</div>
+<p>Nous obtenons un taux d’erreur plus faible (3,9 %) par rapport au modèle précédent, ce qui confirme notre petite recherche du <span class="math inline">\(k\)</span> optimal.</p>
+</section>
+<section id="régression" class="level1">
+<h1>Régression</h1>
 
 
 </section>

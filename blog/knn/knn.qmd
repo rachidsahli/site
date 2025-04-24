@@ -26,8 +26,7 @@ Pour estimer la sortie (étiquette ou valeur) associée à $n$ entrées $(x_1, .
 ::: {layout="[50,50]"}
 ![Source : Cornell Computer Science](images_knn/methode_knn.webp)
 
-Ensuite, l’algorithme regarde les $k$ voisins les plus proches et détermine leur sortie.
-En classification, il attribue à l’individu la classe la plus fréquente parmi ces $k$ voisins (on parle de vote majoritaire). En régression, il calcule simplement la moyenne des valeurs de sortie.
+Ensuite, l’algorithme regarde les $k$ voisins les plus proches et détermine leur sortie. En classification, il attribue à l’individu la classe la plus fréquente parmi ces $k$ voisins (on parle de vote majoritaire). En régression, il calcule simplement la moyenne des valeurs de sortie.
 :::
 
 Il existe différents types de distances pouvant être utilisés pour l'algorithme des $k$ plus proches voisins.
@@ -38,11 +37,303 @@ Nous utiliserons la distance Euclidienne. C’est tout simplement la racine carr
 
 $$d(x, y) = \sqrt{ \sum_{i=1}^{n} (x_i - y_i)^2 }$$
 
-# Environnement
+Nous appliquerons la méthode des $k$ plus proches voisins à un cas de classification et à un cas de régression, en nous appuyant sur deux jeux de données distincts.
+
+# Classification
+
+Nous commençons par importer le package [`class`](https://cran.r-project.org/web/packages/class/class.pdf). Ce dernier ne contient que des fonctions pour l'algorithme des $k$ plus proches voisins et nous sera utile pour le cas de classification.
+
+``` r
+---
+library(class)
+---
+```
+
+```{r echo=FALSE}
+library(class)
+```
+
+Le jeu de données Iris, également connu sous le nom d'[Iris de Fisher](https://fr.wikipedia.org/wiki/Iris_de_Fisher), contient 150 observations de trois espèces d'iris : `setosa`, `virginica` et `versicolor`. Pour chaque fleur, quatre caractéristiques mesurées en centimètres sont renseignées : la longueur et la largeur des sépales, ainsi que la longueur et la largeur des pétales.
+
+Ce jeu de données est initialement intégré à R. Nous l'importons à l’aide de la commande suivante :
+
+``` r
+---
+data(iris)
+---
+```
+
+```{r echo=FALSE}
+data(iris)
+```
+
+Nous disposons donc d'un jeu de données avec 4 variables explicatives, qui sont les caractéristiques de chaque fleur, et une variable à prédire, qui est l'espèce. On observe ci-dessous que la variable Species comporte trois modalités. Afin d’éviter un problème de classification multiclasse, nous choisissons d’exclure la modalité Setosa. L’objectif est de construire un modèle qui se résume à une règle de classification binaire.
+
+``` r
+---
+str(iris)
+---
+```
+
+```{r echo=FALSE}
+str(iris)
+```
+
+On supprime les 50 observations associées à l’espèce Setosa, puis la modalité correspondante de la variable.
+
+``` r
+---
+iris <- iris[!iris$Species == "setosa",]
+
+iris$Species <- droplevels(iris$Species)
+---
+```
+
+```{r echo=FALSE}
+iris <- iris[!iris$Species == "setosa",]
+
+iris$Species <- droplevels(iris$Species)
+```
+
+Notre jeu de données compte désormais 50 observations.
+
+``` r
+---
+dim(iris)
+---
+```
+
+```{r echo=FALSE}
+dim(iris)
+```
+
+Iris est un jeu de données souvent utilisé à des fins pédagogiques, car il est déjà propre, équilibré et bien structuré. Il ne comporte pas de valeurs manquantes, les variables sont déjà au format numérique, leurs échelles sont relativement comparables, et la répartition des classes est équilibrée. Nous ne réaliserons donc pas d’analyses descriptives approfondies, mis à part le résumé statistique de notre data frame présenté ci-dessous.
+
+``` r
+---
+summary(iris)
+---
+```
+
+```{r echo=FALSE}
+summary(iris)
+```
+
+::: {layout="[60,40]"}
+![](images_knn/app_test.png)
+
+Afin de pouvoir évaluer notre modèle, nous divisons notre jeu de données en deux sous-ensembles : Un jeu de données d’`apprentissage` réprésentant 80 % du jeu de données initial. L’algorithme s’entraînera à partir de ces données. Puis un jeu de données de `test` correspondant aux 20 % restants. Il servira à évaluer les performances du modèle de classification sur des données jamais vues pendant l’apprentissage.
+:::
+
+``` r
+---
+N <- 80
+idx1 <- sample(1:50, N/2, replace = F)
+idx1 <- sample(1:50, N/2, replace = F) # Tirage aleatoire de 40 indices entre 1 et 50 
+                                       # (classe : versicolor)
+idx0 <- sample(51:100, N/2, replace = F) # Tirage aleatoire de 40 indices entre 51 et 100 
+                                         # (classe : virginica)
+dataL <- iris[c(idx1,idx0),] # Apprentissage (80 %)
+dataV <- iris[-c(idx1,idx0),] # Test (20 %)
+---
+```
+
+```{r echo=FALSE}
+set.seed(75014)
+N <- 80
+idx1 <- sample(1:50, N/2, replace = F)
+idx1 <- sample(1:50, N/2, replace = F) # Tirage aleatoire de 40 indices entre 1 et 50 (classe : versicolor)
+idx0 <- sample(51:100, N/2, replace = F) # Tirage aleatoire de 40 indices entre 51 et 100 (classe : virginica)
+dataL <- iris[c(idx1,idx0),] # Apprentissage (80 %)
+dataV <- iris[-c(idx1,idx0),] # Test (20 %)
+```
+
+Nous pouvons maintenant créer notre fonction de prédiction et l’appliquer à nos données à l’aide de la fonction knn(). Cette fonction prend cinq paramètres principaux :
+
+-   train : le jeu de données d’apprentissage,
+
+-   test : le jeu de données sur lequel on souhaite faire des prédictions,
+
+-   cl : le vecteur des classes associées aux données d’apprentissage $(Y)$,
+
+-   $k$ : le nombre de voisins à considérer pour la classification,
+
+-   prob : un paramètre optionnel qui, s’il est défini à `TRUE`, renvoie également la probabilité associée à la prédiction.
+
+``` r
+---
+prediction = knn(train = dataL[,-5], test = dataV[,-5],
+                 cl = dataL[,5], k = 3)
+---
+```
+```{r echo=FALSE}
+prediction = knn(train = dataL[,-5], test = dataV[,-5],
+                 cl = dataL[,5], k = 3)
+```
+
+Ici, nous avons choisi de considérer les 3 plus proches voisins pour prédire la classe de la prochaine observation. On voit sur l'image ci-dessous que la valeur de $k$ influence fortement la performance du modèle et la qualité des prédictions.
+
+![Source : Towards datascience](images_knn/impact_k.webp){width="1000"} 
+Nous verrons par la suite comment déterminer la valeur optimale de $k$ afin de minimiser le taux de mauvaise classification.
+
+Nous calculons l’erreur de notre classification, c’est-à-dire le taux de mauvaise classification sur l’échantillon test. Il s’agit simplement de comparer les prédictions aux vraies valeurs, puis de calculer la proportion d’observations mal classées.
+
+``` r
+---
+mean(prediction != dataV[,5])
+---
+```
+```{r echo=FALSE}
+mean(prediction != dataV[,5])
+```
+
+Le taux d’erreur de notre classification est de 15 %. Cependant, ce taux peut varier à chaque répétition de l’expérience, car la répartition des données entre l’échantillon d’apprentissage et celui de test change à chaque tirage aléatoire.
+Nous décidons donc de répéter l’expérience 100 fois, en utilisant des échantillons différents à chaque itération.
+À l’issue de ces répétitions, nous calculerons la moyenne des taux de mauvaise classification obtenus afin d’obtenir une estimation plus fiable de la performance du modèle.
+
+``` r
+---
+rep <- 100 # Nb de répétitions
+error <- rep(NA, rep)
+
+for (i in 1:rep){
+  N <- 80
+  idx1 <- sample(1:50, N/2, replace = F)
+  idx0 <- sample(51:100, N/2, replace = F)
+  dataL <- iris[c(idx1,idx0),]
+  dataV <- iris[-c(idx1,idx0),]
+  
+  prediction_100 <- knn(train = dataL[,-5], test = dataV[,-5],
+                 cl = dataL[,5], k = 3)
+  
+  error[i] <- c(mean(prediction_100 != dataV[,5]))
+}
+
+mean(error)
+---
+```
+```{r echo=FALSE}
+rep <- 100 # Nb de répétitions
+error <- rep(NA, rep)
+
+for (i in 1:rep){
+  N <- 80
+  idx1 <- sample(1:50, N/2, replace = F)
+  idx0 <- sample(51:100, N/2, replace = F)
+  dataL <- iris[c(idx1,idx0),]
+  dataV <- iris[-c(idx1,idx0),]
+  
+  prediction_100 <- knn(train = dataL[,-5], test = dataV[,-5],
+                 cl = dataL[,5], k = 3)
+  
+  error[i] <- c(mean(prediction_100 != dataV[,5]))
+}
+
+mean(error)
+```
 
 
+Le taux d'erreur de notre classification est de 5,3 % lorsque nous considérons les 3 plus proches voisins. Il existe de nombreux types de visualisations sur R, tant pour les prédictions que pour les erreurs, que nous ne détaillerons pas ici.
 
+Nous souhaitons maintenant déterminer le nombre de voisins qui permet la meilleure classification de la nouvelle observation. Pour ce faire, nous allons chercher à identifier la valeur optimale de $k$, ce qui permettra de réduire le taux d'erreur du modèle précédent. Afin de gagner du temps, nous calculerons le taux d'erreur moyen pour chaque valeur de $k$ à partir de 100 échantillons différents.
 
+``` r
+---
+rep <- 100 # Nb de répétitions
+kval <- seq(1, 79, by = 2)
+error <- matrix(NA, rep, length(kval))
+
+for (i in 1:rep){
+  N <- 80
+  idx1 <- sample(1:50, N/2, replace = F)
+  idx0 <- sample(51:100, N/2, replace = F)
+  dataL <- iris[c(idx1,idx0),]
+  dataV <- iris[-c(idx1,idx0),]
+  for (j in 1:(length(kval)))
+  {
+    prediction_2 <- knn(train = dataL[,-5], test = dataV[,-5], 
+                    cl = dataL[,5], k = kval[j])
+    error[i,j] <- mean(dataV[,5] != prediction_2)
+  }
+}
+---
+```
+```{r echo=FALSE}
+rep <- 100 # Nb de répétitions
+kval <- seq(1, 79, by = 2)
+error <- matrix(NA, rep, length(kval))
+
+for (i in 1:rep){
+  N <- 80
+  idx1 <- sample(1:50, N/2, replace = F)
+  idx0 <- sample(51:100, N/2, replace = F)
+  dataL <- iris[c(idx1,idx0),]
+  dataV <- iris[-c(idx1,idx0),]
+  for (j in 1:(length(kval)))
+  {
+    prediction_2 <- knn(train = dataL[,-5], test = dataV[,-5], 
+                    cl = dataL[,5], k = kval[j])
+    error[i,j] <- mean(dataV[,5] != prediction_2)
+  }
+}
+```
+
+On visualise les résultats sur le graphique ci-dessous.
+
+```{r echo=FALSE}
+plot(kval, apply(error, 2, mean), type="l", main = "Erreur de prédiction en fonction de k",
+     xlab = "k", ylab = "Taux d'erreur (%)")
+abline(v= kval[which.min(apply(error, 2, mean))], lty = 2, col="red")
+legend("bottomright", legend = paste("k optimal=", kval[which.min(apply(error, 2, mean))]), 
+       col = "red", lty = 2)
+```
+
+Ici, il est nécessaire de considérer 11 voisins pour obtenir le taux de classification le plus faible. Nous réentraînerons donc le modèle en utilisant ce paramètre modifié. 
+
+``` r
+---
+rep <- 100 # Nb de répétitions
+error <- rep(NA, rep)
+
+for (i in 1:rep){
+  N <- 80
+  idx1 <- sample(1:50, N/2, replace = F)
+  idx0 <- sample(51:100, N/2, replace = F)
+  dataL <- iris[c(idx1,idx0),]
+  dataV <- iris[-c(idx1,idx0),]
+  
+  prediction_11 <- knn(train = dataL[,-5], test = dataV[,-5],
+                 cl = dataL[,5], k = 11)
+  
+  error[i] <- c(mean(prediction_11 != dataV[,5]))
+}
+
+mean(error)
+---
+```
+```{r echo=FALSE}
+rep <- 100 # Nb de répétitions
+error <- rep(NA, rep)
+
+for (i in 1:rep){
+  N <- 80
+  idx1 <- sample(1:50, N/2, replace = F)
+  idx0 <- sample(51:100, N/2, replace = F)
+  dataL <- iris[c(idx1,idx0),]
+  dataV <- iris[-c(idx1,idx0),]
+  
+  prediction_11 <- knn(train = dataL[,-5], test = dataV[,-5],
+                 cl = dataL[,5], k = 11)
+  
+  error[i] <- c(mean(prediction_11 != dataV[,5]))
+}
+
+mean(error)
+```
+
+Nous obtenons un taux d'erreur plus faible (3,9 %) par rapport au modèle précédent, ce qui confirme notre petite recherche du $k$ optimal.
+
+# Régression
 
 
 
