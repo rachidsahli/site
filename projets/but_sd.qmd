@@ -14,10 +14,10 @@ image: image_projets/couverture_projets_but.jpeg
 listing:
   type: grid
   contents: 
-        - projets_but/louvre.qmd
-        - projets_but/migration.qmd
-        - projets_but/essai_clinique.qmd
-        - projets_but/serie_temp_charbon.qmd
+        - projets_but/louvre/louvre.qmd
+        - projets_but/migration/migration.qmd
+        - projets_but/essai_clinique/essai_clinique.qmd
+        - projets_but/serie_temp_charbon/serie_temp_charbon.qmd
   fields: [image, title, description, categories, date,]
   categories: true
 ---

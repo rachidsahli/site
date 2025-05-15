@@ -1,5 +1,12 @@
 [
   {
+    "listing": "/blog.html",
+    "items": [
+      "/blog/knn/knn.html",
+      "/blog/carte_volontaires/carte_volontaires.html"
+    ]
+  },
+  {
     "listing": "/projets.html",
     "items": [
       "/projets/but_sd.html"
@@ -7,13 +14,11 @@
   },
   {
     "listing": "/projets/but_sd.html",
-    "items": []
-  },
-  {
-    "listing": "/blog.html",
     "items": [
-      "/blog/knn/knn.html",
-      "/blog/carte_volontaires/carte_volontaires.html"
+      "/projets/projets_but/essai_clinique/essai_clinique.html",
+      "/projets/projets_but/migration/migration.html",
+      "/projets/projets_but/louvre/louvre.html",
+      "/projets/projets_but/serie_temp_charbon/serie_temp_charbon.html"
     ]
   }
 ]
