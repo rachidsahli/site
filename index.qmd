@@ -30,11 +30,7 @@ Je suis étudiant en Science des Données à l'IUT Paris Rives de Seine et alter
 
 Je travaille principalement avec `R` et `Python` et j'ai créé un site de ressources appelé [`PratiqueR`](https://pratiquer.github.io/site/). Vous pouvez également me retrouver sur [`YouTube`](https://www.youtube.com/@PratiqueR), où je partage des vidéos sur R et son environnement.
 
-En-dehors de mes études, je consacre mon temps libre à la construction de robots et je partage mes idées sur mon blog, [`Jiqiren`](https://rachidsahli.github.io/jiqiren/).
-
-Passionné par les statistiques, la robotique 🦿🤖, le vélo 🚲, le cinéma 🎞️, et la programmation 👾, j'aime explorer et partager mes découvertes dans ces domaines.
+Passionné par l'intelligence artificielle, les statistiques, la robotique 🦿🤖, le vélo 🚲, le cinéma 🎞️, et la programmation 👾, j'aime explorer et partager mes découvertes dans ces domaines.
 
 Je suis très curieux et toujours ouvert à de nouvelles idées. N'hésitez pas à me contacter pour discuter d'un projet ou explorer des opportunités de collaboration.
 :::
-
-
